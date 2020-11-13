@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">AndroidAcademyApp</string>
+    <string name="title_name">Movies list</string>
+    <string name="story_line_text">
+        After the devastating events of Avengers: Infinity War,
+        the universe is in ruins. With the help of remaining allies,
+        the Avengers assemble once more in order to reverse Thanos\'
+        actions and restore balance to the universe.
+    </string>
+
 </resources>
