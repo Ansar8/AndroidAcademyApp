@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="main_background">#191926</color>
+    <color name="age_limits">#FFFFFF</color>
+    <color name="story_line_text">#FFFFFF</color>
+    <color name="cast">#ECECEC</color>
+    <color name="story_line">#ECECEC</color>
+    <color name="reviews_text">#6D6D80</color>
+    <color name="genre_text">#FF3466</color>
+    <color name="movie_name_text">#ECECEC</color>
 </resources>
