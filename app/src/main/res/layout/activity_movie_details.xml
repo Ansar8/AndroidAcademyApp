@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="16dp" />
+            app:layout_constraintGuide_begin="16dp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideVerticalEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp"  />
+            app:layout_constraintGuide_end="16dp"/>
 
 
         <ImageView
@@ -62,7 +62,7 @@
             android:textSize="@dimen/back_button"
             app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
             app:layout_constraintStart_toEndOf="@id/back_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/avengers_age_limits"
@@ -99,7 +99,7 @@
             android:layout_marginBottom="4dp"
             android:gravity="center_vertical"
             android:text="@string/genre"
-            android:textSize="14sp"
+            android:textSize="@dimen/genre"
             android:textColor="@color/genre"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"

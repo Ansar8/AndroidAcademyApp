@@ -9,4 +9,5 @@
     <dimen name="story_line">14sp</dimen>
     <dimen name="story_line_text">14sp</dimen>
     <dimen name="cast">14sp</dimen>
+    <dimen name="genre">14sp</dimen>
 </resources>

@@ -10,7 +10,7 @@
     <string name="review_number">125 REVIEWS</string>
     <string name="story_line">Storyline</string>
     <string name="genre">Action, Adventure, Fantasy</string>
-    <string name="movie_name">Avengers:<br/>End Game</string>
+    <string name="movie_name">Avengers:\nEnd Game</string>
     <string name="age_limits">13+</string>
     <string name="cast">Cast</string>
     <string name="cast_person_name_1">Robert Downey Jr.</string>
@@ -18,5 +18,6 @@
     <string name="cast_person_name_3">Mark Ruffalo</string>
     <string name="cast_person_name_4">Chris Hemsworth</string>
     <string name="back_button">Back</string>
+    <string name="movie_details_navigation">Tap to look at Movie Details page</string>
 
 </resources>
