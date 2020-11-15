@@ -127,7 +127,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="1dp"
-            android:src="@drawable/red_star_icon"
+            android:src="@drawable/red_star"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/avengers_star_2"
             app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
@@ -139,7 +139,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
-            android:src="@drawable/red_star_icon"
+            android:src="@drawable/red_star"
             app:layout_constraintLeft_toRightOf="@+id/avengers_star_1"
             app:layout_constraintRight_toLeftOf="@id/avengers_star_3"
             app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
@@ -151,7 +151,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
-            android:src="@drawable/red_star_icon"
+            android:src="@drawable/red_star"
             app:layout_constraintLeft_toRightOf="@id/avengers_star_2"
             app:layout_constraintRight_toLeftOf="@id/avengers_star_4"
             app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
@@ -163,7 +163,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
-            android:src="@drawable/red_star_icon"
+            android:src="@drawable/red_star"
             app:layout_constraintLeft_toRightOf="@id/avengers_star_3"
             app:layout_constraintRight_toLeftOf="@id/avengers_star_5"
             app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
@@ -175,7 +175,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="6dp"
-            android:src="@drawable/grey_star_icon"
+            android:src="@drawable/grey_star"
             app:layout_constraintLeft_toRightOf="@id/avengers_star_4"
             app:layout_constraintRight_toLeftOf="@id/avengers_reviews"
             app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>

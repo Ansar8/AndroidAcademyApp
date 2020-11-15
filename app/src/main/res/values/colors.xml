@@ -13,7 +13,8 @@
     <color name="story_line_text">#FFFFFF</color>
     <color name="cast">#ECECEC</color>
     <color name="story_line">#ECECEC</color>
-    <color name="reviews_text">#6D6D80</color>
-    <color name="genre_text">#FF3466</color>
-    <color name="movie_name_text">#ECECEC</color>
+    <color name="reviews">#6D6D80</color>
+    <color name="genre">#FF3466</color>
+    <color name="movie_name">#ECECEC</color>
+    <color name="back_button">#6D6D80</color>
 </resources>

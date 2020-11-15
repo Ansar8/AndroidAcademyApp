@@ -20,11 +20,11 @@
     </style>
     
     <style name="RatingRedStar" parent="@style/Star">
-        <item name="android:src">@drawable/red_star_icon</item>
+        <item name="android:src">@drawable/red_star</item>
     </style>
     
     <style name="RatingGreyStar" parent="@style/Star">
-        <item name="android:src">@drawable/grey_star_icon</item>
+        <item name="android:src">@drawable/grey_star</item>
     </style>
     
     <style name="CastPersonName">

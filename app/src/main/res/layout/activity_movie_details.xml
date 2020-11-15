@@ -29,15 +29,40 @@
 
 
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="298dp"
             android:foreground="@drawable/movie_image_gradient"
-            android:scaleType="fitXY"
-            android:src="@drawable/orig"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avengers_movie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="6dp"
+            android:layout_height="10dp"
+            android:src="@drawable/back"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/guideVerticalBegin"
+            app:layout_constraintEnd_toStartOf="@id/back_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/back_text"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/back_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:text="@string/back_button"
+            android:textColor="@color/back_button"
+            android:textSize="@dimen/back_button"
+            app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
+            app:layout_constraintStart_toEndOf="@id/back_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/avengers_age_limits"
@@ -45,7 +70,7 @@
             android:layout_height="24dp"
             android:layout_marginTop="222dp"
             android:text="@string/age_limits"
-            android:textSize="12sp"
+            android:textSize="@dimen/age_limits"
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/age_limits"
@@ -59,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="254dp"
             android:text="@string/movie_name"
-            android:textColor="@color/movie_name_text"
-            android:textSize="40sp"
+            android:textColor="@color/movie_name"
+            android:textSize="@dimen/movie_name"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
@@ -75,7 +100,7 @@
             android:gravity="center_vertical"
             android:text="@string/genre"
             android:textSize="14sp"
-            android:textColor="@color/genre_text"
+            android:textColor="@color/genre"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
             app:layout_constraintTop_toBottomOf="@id/movie_name"
@@ -149,9 +174,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/review_number"
-            android:textSize="12sp"
+            android:textSize="@dimen/reviews"
             android:textStyle="bold"
-            android:textColor="@color/reviews_text"
+            android:textColor="@color/reviews"
             app:layout_constraintLeft_toRightOf="@id/avengers_star_5"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalGenreTop"
             app:layout_constraintBottom_toBottomOf="@id/barrierHorizontalRatingTop"/>
@@ -169,7 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/story_line"
-            android:textSize="14sp"
+            android:textSize="@dimen/story_line"
             android:textColor="@color/story_line"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="@id/guideVerticalBegin"
@@ -184,7 +209,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/story_line_text"
-            android:textSize="14sp"
+            android:textSize="@dimen/story_line_text"
             android:textColor="@color/story_line_text"
             android:lineHeight="@dimen/storyline_line_height"
             app:layout_constraintLeft_toLeftOf="@id/guideVerticalBegin"
@@ -204,9 +229,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="7dp"
             android:text="@string/cast"
-            android:textSize="14sp"
+            android:textSize="@dimen/cast"
             android:textColor="@color/cast"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="@id/guideVerticalBegin"
@@ -233,7 +258,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
                 android:src="@drawable/robert"
                 tools:srcCompat="@tools:sample/avatars"
                 tools:ignore="ContentDescription" />
@@ -260,7 +284,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
                 android:src="@drawable/chris"
                 tools:srcCompat="@tools:sample/avatars"
                 tools:ignore="ContentDescription" />
