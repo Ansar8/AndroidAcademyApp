@@ -18,11 +18,13 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .apply {
-                add(R.id.fragments_container, moviesListFragment)
-                commit()
-            }
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .apply {
+                    add(R.id.fragments_container, moviesListFragment)
+                    commit()
+                }
+        }
     }
 
     override fun moveToMovieDetailsFragment() {
