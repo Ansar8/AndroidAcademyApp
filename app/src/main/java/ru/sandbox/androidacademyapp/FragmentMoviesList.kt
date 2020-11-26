@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class FragmentMoviesList : Fragment() {
+
+    private var listener: NavigationFragmentClicks? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +24,17 @@ class FragmentMoviesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val image: ImageView = view.findViewById(R.id.avengers_image)
-        setRoundedTopCorners(image)
+        view.findViewById<ConstraintLayout>(R.id.avengers_layout)
+            .setOnClickListener { listener?.moveToMovieDetailsFragment() }
+        view.findViewById<ImageView>(R.id.avengers_image).apply { setRoundedTopCorners(this) }
+    }
+
+    fun setClickListener(l: NavigationFragmentClicks?) {
+        listener = l
+    }
+
+    interface NavigationFragmentClicks {
+        fun moveToMovieDetailsFragment()
     }
 
     private fun setRoundedTopCorners(image: ImageView?) {
