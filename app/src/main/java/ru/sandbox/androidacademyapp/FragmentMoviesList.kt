@@ -1,5 +1,6 @@
 package ru.sandbox.androidacademyapp
 
+import android.content.Context
 import android.graphics.Outline
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 class FragmentMoviesList : Fragment() {
 
-    private var listener: NavigationFragmentClicks? = null
+    private var listener: MoviesListFragmentClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +30,18 @@ class FragmentMoviesList : Fragment() {
         view.findViewById<ImageView>(R.id.avengers_image).apply { setRoundedTopCorners(this) }
     }
 
-    fun setClickListener(l: NavigationFragmentClicks?) {
-        listener = l
+    //communication with activity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MoviesListFragmentClickListener) listener = context
     }
 
-    interface NavigationFragmentClicks {
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface MoviesListFragmentClickListener {
         fun moveToMovieDetailsFragment()
     }
 

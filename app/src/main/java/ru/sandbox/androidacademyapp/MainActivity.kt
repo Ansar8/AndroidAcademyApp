@@ -2,11 +2,12 @@ package ru.sandbox.androidacademyapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.sandbox.androidacademyapp.FragmentMovieDetails.*
+import ru.sandbox.androidacademyapp.FragmentMoviesList.*
 
 class MainActivity : AppCompatActivity(),
-                     FragmentMoviesList.NavigationFragmentClicks,
-                     FragmentMovieDetails.NavigationFragmentClicks {
-
+                     MoviesListFragmentClickListener,
+                     MovieDetailsFragmentClickListener {
 
     private var moviesListFragment: FragmentMoviesList? = null
     private var movieDetailsFragment: FragmentMovieDetails? = null
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity(),
         if (savedInstanceState == null) {
             moviesListFragment = FragmentMoviesList()
             moviesListFragment?.apply {
-                setClickListener(this@MainActivity)
                 supportFragmentManager.beginTransaction()
                     .add(R.id.fragments_container, this, MOVIES_LIST_FRAGMENT_FLAG)
                     .commit()
@@ -27,18 +27,15 @@ class MainActivity : AppCompatActivity(),
         else {
             moviesListFragment = supportFragmentManager
                 .findFragmentByTag(MOVIES_LIST_FRAGMENT_FLAG) as? FragmentMoviesList
-            moviesListFragment?.apply { setClickListener(this@MainActivity) }
 
             movieDetailsFragment = supportFragmentManager
                 .findFragmentByTag(MOVIE_DETAILS_FRAGMENT_FLAG) as? FragmentMovieDetails
-            movieDetailsFragment?.apply { setClickListener(this@MainActivity) }
         }
     }
 
     override fun moveToMovieDetailsFragment() {
         movieDetailsFragment = FragmentMovieDetails()
         movieDetailsFragment?.apply {
-            setClickListener(this@MainActivity)
             supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .add(R.id.fragments_container, this, MOVIE_DETAILS_FRAGMENT_FLAG)
@@ -46,7 +43,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun backToMovieListFragment() {
+    override fun backToMoviesListFragment() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         }
