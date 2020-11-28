@@ -47,13 +47,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun backToMovieListFragment() {
-        if (supportFragmentManager.fragments.size > 1) {
-            val lastFragment = supportFragmentManager.fragments.last()
-            supportFragmentManager.beginTransaction()
-                .apply {
-                    remove(lastFragment)
-                    commit()
-                }
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
         }
     }
 
