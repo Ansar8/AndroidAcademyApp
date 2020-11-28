@@ -9,5 +9,9 @@
     <dimen name="story_line">14sp</dimen>
     <dimen name="story_line_text">14sp</dimen>
     <dimen name="cast">14sp</dimen>
-    <dimen name="genre">14sp</dimen>
+    <dimen name="avengers_details_genre">14sp</dimen>
+    <dimen name="avengers_preview_genre">8sp</dimen>
+    <dimen name="avengers_preview_reviews">8sp</dimen>
+    <dimen name="avengers_title">14sp</dimen>
+    <dimen name="avengers_duration">8sp</dimen>
 </resources>
