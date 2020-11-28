@@ -8,32 +8,42 @@ class MainActivity : AppCompatActivity(),
                      FragmentMovieDetails.NavigationFragmentClicks {
 
 
-    private val moviesListFragment =  FragmentMoviesList()
-        .apply { setClickListener(this@MainActivity) }
-
-    private val movieDetailsFragment = FragmentMovieDetails()
-        .apply { setClickListener(this@MainActivity) }
+    private var moviesListFragment: FragmentMoviesList? = null
+    private var movieDetailsFragment: FragmentMovieDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .apply {
-                    add(R.id.fragments_container, moviesListFragment)
-                    commit()
-                }
+            moviesListFragment = FragmentMoviesList()
+            moviesListFragment?.apply {
+                setClickListener(this@MainActivity)
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fragments_container, this, MOVIES_LIST_FRAGMENT_FLAG)
+                    .commit()
+            }
+        }
+        else {
+            moviesListFragment = supportFragmentManager
+                .findFragmentByTag(MOVIES_LIST_FRAGMENT_FLAG) as? FragmentMoviesList
+            moviesListFragment?.apply { setClickListener(this@MainActivity) }
+
+            movieDetailsFragment = supportFragmentManager
+                .findFragmentByTag(MOVIE_DETAILS_FRAGMENT_FLAG) as? FragmentMovieDetails
+            movieDetailsFragment?.apply { setClickListener(this@MainActivity) }
         }
     }
 
     override fun moveToMovieDetailsFragment() {
-        supportFragmentManager.beginTransaction()
-            .apply {
-                addToBackStack(null)
-                add(R.id.fragments_container, movieDetailsFragment)
-                commit()
-            }
+        movieDetailsFragment = FragmentMovieDetails()
+        movieDetailsFragment?.apply {
+            setClickListener(this@MainActivity)
+            supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.fragments_container, this, MOVIE_DETAILS_FRAGMENT_FLAG)
+                .commit()
+        }
     }
 
     override fun backToMovieListFragment() {
@@ -45,5 +55,10 @@ class MainActivity : AppCompatActivity(),
                     commit()
                 }
         }
+    }
+
+    companion object {
+        const val MOVIES_LIST_FRAGMENT_FLAG = "moviesListFragment"
+        const val MOVIE_DETAILS_FRAGMENT_FLAG = "movieDetailsFragment"
     }
 }
