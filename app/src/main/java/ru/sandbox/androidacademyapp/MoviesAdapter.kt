@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.data.models.Movie
 
-class MoviesAdapter: RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
     private var movies = listOf<Movie>()
 
@@ -25,6 +25,9 @@ class MoviesAdapter: RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movies[position])
+        holder.itemView.setOnClickListener {
+            clickListener.onClick(movies[position])
+        }
     }
 
     override fun getItemCount(): Int = movies.size
@@ -93,3 +96,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 private val RecyclerView.ViewHolder.context
     get() = this.itemView.context
+
+interface OnRecyclerItemClicked {
+    fun onClick(movie: Movie)
+}
