@@ -45,6 +45,26 @@ class MoviesDataSource {
                 5,
                 74,
                 120
+            ),
+            Movie(
+                R.drawable.black_widow,
+                "Black Widow",
+                false,
+                13,
+                "Action, Adventure, Sci-Fi",
+                4,
+                38,
+                102
+            ),
+            Movie(
+                R.drawable.wonder_woman,
+                "Wonder Woman 1984",
+                false,
+                13,
+                "Action, Adventure, Fantasy",
+                5,
+                74,
+                120
             )
         )
     }

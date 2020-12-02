@@ -24,7 +24,7 @@ class FragmentMoviesList : Fragment() {
         recycler = view.findViewById(R.id.recycler_view_movies)
         recycler?.adapter = MoviesAdapter()
         recycler?.layoutManager = GridLayoutManager(requireContext(), 2)
-        recycler?.addItemDecoration(SpacesItemDecoration(30))
+        recycler?.addItemDecoration(SpacesItemDecoration(30, 2))
     }
 
     override fun onStart() {

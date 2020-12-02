@@ -4,18 +4,14 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class SpacesItemDecoration(private val space: Int): RecyclerView.ItemDecoration() {
+class SpacesItemDecoration(val space: Int, val columnNumber: Int ): RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.left = space
-        outRect.right = space
-        outRect.bottom = space
-
-        // Add top margin only for the first item to avoid double space between items
-        if (parent.getChildLayoutPosition(view) == 0 || parent.getChildLayoutPosition(view) == 1) {
-            outRect.top = space
-        } else {
-            outRect.top = 0
-        }
+    override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
+            val column = itemPosition % columnNumber
+            outRect.left = column * space / columnNumber
+            outRect.right = space - (column + 1) * space / columnNumber
+            if (itemPosition < columnNumber) { outRect.top = space }
+            outRect.bottom = space
     }
+
 }
