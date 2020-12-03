@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ru.sandbox.androidacademyapp.domain.ActorsDataSource
+import ru.sandbox.androidacademyapp.domain.MoviesDataSource
 
 class FragmentMovieDetails : Fragment() {
 
     private var listener: MovieDetailsFragmentClickListener? = null
+    private var recycler: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +27,10 @@ class FragmentMovieDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.back_text)
             .setOnClickListener { listener?.backToMoviesListFragment() }
+        recycler = view.findViewById(R.id.recycler_view_actors)
+        recycler?.adapter = ActorsAdapter()
+        recycler?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        recycler?.addItemDecoration(ActorsItemDecoration(15))
     }
 
     //communication with activity
@@ -30,9 +39,21 @@ class FragmentMovieDetails : Fragment() {
         if (context is MovieDetailsFragmentClickListener) listener = context
     }
 
+    override fun onStart() {
+        super.onStart()
+        updateData()
+    }
+
     override fun onDetach() {
-        super.onDetach()
         listener = null
+        recycler = null
+        super.onDetach()
+    }
+
+    private fun updateData() {
+        (recycler?.adapter as? ActorsAdapter)?.apply {
+            bindMovies(ActorsDataSource().getActors())
+        }
     }
 
     interface MovieDetailsFragmentClickListener {

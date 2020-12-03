@@ -27,7 +27,7 @@ class FragmentMoviesList : Fragment() {
         recycler = view.findViewById(R.id.recycler_view_movies)
         recycler?.adapter = MoviesAdapter(clickListener)
         recycler?.layoutManager = GridLayoutManager(requireContext(), 2)
-        recycler?.addItemDecoration(SpacesItemDecoration(30, 2))
+        recycler?.addItemDecoration(MoviesItemDecoration(30, 2))
     }
 
     //communication with activity
@@ -66,5 +66,4 @@ class FragmentMoviesList : Fragment() {
     interface MoviesListFragmentClickListener {
         fun moveToMovieDetailsFragment()
     }
-
 }

@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class SpacesItemDecoration(val space: Int, val columnNumber: Int ): RecyclerView.ItemDecoration() {
+class MoviesItemDecoration(val space: Int, val columnNumber: Int ): RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
             val column = itemPosition % columnNumber

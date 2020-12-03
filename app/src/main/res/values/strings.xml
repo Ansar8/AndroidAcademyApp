@@ -12,10 +12,6 @@
     <string name="age_limits">13+</string>
     <string name="movie_age_limits_text">%1$s+</string>
     <string name="cast">Cast</string>
-    <string name="cast_person_name_1">Robert Downey Jr.</string>
-    <string name="cast_person_name_2">Chris Evans</string>
-    <string name="cast_person_name_3">Mark Ruffalo</string>
-    <string name="cast_person_name_4">Chris Hemsworth</string>
     <string name="back_button">Back</string>
     <string name="movie_reviews_text">%1$s REVIEWS</string>
     <string name="movie_duration_text">%1$s MIN</string>
