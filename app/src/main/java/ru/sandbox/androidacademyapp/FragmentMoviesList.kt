@@ -14,7 +14,7 @@ import ru.sandbox.androidacademyapp.domain.MoviesDataSource
 class FragmentMoviesList : Fragment() {
 
     private var listener: MoviesListFragmentClickListener? = null
-    private var recycler: RecyclerView? = null
+    private lateinit var recycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,9 +25,9 @@ class FragmentMoviesList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler?.adapter = MoviesAdapter(clickListener)
-        recycler?.layoutManager = GridLayoutManager(requireContext(), 2)
-        recycler?.addItemDecoration(MoviesItemDecoration(30, 2))
+        recycler.adapter = MoviesAdapter(clickListener)
+        recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        recycler.addItemDecoration(MoviesItemDecoration(30, 2))
     }
 
     //communication with activity
@@ -43,23 +43,18 @@ class FragmentMoviesList : Fragment() {
 
     override fun onDetach() {
         listener = null
-        recycler = null
         super.onDetach()
     }
 
     private fun updateData() {
-        (recycler?.adapter as? MoviesAdapter)?.apply {
+        (recycler.adapter as? MoviesAdapter)?.apply {
             bindMovies(MoviesDataSource().getMovies())
         }
     }
 
-    private fun doOnClick(movie: Movie) {
-        listener?.moveToMovieDetailsFragment()
-    }
-
     private val clickListener = object : OnRecyclerItemClicked {
         override fun onClick(movie: Movie) {
-            doOnClick(movie)
+            listener?.moveToMovieDetailsFragment()
         }
     }
 

@@ -34,11 +34,11 @@ class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
 class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val image: ImageView? = itemView.findViewById(R.id.actor_image)
-    private val fullName: TextView? = itemView.findViewById(R.id.actor_full_name)
+    private val image: ImageView = itemView.findViewById(R.id.actor_image)
+    private val fullName: TextView = itemView.findViewById(R.id.actor_full_name)
 
     fun onBind(actor: Actor) {
-        image?.setImageResource(actor.image)
-        fullName?.text = actor.fullName
+        image.setImageResource(actor.image)
+        fullName.text = actor.fullName
     }
 }
