@@ -1,14 +1,12 @@
 package ru.sandbox.androidacademyapp
 
 import android.graphics.Outline
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.data.models.Movie
@@ -49,13 +47,13 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     )
 
     private val image: ImageView =
-        itemView.findViewById<ImageView>(R.id.movie_image).apply { setRoundedTopCorners(this) }
-    private val like: ImageView = itemView.findViewById(R.id.movie_like)
-    private val ageLimits: TextView = itemView.findViewById(R.id.movie_age_limits)
-    private val genre: TextView = itemView.findViewById(R.id.movie_genre)
-    private val reviews: TextView = itemView.findViewById(R.id.movie_reviews)
+        itemView.findViewById<ImageView>(R.id.image).apply { setRoundedTopCorners(this) }
+    private val like: ImageView = itemView.findViewById(R.id.like)
+    private val ageLimits: TextView = itemView.findViewById(R.id.age_limits)
+    private val genre: TextView = itemView.findViewById(R.id.genre)
+    private val reviews: TextView = itemView.findViewById(R.id.reviews)
     private val name: TextView = itemView.findViewById(R.id.movie_name)
-    private val duration: TextView = itemView.findViewById(R.id.movie_duration)
+    private val duration: TextView = itemView.findViewById(R.id.duration)
 
     fun onBind(movie: Movie) {
         val likeImage = if (movie.hasLike) R.drawable.red_like else R.drawable.grey_like

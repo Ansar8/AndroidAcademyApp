@@ -42,7 +42,7 @@ class MoviesDataSource {
                 false,
                 13,
                 "Action, Adventure, Fantasy",
-                5,
+                3,
                 74,
                 120
             ),
@@ -52,7 +52,7 @@ class MoviesDataSource {
                 false,
                 13,
                 "Action, Adventure, Sci-Fi",
-                4,
+                1,
                 38,
                 102
             ),
@@ -62,7 +62,7 @@ class MoviesDataSource {
                 false,
                 13,
                 "Action, Adventure, Fantasy",
-                5,
+                2,
                 74,
                 120
             )

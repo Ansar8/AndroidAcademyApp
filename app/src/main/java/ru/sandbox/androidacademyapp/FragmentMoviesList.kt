@@ -54,11 +54,11 @@ class FragmentMoviesList : Fragment() {
 
     private val clickListener = object : OnRecyclerItemClicked {
         override fun onClick(movie: Movie) {
-            listener?.moveToMovieDetailsFragment()
+            listener?.moveToMovieDetailsFragment(movie)
         }
     }
 
     interface MoviesListFragmentClickListener {
-        fun moveToMovieDetailsFragment()
+        fun moveToMovieDetailsFragment(movie: Movie)
     }
 }

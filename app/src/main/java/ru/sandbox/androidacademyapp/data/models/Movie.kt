@@ -1,5 +1,9 @@
 package ru.sandbox.androidacademyapp.data.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Movie(
     val image: Int,
     val name: String,
@@ -9,4 +13,4 @@ data class Movie(
     val rating: Int,
     val reviews: Int,
     val duration: Int
-)
+) : Parcelable
