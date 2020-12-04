@@ -32,7 +32,7 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@id/title_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/barrierHorizontalTitleTop"/>
@@ -51,177 +51,21 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="16dp"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/avengers_layout"
-        android:layout_width="170dp"
-        android:layout_height="296dp"
-        android:layout_marginTop="24dp"
-        android:padding="1dp"
-        android:background="@drawable/rounded_corner"
-        app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
-        app:layout_constraintTop_toBottomOf="@id/barrierHorizontalTitleTop">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideVerticalEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"/>
 
-        <ImageView
-            android:id="@+id/avengers_image"
-            android:layout_width="0dp"
-            android:layout_height="248dp"
-            android:background="@drawable/avengers"
-            android:src="@drawable/movie_image_gradient"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/avengers_title" />
-
-        <ImageView
-            android:id="@+id/avengers_like"
-            android:layout_width="16dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="6dp"
-            android:src="@drawable/like"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/avengers_age_limits"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="6dp"
-            android:text="@string/age_limits"
-            android:textSize="@dimen/age_limits"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/age_limits"
-            android:background="@drawable/rounded_square"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
-
-
-        <TextView
-            android:id="@+id/avengers_genre"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginTop="214dp"
-            android:layout_marginBottom="22dp"
-            android:text="@string/avengers_genre"
-            android:textSize="@dimen/avengers_preview_genre"
-            android:textColor="@color/genre"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <ImageView
-            android:id="@+id/avengers_star_1"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="1dp"
-            android:src="@drawable/red_star"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/avengers_star_2"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <ImageView
-            android:id="@+id/avengers_star_2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@+id/avengers_star_1"
-            app:layout_constraintRight_toLeftOf="@id/avengers_star_3"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <ImageView
-            android:id="@+id/avengers_star_3"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@id/avengers_star_2"
-            app:layout_constraintRight_toLeftOf="@id/avengers_star_4"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <ImageView
-            android:id="@+id/avengers_star_4"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@id/avengers_star_3"
-            app:layout_constraintRight_toLeftOf="@id/avengers_star_5"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <ImageView
-            android:id="@+id/avengers_star_5"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="6dp"
-            android:src="@drawable/grey_star"
-            app:layout_constraintLeft_toRightOf="@id/avengers_star_4"
-            app:layout_constraintRight_toLeftOf="@id/avengers_reviews"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"/>
-
-        <TextView
-            android:id="@+id/avengers_reviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/avengers_reviews"
-            android:textColor="@color/reviews"
-            android:textSize="@dimen/avengers_preview_reviews"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/avengers_image"
-            app:layout_constraintLeft_toRightOf="@id/avengers_star_5" />
-
-
-        <TextView
-            android:id="@+id/avengers_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/avengers_title"
-            android:textStyle="bold"
-            android:textSize="@dimen/avengers_title"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/avengers_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/avengers_duration"/>
-
-        <TextView
-            android:id="@+id/avengers_duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/avengers_duration"
-            android:textSize="@dimen/avengers_duration"
-            android:textColor="@color/avengers_duration"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/avengers_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_movies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
+        app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

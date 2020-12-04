@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.sandbox.androidacademyapp.FragmentMovieDetails.*
 import ru.sandbox.androidacademyapp.FragmentMoviesList.*
+import ru.sandbox.androidacademyapp.data.models.Movie
 
 class MainActivity : AppCompatActivity(),
                      MoviesListFragmentClickListener,
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun moveToMovieDetailsFragment() {
-        movieDetailsFragment = FragmentMovieDetails()
+    override fun moveToMovieDetailsFragment(movie: Movie) {
+        movieDetailsFragment = FragmentMovieDetails.newInstance(movie)
         movieDetailsFragment?.apply {
             supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
