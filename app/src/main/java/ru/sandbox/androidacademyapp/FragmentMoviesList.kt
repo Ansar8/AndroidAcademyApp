@@ -8,13 +8,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.data.models.Movie
-import ru.sandbox.androidacademyapp.domain.MoviesDataSource
+import kotlinx.coroutines.*
+import ru.sandbox.androidacademyapp.data.loadMovies
+import ru.sandbox.androidacademyapp.data.Movie
 
 class FragmentMoviesList : Fragment() {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
+
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
+        println("CoroutineExceptionHandler got $exception in $coroutineContext")
+    }
+
+    private var scope = CoroutineScope(
+        Job() +
+                Dispatchers.IO +
+                exceptionHandler
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +52,22 @@ class FragmentMoviesList : Fragment() {
         updateData()
     }
 
+    override fun onStop() {
+        scope.cancel()
+        super.onStop()
+    }
+
     override fun onDetach() {
         listener = null
         super.onDetach()
     }
 
     private fun updateData() {
-        (recycler.adapter as? MoviesAdapter)?.apply {
-            bindMovies(MoviesDataSource().getMovies())
+        scope.launch {
+            val movies = loadMovies(requireContext())
+            (recycler.adapter as? MoviesAdapter)?.apply {
+                bindMovies(movies)
+            }
         }
     }
 
