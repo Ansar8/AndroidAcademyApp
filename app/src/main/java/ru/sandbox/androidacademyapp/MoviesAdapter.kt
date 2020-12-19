@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.data.models.Movie
+import com.bumptech.glide.Glide
+import ru.sandbox.androidacademyapp.data.Movie
+import kotlin.math.roundToInt
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
@@ -46,8 +47,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.findViewById(R.id.star_5)
     )
 
-    private val image: ImageView =
-        itemView.findViewById<ImageView>(R.id.image).apply { setRoundedTopCorners(this) }
+    private val poster: ImageView =
+        itemView.findViewById<ImageView>(R.id.poster).apply { setRoundedTopCorners(this) }
     private val like: ImageView = itemView.findViewById(R.id.like)
     private val ageLimits: TextView = itemView.findViewById(R.id.age_limits)
     private val genre: TextView = itemView.findViewById(R.id.genre)
@@ -56,16 +57,17 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
     fun onBind(movie: Movie) {
-        val likeImage = if (movie.hasLike) R.drawable.red_like else R.drawable.grey_like
-        showStarRating(movie.rating)
+        val ratingOutOfFive = 5 * movie.ratings / 10
+        showStarRating(ratingOutOfFive.roundToInt())
 
-        image.background = ContextCompat.getDrawable(context, movie.image)
-        like.setImageResource(likeImage)
-        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.ageLimits.toString())
-        genre.text = movie.genre
-        reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
-        name.text = movie.name
-        duration.text = context.getString(R.string.movie_duration_text, movie.duration.toString())
+        Glide.with(context).load(movie.poster).into(poster)
+
+        like.setImageResource(R.drawable.grey_like)
+        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
+        genre.text = movie.genres.joinToString { it.name }
+        reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
+        name.text = movie.title
+        duration.text = context.getString(R.string.movie_duration_text, movie.runtime.toString())
     }
 
     private fun showStarRating(rating: Int) {
@@ -78,7 +80,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun setRoundedTopCorners(image: ImageView) {
-        val curveRadius = 20F
+        val curveRadius = 25F
 
         image.outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline?) {

@@ -10,8 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.data.models.Movie
+import ru.sandbox.androidacademyapp.data.Movie
 import ru.sandbox.androidacademyapp.domain.ActorsDataSource
+import kotlin.math.roundToInt
 
 class FragmentMovieDetails : Fragment() {
 
@@ -44,14 +45,15 @@ class FragmentMovieDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<ImageView>(R.id.)
         view.findViewById<TextView>(R.id.movie_name)
-            .apply { text = movie?.name }
+            .apply { text = movie?.title }
         view.findViewById<TextView>(R.id.movie_genre)
-            .apply { text = movie?.genre }
+            .apply { text = movie?.genres?.joinToString { it.name } }
         view.findViewById<TextView>(R.id.movie_age_limits)
-            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.ageLimits.toString()) }
+            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minimumAge.toString()) }
         view.findViewById<TextView>(R.id.movie_reviews)
-            .apply { text = context.getString(R.string.movie_reviews_text, movie?.reviews.toString())}
+            .apply { text = context.getString(R.string.movie_reviews_text, movie?.numberOfRatings.toString())}
         view.findViewById<TextView>(R.id.back_text)
             .setOnClickListener { listener?.backToMoviesListFragment() }
 
@@ -62,7 +64,13 @@ class FragmentMovieDetails : Fragment() {
             view.findViewById(R.id.movie_star_4),
             view.findViewById(R.id.movie_star_5)
         )
-        movie?.rating?.let { showStarRating(it) }
+        val ratingOutOfFive = movie?.ratings?.div(10)?.times(5)
+        if (ratingOutOfFive != null) {
+            showStarRating(ratingOutOfFive.roundToInt())
+        }
+        else{
+            showStarRating(0)
+        }
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
         recycler?.adapter = ActorsAdapter()
