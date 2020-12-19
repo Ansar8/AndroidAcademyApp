@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.sandbox.androidacademyapp.data.Movie
 import ru.sandbox.androidacademyapp.domain.ActorsDataSource
 import kotlin.math.roundToInt
@@ -45,7 +46,8 @@ class FragmentMovieDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<ImageView>(R.id.)
+        view.findViewById<ImageView>(R.id.movie_backdrop)
+            .apply { Glide.with(context).load(movie?.backdrop).into(this)  }
         view.findViewById<TextView>(R.id.movie_name)
             .apply { text = movie?.title }
         view.findViewById<TextView>(R.id.movie_genre)
