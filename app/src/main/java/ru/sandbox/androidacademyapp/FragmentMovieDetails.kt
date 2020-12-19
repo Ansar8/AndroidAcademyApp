@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.sandbox.androidacademyapp.data.Movie
-import ru.sandbox.androidacademyapp.domain.ActorsDataSource
 import kotlin.math.roundToInt
 
 class FragmentMovieDetails : Fragment() {
@@ -26,14 +25,10 @@ class FragmentMovieDetails : Fragment() {
 
     private lateinit var ratingStars: List<ImageView>
     private var movie: Movie? = null
-//    private var movieRating: Int = 0
-//    private lateinit var movieName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-//            movieName = it.getString(PARAM_NAME).toString()
-//            movieRating = it.getInt(PARAM_RATING)
             movie = it.getParcelable(PARAM_MOVIE)
         }
     }
@@ -90,16 +85,12 @@ class FragmentMovieDetails : Fragment() {
     }
 
     companion object{
-//        private const val PARAM_NAME = "movie_name"
-//        private const val PARAM_RATING = "movie_rating"
         private const val PARAM_MOVIE = "movie_movie"
 
         fun newInstance(movie: Movie): FragmentMovieDetails {
             val fragment = FragmentMovieDetails()
             val args = Bundle()
             args.putParcelable(PARAM_MOVIE, movie)
-//            args.putString(PARAM_NAME, movie.name)
-//            args.putInt(PARAM_RATING, movie.rating)
             fragment.arguments = args
             return fragment
         }
@@ -124,7 +115,7 @@ class FragmentMovieDetails : Fragment() {
 
     private fun updateData() {
         (recycler?.adapter as? ActorsAdapter)?.apply {
-            bindMovies(ActorsDataSource().getActors())
+            movie?.actors?.let { bindMovies(it) }
         }
     }
 }
