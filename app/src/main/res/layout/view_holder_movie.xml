@@ -170,6 +170,8 @@
             android:textStyle="bold"
             android:textSize="@dimen/avengers_title"
             android:textColor="@color/white"
+            android:lines="1"
+            android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
