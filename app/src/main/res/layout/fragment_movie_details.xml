@@ -13,6 +13,7 @@
         android:background="@color/main_background">
 
         <ImageView
+            android:id="@+id/movie_backdrop"
             android:layout_width="0dp"
             android:layout_height="298dp"
             android:foreground="@drawable/movie_image_gradient"

@@ -2,7 +2,6 @@ package ru.sandbox.androidacademyapp.domain
 
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.models.Actor
-import ru.sandbox.androidacademyapp.data.models.Movie
 
 class ActorsDataSource {
     fun getActors(): List<Actor>{

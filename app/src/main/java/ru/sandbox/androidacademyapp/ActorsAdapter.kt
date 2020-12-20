@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.data.models.Actor
-import ru.sandbox.androidacademyapp.data.models.Movie
+import com.bumptech.glide.Glide
+import ru.sandbox.androidacademyapp.data.Actor
+
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
@@ -35,10 +35,13 @@ class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val image: ImageView = itemView.findViewById(R.id.actor_image)
-    private val fullName: TextView = itemView.findViewById(R.id.actor_full_name)
+    private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
     fun onBind(actor: Actor) {
-        image.setImageResource(actor.image)
-        fullName.text = actor.fullName
+        Glide.with(context).load(actor.picture).centerCrop().into(image)
+        name.text = actor.name
     }
 }
+
+private val RecyclerView.ViewHolder.context
+    get() = this.itemView.context

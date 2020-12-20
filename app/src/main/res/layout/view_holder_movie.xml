@@ -14,17 +14,28 @@
         android:padding="1dp"
         android:background="@drawable/rounded_corner">
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="248dp"
-            tools:background="@drawable/avengers"
-            android:src="@drawable/movie_image_gradient"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/movie_name"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintBottom_toTopOf="@id/movie_name">
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:src="@drawable/avengers"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/movie_image_gradient"/>
+
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/like"
@@ -159,6 +170,8 @@
             android:textStyle="bold"
             android:textSize="@dimen/avengers_title"
             android:textColor="@color/white"
+            android:lines="1"
+            android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
