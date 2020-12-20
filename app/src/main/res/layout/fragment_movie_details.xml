@@ -12,17 +12,27 @@
         android:layout_height="wrap_content"
         android:background="@color/main_background">
 
-        <ImageView
-            android:id="@+id/movie_backdrop"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="298dp"
-            android:foreground="@drawable/movie_image_gradient"
-            android:scaleType="centerCrop"
-            android:src="@drawable/avengers_movie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/movie_backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/avengers_movie"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/movie_image_gradient"/>
+
+        </FrameLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideVerticalBegin"
