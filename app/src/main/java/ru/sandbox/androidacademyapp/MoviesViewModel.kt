@@ -14,12 +14,10 @@ import ru.sandbox.androidacademyapp.data.loadMovies
 class MoviesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean>
-        get() = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _movieList = MutableLiveData<List<Movie>>(emptyList())
-    val movieList: LiveData<List<Movie>>
-        get() = _movieList
+    val movieList: LiveData<List<Movie>> = _movieList
 
     private val exceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
