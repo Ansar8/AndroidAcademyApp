@@ -37,4 +37,8 @@ class MoviesViewModel(application: Application) : AndroidViewModel(application) 
             _isLoading.value = false
         }
     }
+
+    fun getMovieById(id: Int?): Movie? {
+        return movieList.value?.find { it.id == id }
+    }
 }

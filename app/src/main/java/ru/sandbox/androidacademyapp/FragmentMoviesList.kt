@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.sandbox.androidacademyapp.MoviesAdapter.*
 import ru.sandbox.androidacademyapp.data.Movie
 
 class FragmentMoviesList : Fragment() {
@@ -61,12 +62,12 @@ class FragmentMoviesList : Fragment() {
     }
 
     private val clickListener = object : OnRecyclerItemClicked {
-        override fun onClick(movie: Movie) {
-            listener?.moveToMovieDetailsFragment(movie)
+        override fun onClick(movieId: Int) {
+            listener?.moveToMovieDetailsFragment(movieId)
         }
     }
 
     interface MoviesListFragmentClickListener {
-        fun moveToMovieDetailsFragment(movie: Movie)
+        fun moveToMovieDetailsFragment(movieId: Int)
     }
 }

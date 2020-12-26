@@ -14,6 +14,10 @@ import kotlin.math.roundToInt
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
+    interface OnRecyclerItemClicked {
+        fun onClick(movieId: Int)
+    }
+
     private var movies = listOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -25,7 +29,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movies[position])
         holder.itemView.setOnClickListener {
-            clickListener.onClick(movies[position])
+            clickListener.onClick(movies[position].id)
         }
     }
 
@@ -99,7 +103,3 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 private val RecyclerView.ViewHolder.context
     get() = this.itemView.context
-
-interface OnRecyclerItemClicked {
-    fun onClick(movie: Movie)
-}

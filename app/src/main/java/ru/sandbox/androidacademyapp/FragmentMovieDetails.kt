@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,11 +26,14 @@ class FragmentMovieDetails : Fragment() {
 
     private lateinit var ratingStars: List<ImageView>
     private var movie: Movie? = null
+    private var movieId: Int? = null
+
+    private val viewModel: MoviesViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            movie = it.getParcelable(PARAM_MOVIE)
+            movieId = it.getInt(PARAM_MOVIE_ID)
         }
     }
 
@@ -41,6 +45,9 @@ class FragmentMovieDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        movie = viewModel.getMovieById(movieId)
+
         view.findViewById<ImageView>(R.id.movie_backdrop)
             .apply { Glide.with(context).load(movie?.backdrop).into(this)  }
         view.findViewById<TextView>(R.id.movie_name)
@@ -84,15 +91,9 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    companion object{
-        private const val PARAM_MOVIE = "movie_movie"
-
-        fun newInstance(movie: Movie): FragmentMovieDetails {
-            val fragment = FragmentMovieDetails()
-            val args = Bundle()
-            args.putParcelable(PARAM_MOVIE, movie)
-            fragment.arguments = args
-            return fragment
+    private fun updateActorsAdapter() {
+        (recycler?.adapter as? ActorsAdapter)?.apply {
+            movie?.actors?.let { bindMovies(it) }
         }
     }
 
@@ -104,7 +105,7 @@ class FragmentMovieDetails : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        updateData()
+        updateActorsAdapter()
     }
 
     override fun onDetach() {
@@ -113,9 +114,15 @@ class FragmentMovieDetails : Fragment() {
         super.onDetach()
     }
 
-    private fun updateData() {
-        (recycler?.adapter as? ActorsAdapter)?.apply {
-            movie?.actors?.let { bindMovies(it) }
+    companion object{
+        private const val PARAM_MOVIE_ID = "movieId"
+
+        fun newInstance(movieId: Int): FragmentMovieDetails {
+            val fragment = FragmentMovieDetails()
+            val args = Bundle()
+            args.putInt(PARAM_MOVIE_ID, movieId)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

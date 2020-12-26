@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun moveToMovieDetailsFragment(movie: Movie) {
-        movieDetailsFragment = FragmentMovieDetails.newInstance(movie)
+    override fun moveToMovieDetailsFragment(movieId: Int) {
+        movieDetailsFragment = FragmentMovieDetails.newInstance(movieId)
         movieDetailsFragment?.apply {
             supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
