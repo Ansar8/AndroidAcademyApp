@@ -1,17 +1,11 @@
 package ru.sandbox.androidacademyapp
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.sandbox.androidacademyapp.data.Movie
-import ru.sandbox.androidacademyapp.data.loadMovies
 
-class MoviesViewModel(application: Application) : AndroidViewModel(application) {
+class MoviesViewModel(private val loader: MoviesLoader) : ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -28,8 +22,7 @@ class MoviesViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch(exceptionHandler) {
             _isLoading.value = true
 
-            Log.d("ViewModel", "Loading movies from view model...")
-            val loadedMovies = loadMovies(getApplication())
+            val loadedMovies = loader.loadMovieList()
             _movieList.value = loadedMovies
 
             _isLoading.value = false

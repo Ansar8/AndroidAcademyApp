@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,7 +29,8 @@ class FragmentMovieDetails : Fragment() {
     private var movie: Movie? = null
     private var movieId: Int? = null
 
-    private val viewModel: MoviesViewModel by activityViewModels()
+    private lateinit var viewModel: MoviesViewModel
+    private lateinit var viewModelFactory: MoviesViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,12 @@ class FragmentMovieDetails : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movie_details, container, false)
+    ): View?{
+        viewModelFactory = MoviesViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(MoviesViewModel::class.java)
+        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
