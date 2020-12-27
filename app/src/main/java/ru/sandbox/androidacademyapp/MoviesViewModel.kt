@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.sandbox.androidacademyapp.data.Movie
 
-class MoviesViewModel(private val loader: MoviesLoader) : ViewModel() {
+class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,7 +22,7 @@ class MoviesViewModel(private val loader: MoviesLoader) : ViewModel() {
         viewModelScope.launch(exceptionHandler) {
             _isLoading.value = true
 
-            val loadedMovies = loader.loadMovieList()
+            val loadedMovies = loader.getMovies()
             _movieList.value = loadedMovies
 
             _isLoading.value = false
