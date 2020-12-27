@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,19 +18,13 @@ class FragmentMoviesList : Fragment() {
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
 
-    private lateinit var viewModel: MoviesViewModel
-    private lateinit var viewModelFactory: MoviesViewModelFactory
+    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        viewModelFactory = MoviesViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(MoviesViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_movies_list, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

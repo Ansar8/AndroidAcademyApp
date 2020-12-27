@@ -29,8 +29,7 @@ class FragmentMovieDetails : Fragment() {
     private var movie: Movie? = null
     private var movieId: Int? = null
 
-    private lateinit var viewModel: MoviesViewModel
-    private lateinit var viewModelFactory: MoviesViewModelFactory
+    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory(requireContext()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +42,7 @@ class FragmentMovieDetails : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?{
-        viewModelFactory = MoviesViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(MoviesViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_movie_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
