@@ -29,7 +29,7 @@ class FragmentMovieDetails : Fragment() {
     private var movie: Movie? = null
     private var movieId: Int? = null
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory(requireContext()) }
+    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

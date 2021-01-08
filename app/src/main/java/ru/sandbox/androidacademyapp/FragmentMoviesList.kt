@@ -18,7 +18,7 @@ class FragmentMoviesList : Fragment() {
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory(requireContext()) }
+    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
