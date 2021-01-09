@@ -64,7 +64,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ratingOutOfFive = 5 * movie.ratings / 10
         showStarRating(ratingOutOfFive.roundToInt())
 
-        Glide.with(context).load(movie.poster).into(poster)
+        val posterUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + movie.poster
+        Glide.with(context).load(posterUrl).into(poster)
 
         like.setImageResource(R.drawable.grey_like)
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())

@@ -23,6 +23,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
+        buildConfigField("String", "IMAGES_BASE_URL", "\"https://image.tmdb.org/t/p/\"")
+        buildConfigField("String", "POSTER_SIZE", "\"w500\"")
+        buildConfigField("String", "BACKDROP_SIZE", "\"w780\"")
+        buildConfigField("String", "PROFILE_SIZE", "\"w185\"")
     }
 
     buildTypes {
