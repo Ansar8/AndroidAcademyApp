@@ -64,15 +64,22 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ratingOutOfFive = 5 * movie.ratings / 10
         showStarRating(ratingOutOfFive.roundToInt())
 
-        val posterUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + movie.poster
-        Glide.with(context).load(posterUrl).into(poster)
+        if (movie.poster != null || movie.poster != "") {
+            val posterUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + movie.poster
+            Glide.with(context).load(posterUrl).into(poster)
+        }
+        else{
+            //TODO: set "image not found" background
+        }
 
         like.setImageResource(R.drawable.grey_like)
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
         genre.text = movie.genres.joinToString { it.name }
         reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
         name.text = movie.title
-        duration.text = context.getString(R.string.movie_duration_text, movie.runtime.toString())
+
+        val runtime = movie.runtime.toString()
+        duration.text = if (runtime == "null") "" else context.getString(R.string.movie_duration_text, runtime)
     }
 
     private fun showStarRating(rating: Int) {
