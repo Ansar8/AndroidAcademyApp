@@ -30,7 +30,8 @@ class MovieRepositoryImpl(): IMovieRepository {
     private val moviesApi: MoviesApi = retrofit.create(MoviesApi::class.java)
 
     override suspend fun getMovies(): List<Movie> {
-        return moviesApi.getMovies()
+        val results = moviesApi.getMovies()
+        return results.movies
     }
 
     companion object {
