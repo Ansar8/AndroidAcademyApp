@@ -34,6 +34,10 @@ class FragmentMoviesList : Fragment() {
         recycler.addItemDecoration(MoviesItemDecoration(30, 2))
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
+
+        if (savedInstanceState == null){
+            viewModel.loadMovies()
+        }
     }
 
     //communication with activity
@@ -42,18 +46,9 @@ class FragmentMoviesList : Fragment() {
         if (context is MoviesListFragmentClickListener) listener = context
     }
 
-    override fun onStart() {
-        super.onStart()
-        updateData()
-    }
-
     override fun onDetach() {
         listener = null
         super.onDetach()
-    }
-
-    private fun updateData() {
-        viewModel.loadMovies()
     }
 
     private fun updateMoviesAdapter(movies: List<Movie>){
