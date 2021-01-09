@@ -31,7 +31,7 @@ class MovieRepositoryImpl(): IMovieRepository {
 
     override suspend fun getMovies(): List<Movie> {
         val results = moviesApi.getMovies()
-        return results.movies
+        return results.movies.map { moviesApi.getMovieDetails(it.id) }
     }
 
     companion object {
