@@ -2,6 +2,7 @@ package ru.sandbox.androidacademyapp.repository
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import ru.sandbox.androidacademyapp.BuildConfig
 
 class MoviesApiHeaderInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -9,7 +10,7 @@ class MoviesApiHeaderInterceptor: Interceptor {
         val originalHttpUrl = originalRequest.url
 
         val url = originalHttpUrl.newBuilder()
-            .addQueryParameter("api_key", "your-actual-api-key")
+            .addQueryParameter("api_key", BuildConfig.API_KEY)
             .build()
 
         val request = originalRequest.newBuilder()
