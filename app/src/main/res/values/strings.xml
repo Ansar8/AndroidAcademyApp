@@ -20,5 +20,6 @@
     <string name="avengers_details_reviews">125 REVIEWS</string>
     <string name="avengers_title">Avengers: End Game</string>
     <string name="avengers_duration">127 MIN</string>
+    <string name="no_overview_text">No overview yet.</string>
 
 </resources>
