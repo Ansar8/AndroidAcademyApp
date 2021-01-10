@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.*
@@ -17,6 +18,7 @@ class FragmentMoviesList : Fragment() {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
 
@@ -33,7 +35,10 @@ class FragmentMoviesList : Fragment() {
         recycler.layoutManager = GridLayoutManager(requireContext(), 2)
         recycler.addItemDecoration(MoviesItemDecoration(30, 2))
 
+        progressBar = view.findViewById(R.id.movies_progress_bar)
+
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
+        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
 
         if (savedInstanceState == null){
             viewModel.loadMovies()
@@ -55,6 +60,10 @@ class FragmentMoviesList : Fragment() {
         (recycler.adapter as? MoviesAdapter)?.apply {
             bindMovies(movies)
         }
+    }
+
+    private fun showProgressBar(isVisible: Boolean){
+        progressBar.isVisible = isVisible
     }
 
     private val clickListener = object : OnRecyclerItemClicked {
