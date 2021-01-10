@@ -34,6 +34,10 @@ class MovieRepositoryImpl(): IMovieRepository {
         return results.movies.map { moviesApi.getMovieDetails(it.id) }
     }
 
+    override suspend fun getActors(movie_id: Int): List<Actor> {
+        return moviesApi.getMovieActors(movie_id).actors.take(10)
+    }
+
     companion object {
         private val TAG = MovieRepositoryImpl::class.java.simpleName
     }

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
 import kotlin.math.roundToInt
 
@@ -27,7 +28,7 @@ class FragmentMovieDetails : Fragment() {
 
     private lateinit var ratingStars: List<ImageView>
     private var movie: Movie? = null
-    private var movieId: Int? = null
+    private var movieId: Int = -1
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
 
@@ -47,6 +48,13 @@ class FragmentMovieDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        findViews(view)
+
+        viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
+        if (savedInstanceState == null) viewModel.loadActors(movieId)
+    }
+
+    private fun findViews(view: View){
         movie = viewModel.getMovieById(movieId)
 
         view.findViewById<ImageView>(R.id.movie_backdrop)
@@ -83,7 +91,7 @@ class FragmentMovieDetails : Fragment() {
         if (ratingOutOfFive != null) {
             showStarRating(ratingOutOfFive.roundToInt())
         }
-        else{
+        else {
             showStarRating(0)
         }
 
@@ -92,6 +100,7 @@ class FragmentMovieDetails : Fragment() {
         recycler?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recycler?.addItemDecoration(ActorsItemDecoration(15))
     }
+
 
     private fun showStarRating(rating: Int) {
         for (i in ratingStars.indices){
@@ -102,9 +111,9 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    private fun updateActorsAdapter() {
+    private fun updateActorsAdapter(actors: List<Actor>) {
         (recycler?.adapter as? ActorsAdapter)?.apply {
-            movie?.actors?.let { bindMovies(it) }
+            bindMovies(actors)
         }
     }
 
@@ -112,11 +121,6 @@ class FragmentMovieDetails : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MovieDetailsFragmentClickListener) listener = context
-    }
-
-    override fun onStart() {
-        super.onStart()
-        updateActorsAdapter()
     }
 
     override fun onDetach() {
