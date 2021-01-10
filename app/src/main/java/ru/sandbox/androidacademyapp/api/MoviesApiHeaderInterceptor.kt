@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.repository
+package ru.sandbox.androidacademyapp.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
