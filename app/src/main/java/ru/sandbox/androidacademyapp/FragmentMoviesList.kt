@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,6 +40,7 @@ class FragmentMoviesList : Fragment() {
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.isMoviesLoadingError.observe(this.viewLifecycleOwner, this::showWarningMessage)
 
         if (savedInstanceState == null){
             viewModel.loadMovies()
@@ -64,6 +66,17 @@ class FragmentMoviesList : Fragment() {
 
     private fun showProgressBar(isVisible: Boolean){
         progressBar.isVisible = isVisible
+    }
+
+    private fun showWarningMessage(isError: Boolean){
+        if (isError) {
+            val context = requireContext()
+            Toast.makeText(
+                context,
+                context.getString(R.string.data_load_issues),
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     private val clickListener = object : OnRecyclerItemClicked {

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,8 @@ class FragmentMovieDetails : Fragment() {
         findViews(view)
 
         viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
+        viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showWarningMessage)
+
         if (savedInstanceState == null) viewModel.loadActors(movieId)
     }
 
@@ -101,7 +104,6 @@ class FragmentMovieDetails : Fragment() {
         recycler?.addItemDecoration(ActorsItemDecoration(15))
     }
 
-
     private fun showStarRating(rating: Int) {
         for (i in ratingStars.indices){
             if (i < rating)
@@ -114,6 +116,17 @@ class FragmentMovieDetails : Fragment() {
     private fun updateActorsAdapter(actors: List<Actor>) {
         (recycler?.adapter as? ActorsAdapter)?.apply {
             bindMovies(actors)
+        }
+    }
+
+    private fun showWarningMessage(isError: Boolean){
+        if (isError) {
+            val context = requireContext()
+            Toast.makeText(
+                context,
+                context.getString(R.string.data_load_issues),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
