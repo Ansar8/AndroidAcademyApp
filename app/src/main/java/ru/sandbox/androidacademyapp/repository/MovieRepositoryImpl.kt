@@ -4,9 +4,7 @@ import ru.sandbox.androidacademyapp.api.MoviesApi
 import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
 
-class MovieRepositoryImpl(): IMovieRepository {
-
-    private val moviesApi: MoviesApi = MoviesApi.create()
+class MovieRepositoryImpl(private val moviesApi: MoviesApi): IMovieRepository {
 
     override suspend fun getMovies(): List<Movie> {
         val response = moviesApi.getMovies()
