@@ -21,8 +21,11 @@
     <string name="avengers_title">Avengers: End Game</string>
     <string name="avengers_duration">127 MIN</string>
     <string name="no_overview_text">No overview yet.</string>
-    <string name="data_load_issues">
-        "Warning:\nThere was a problem to load the data.Try to refresh the page."
+    <string name="actors_loading_issue">
+        Warning!\nThere was a problem to load a list of actors. Please, try to refresh the page.
+    </string>
+    <string name="movies_loading_issue">
+        Warning!\nThere was a problem to load a list of movies. Please, try to refresh the page.
     </string>
 
 </resources>

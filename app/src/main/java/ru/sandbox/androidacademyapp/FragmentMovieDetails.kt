@@ -8,9 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,7 +24,8 @@ class FragmentMovieDetails : Fragment() {
     }
 
     private var listener: MovieDetailsFragmentClickListener? = null
-    private var recycler: RecyclerView? = null
+    private lateinit var recycler: RecyclerView
+    private lateinit var actorsLoadingIssueTextView: TextView
 
     private lateinit var ratingStars: List<ImageView>
     private var movie: Movie? = null
@@ -52,7 +52,7 @@ class FragmentMovieDetails : Fragment() {
         findViews(view)
 
         viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
-        viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showWarningMessage)
+        viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showActorsNotLoadedMessage)
 
         if (savedInstanceState == null) viewModel.loadActors(movieId)
     }
@@ -99,9 +99,11 @@ class FragmentMovieDetails : Fragment() {
         }
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
-        recycler?.adapter = ActorsAdapter()
-        recycler?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        recycler?.addItemDecoration(ActorsItemDecoration(15))
+        recycler.adapter = ActorsAdapter()
+        recycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        recycler.addItemDecoration(ActorsItemDecoration(15))
+
+        actorsLoadingIssueTextView = view.findViewById(R.id.actors_loading_issue_tv)
     }
 
     private fun showStarRating(rating: Int) {
@@ -114,20 +116,14 @@ class FragmentMovieDetails : Fragment() {
     }
 
     private fun updateActorsAdapter(actors: List<Actor>) {
-        (recycler?.adapter as? ActorsAdapter)?.apply {
+        (recycler.adapter as? ActorsAdapter)?.apply {
             bindMovies(actors)
         }
     }
 
-    private fun showWarningMessage(isError: Boolean){
-        if (isError) {
-            val context = requireContext()
-            Toast.makeText(
-                context,
-                context.getString(R.string.data_load_issues),
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private fun showActorsNotLoadedMessage(isVisible: Boolean){
+        actorsLoadingIssueTextView.isVisible = isVisible
+        recycler.isVisible = !isVisible
     }
 
     //communication with activity
@@ -138,7 +134,6 @@ class FragmentMovieDetails : Fragment() {
 
     override fun onDetach() {
         listener = null
-        recycler = null
         super.onDetach()
     }
 

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,6 +20,7 @@ class FragmentMoviesList : Fragment() {
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var moviesLoadingIssueTextView: TextView
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
 
@@ -37,10 +38,11 @@ class FragmentMoviesList : Fragment() {
         recycler.addItemDecoration(MoviesItemDecoration(30, 2))
 
         progressBar = view.findViewById(R.id.movies_progress_bar)
+        moviesLoadingIssueTextView = view.findViewById(R.id.movies_loading_issue_tv)
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
-        viewModel.isMoviesLoadingError.observe(this.viewLifecycleOwner, this::showWarningMessage)
+        viewModel.isMoviesLoadingError.observe(this.viewLifecycleOwner, this::showMoviesNotLoadedMessage)
 
         if (savedInstanceState == null){
             viewModel.loadMovies()
@@ -68,15 +70,9 @@ class FragmentMoviesList : Fragment() {
         progressBar.isVisible = isVisible
     }
 
-    private fun showWarningMessage(isError: Boolean){
-        if (isError) {
-            val context = requireContext()
-            Toast.makeText(
-                context,
-                context.getString(R.string.data_load_issues),
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private fun showMoviesNotLoadedMessage(isVisible: Boolean){
+        moviesLoadingIssueTextView.isVisible = isVisible
+        recycler.isVisible = !isVisible
     }
 
     private val clickListener = object : OnRecyclerItemClicked {

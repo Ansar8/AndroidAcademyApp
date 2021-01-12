@@ -14,4 +14,6 @@
     <dimen name="avengers_preview_reviews">8sp</dimen>
     <dimen name="avengers_title">14sp</dimen>
     <dimen name="avengers_duration">8sp</dimen>
+    <dimen name="data_loading_issue_tv_size">15sp</dimen>
+    <dimen name="data_loading_issue_tv_padding">15dp</dimen>
 </resources>
