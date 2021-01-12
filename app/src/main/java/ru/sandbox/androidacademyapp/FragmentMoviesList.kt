@@ -1,6 +1,7 @@
 package ru.sandbox.androidacademyapp
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +33,20 @@ class FragmentMoviesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val orientation: Int = requireActivity().resources.configuration.orientation
+
         recycler = view.findViewById(R.id.recycler_view_movies)
         recycler.adapter = MoviesAdapter(clickListener)
-        recycler.layoutManager = GridLayoutManager(requireContext(), 2)
-        recycler.addItemDecoration(MoviesItemDecoration(30, 2))
+
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
+        }
+        else {
+            recycler.layoutManager = GridLayoutManager(requireContext(), 4)
+            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
+        }
 
         progressBar = view.findViewById(R.id.movies_progress_bar)
         moviesLoadingIssueTextView = view.findViewById(R.id.movies_loading_issue_tv)
