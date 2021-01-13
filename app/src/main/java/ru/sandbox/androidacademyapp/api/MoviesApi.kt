@@ -25,18 +25,6 @@ interface MoviesApi {
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieActors(@Path("movie_id") movie_id: Int): ActorListResponse
 
-    @Serializable
-    data class ActorListResponse(
-        @SerialName("cast")
-        val actors: List<Actor>
-    )
-
-    @Serializable
-    data class MovieListResponse(
-        @SerialName("results")
-        val movies: List<Movie>
-    )
-
     companion object {
         private val json = Json { ignoreUnknownKeys = true }
 
