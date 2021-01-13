@@ -89,7 +89,7 @@
         android:textSize="@dimen/data_loading_issue_tv_size"
         android:gravity="center"
         android:padding="@dimen/data_loading_issue_tv_padding"
-        tools:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"

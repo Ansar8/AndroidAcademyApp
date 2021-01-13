@@ -20,7 +20,6 @@ class FragmentMoviesList : Fragment() {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var moviesLoadingIssueTextView: TextView
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
@@ -36,8 +35,9 @@ class FragmentMoviesList : Fragment() {
 
         val orientation: Int = requireActivity().resources.configuration.orientation
 
+        val adapter = MoviesAdapter(clickListener)
         recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.adapter = MoviesAdapter(clickListener)
+        recycler.adapter = adapter
 
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             recycler.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -48,15 +48,10 @@ class FragmentMoviesList : Fragment() {
             recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
 
-        progressBar = view.findViewById(R.id.movies_progress_bar)
         moviesLoadingIssueTextView = view.findViewById(R.id.movies_loading_issue_tv)
 
-        viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
-        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
-        viewModel.isMoviesLoadingError.observe(this.viewLifecycleOwner, this::showMoviesNotLoadedMessage)
-
-        if (savedInstanceState == null){
-            viewModel.loadMovies()
+        viewModel.movies.observe(this.viewLifecycleOwner){
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 
@@ -69,21 +64,6 @@ class FragmentMoviesList : Fragment() {
     override fun onDetach() {
         listener = null
         super.onDetach()
-    }
-
-    private fun updateMoviesAdapter(movies: List<Movie>){
-        (recycler.adapter as? MoviesAdapter)?.apply {
-            bindMovies(movies)
-        }
-    }
-
-    private fun showProgressBar(isVisible: Boolean){
-        progressBar.isVisible = isVisible
-    }
-
-    private fun showMoviesNotLoadedMessage(isVisible: Boolean){
-        moviesLoadingIssueTextView.isVisible = isVisible
-        recycler.isVisible = !isVisible
     }
 
     private val clickListener = object : OnRecyclerItemClicked {

@@ -2,33 +2,39 @@ package ru.sandbox.androidacademyapp
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
-import kotlin.math.roundToInt
 
-class FragmentMovieDetails : Fragment() {
+class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
     interface MovieDetailsFragmentClickListener {
         fun backToMoviesListFragment()
     }
 
     private var listener: MovieDetailsFragmentClickListener? = null
-    private lateinit var recycler: RecyclerView
-    private lateinit var actorsLoadingIssueTextView: TextView
 
+    private lateinit var actorsLoadingIssueTextView: TextView
+    private lateinit var backdrop: ImageView
+    private lateinit var name: TextView
+    private lateinit var genre: TextView
+    private lateinit var ageLimits: TextView
+    private lateinit var reviews: TextView
+    private lateinit var storyLine: TextView
+    private lateinit var backText: TextView
+    private lateinit var recycler: RecyclerView
     private lateinit var ratingStars: List<ImageView>
-    private var movie: Movie? = null
+
     private var movieId: Int = -1
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
@@ -40,40 +46,29 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movie_details, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findViews(view)
-
+        initViews(view)
+        viewModel.movieDetails.observe(this.viewLifecycleOwner, this::updateMovieDetails)
         viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
         viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showActorsNotLoadedMessage)
 
-        if (savedInstanceState == null) viewModel.loadActors(movieId)
+        if (savedInstanceState == null) {
+            viewModel.getMovieDetails(movieId)
+            viewModel.loadActors(movieId)
+        }
     }
 
-    private fun findViews(view: View){
-        movie = viewModel.getMovieById(movieId)
-
-        view.findViewById<ImageView>(R.id.movie_backdrop)
-            .apply { Glide.with(context).load(movie?.backdropUrl).into(this) } // TODO: add placeholder
-        view.findViewById<TextView>(R.id.movie_name)
-            .apply { text = movie?.title }
-        view.findViewById<TextView>(R.id.movie_genre)
-            .apply { text = movie?.genres?.joinToString { it.name } }
-        view.findViewById<TextView>(R.id.movie_age_limits)
-            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minimumAge.toString()) }
-        view.findViewById<TextView>(R.id.movie_reviews)
-            .apply { text = context.getString(R.string.movie_reviews_text, movie?.numberOfRatings.toString())}
-        view.findViewById<TextView>(R.id.movie_story_line_text)
-            .apply { text =  movie?.overview ?: context.getString(R.string.no_overview_text) }
-        view.findViewById<TextView>(R.id.back_text)
-            .setOnClickListener { listener?.backToMoviesListFragment() }
+    private fun initViews(view: View){
+        backdrop = view.findViewById(R.id.movie_backdrop)
+        name = view.findViewById(R.id.movie_name)
+        genre = view.findViewById(R.id.movie_genre)
+        ageLimits = view.findViewById(R.id.movie_age_limits)
+        reviews = view.findViewById(R.id.movie_reviews)
+        storyLine = view.findViewById(R.id.movie_story_line_text)
+        backText = view.findViewById(R.id.back_text)
+        backText.setOnClickListener { listener?.backToMoviesListFragment() }
 
         ratingStars = listOf(
             view.findViewById(R.id.movie_star_1),
@@ -82,13 +77,6 @@ class FragmentMovieDetails : Fragment() {
             view.findViewById(R.id.movie_star_4),
             view.findViewById(R.id.movie_star_5)
         )
-        val ratingOutOfFive = movie?.ratings?.div(10)?.times(5)
-        if (ratingOutOfFive != null) {
-            showStarRating(ratingOutOfFive.roundToInt())
-        }
-        else {
-            showStarRating(0)
-        }
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
         recycler.adapter = ActorsAdapter()
@@ -96,6 +84,17 @@ class FragmentMovieDetails : Fragment() {
         recycler.addItemDecoration(ActorsItemDecoration(15))
 
         actorsLoadingIssueTextView = view.findViewById(R.id.actors_loading_issue_tv)
+    }
+
+    private fun updateMovieDetails(movie: Movie) {
+        val context = requireContext()
+        Glide.with(context).load(movie.backdropUrl).into(backdrop)// TODO: add placeholder
+        name.text = movie.title
+        genre.text = movie.genres.joinToString { it.name }
+        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
+        reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
+        storyLine.text = movie.overview ?: context.getString(R.string.no_overview_text)
+        showStarRating(movie.ratingOutOfFive)
     }
 
     private fun showStarRating(rating: Int) {
