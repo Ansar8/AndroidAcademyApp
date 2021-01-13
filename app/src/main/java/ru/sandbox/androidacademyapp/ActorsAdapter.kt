@@ -38,13 +38,7 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
     fun onBind(actor: Actor) {
-        if (actor.picture != null || actor.picture != "") {
-            val pictureUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.PROFILE_SIZE + actor.picture
-            Glide.with(context).load(pictureUrl).centerCrop().into(image)
-        }
-        else{
-            //TODO: set "image not found" background
-        }
+        Glide.with(context).load(actor.pictureUrl).centerCrop().into(image) // TODO: add placeholder
         name.text = actor.name
     }
 }

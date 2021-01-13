@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.sandbox.androidacademyapp.BuildConfig
 
 @Serializable
 data class Movie(
@@ -24,5 +25,11 @@ data class Movie(
     val actors: List<Actor> = emptyList()
 ){
     val minimumAge: Int
-        get() = if (this.adult) 16 else 13
+        get() = if (adult) 16 else 13
+
+    val posterUrl: String
+        get() = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + poster
+
+    val backdropUrl: String
+        get() = BuildConfig.IMAGES_BASE_URL + BuildConfig.BACKDROP_SIZE + backdrop
 }

@@ -61,15 +61,7 @@ class FragmentMovieDetails : Fragment() {
         movie = viewModel.getMovieById(movieId)
 
         view.findViewById<ImageView>(R.id.movie_backdrop)
-            .apply {
-                if (movie?.backdrop != null || movie?.backdrop != "") {
-                    val backdropUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.BACKDROP_SIZE + movie?.backdrop
-                    Glide.with(context).load(backdropUrl).into(this)
-                }
-                else{
-                    // TODO: set "image not found" background
-                }
-            }
+            .apply { Glide.with(context).load(movie?.backdropUrl).into(this) } // TODO: add placeholder
         view.findViewById<TextView>(R.id.movie_name)
             .apply { text = movie?.title }
         view.findViewById<TextView>(R.id.movie_genre)
