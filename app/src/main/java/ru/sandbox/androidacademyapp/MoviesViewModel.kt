@@ -27,19 +27,15 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
 
     private val moviesLoadingExceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
-        run {
             println("CoroutineExceptionHandler got $exception in $coroutineContext")
             _isLoading.value = false
             _isMoviesLoadingError.value = true
-        }
     }
 
     private val actorsLoadingExceptionHandler = CoroutineExceptionHandler {
-            coroutineContext, exception ->
-        run {
+        coroutineContext, exception ->
             println("CoroutineExceptionHandler got $exception in $coroutineContext")
             _isActorsLoadingError.value = true
-        }
     }
 
     fun loadMovies(){
