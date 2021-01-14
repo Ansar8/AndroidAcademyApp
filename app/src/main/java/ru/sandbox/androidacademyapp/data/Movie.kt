@@ -21,7 +21,7 @@ data class Movie(
     val adult: Boolean,
     val runtime: Int? = null,
     val genres: List<Genre> = emptyList(),
-    val actors: List<Actor> = emptyList()
+    var actors: List<Actor> = emptyList()
 ){
     val minimumAge: Int
         get() = if (adult) 16 else 13
