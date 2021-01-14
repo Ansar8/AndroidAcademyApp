@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
 
@@ -88,7 +89,13 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
     private fun updateMovieDetails(movie: Movie) {
         val context = requireContext()
-        Glide.with(context).load(movie.backdropUrl).into(backdrop)// TODO: add placeholder
+
+        Glide.with(context)
+            .load(movie.backdropUrl)
+            .placeholder(R.drawable.ic_movie)
+            .error(R.drawable.ic_error)
+            .into(backdrop)
+
         name.text = movie.title
         genre.text = movie.genres.joinToString { it.name }
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())

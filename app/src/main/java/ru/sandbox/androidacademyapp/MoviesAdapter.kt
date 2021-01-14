@@ -11,6 +11,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.Movie
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked):
@@ -59,7 +60,12 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked):
         fun onBind(movie: Movie) {
             showStarRating(movie.ratingOutOfFive)
 
-            Glide.with(context).load(movie.posterUrl).into(poster) // TODO: add placeholder
+            Glide.with(context)
+                .load(movie.posterUrl)
+                .placeholder(R.drawable.ic_movie)
+                .error(R.drawable.ic_error)
+                .transition(DrawableTransitionOptions.withCrossFade(500))
+                .into(poster)
 
             like.setImageResource(R.drawable.grey_like)
             ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())

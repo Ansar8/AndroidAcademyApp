@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.Actor
 
 
@@ -38,7 +39,13 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
     fun onBind(actor: Actor) {
-        Glide.with(context).load(actor.pictureUrl).centerCrop().into(image) // TODO: add placeholder
+        Glide.with(context)
+            .load(actor.pictureUrl)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_error)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .centerCrop()
+            .into(image)
         name.text = actor.name
     }
 }
