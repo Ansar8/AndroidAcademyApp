@@ -42,7 +42,7 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(context)
             .load(actor.pictureUrl)
             .placeholder(R.drawable.ic_person)
-            .error(R.drawable.ic_error)
+            .error(R.drawable.ic_person)
             .transition(DrawableTransitionOptions.withCrossFade(500))
             .centerCrop()
             .into(image)
