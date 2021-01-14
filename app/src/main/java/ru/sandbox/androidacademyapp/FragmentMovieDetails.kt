@@ -2,18 +2,15 @@ package ru.sandbox.androidacademyapp
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
 
@@ -38,7 +35,7 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
     private var movieId: Int = -1
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
+    private val viewModel: MovieDetailsViewModel by viewModels { MoviesViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

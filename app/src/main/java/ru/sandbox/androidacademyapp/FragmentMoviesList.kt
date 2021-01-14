@@ -6,15 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.MoviesAdapter.*
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.MoviesAdapter.OnRecyclerItemClicked
 
 class FragmentMoviesList : Fragment() {
 
@@ -22,7 +19,7 @@ class FragmentMoviesList : Fragment() {
     private lateinit var recycler: RecyclerView
     private lateinit var moviesLoadingIssueTextView: TextView
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
+    private val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
