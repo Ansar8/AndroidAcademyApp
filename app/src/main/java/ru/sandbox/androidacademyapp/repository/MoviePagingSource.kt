@@ -14,8 +14,8 @@ class MoviePagingSource(private val moviesApi: MoviesApi): PagingSource<Int, Mov
         val position = params.key ?: MOVIE_STARTING_PAGE_INDEX
 
         return try {
-            val response = moviesApi.getMovies(position)
-            val movies = response.movies.map { moviesApi.getMovieDetails(it.id) }
+            val response = moviesApi.getPopularMovies(position)
+            val movies = response.movies.map { moviesApi.getMovie(it.id) }
             val prevKey = if (position == MOVIE_STARTING_PAGE_INDEX) null else position - 1
             val nextKey = if (movies.isEmpty()) null else position + 1
 

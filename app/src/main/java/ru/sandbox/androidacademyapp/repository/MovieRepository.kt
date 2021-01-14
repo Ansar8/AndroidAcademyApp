@@ -11,7 +11,7 @@ import ru.sandbox.androidacademyapp.data.Movie
 
 class MovieRepository(private val moviesApi: MoviesApi): IMovieRepository {
 
-    override fun getMovies(): LiveData<PagingData<Movie>> {
+    override fun getPopularMovies(): LiveData<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
@@ -22,8 +22,8 @@ class MovieRepository(private val moviesApi: MoviesApi): IMovieRepository {
         ).liveData
     }
 
-    override suspend fun getMovieDetails(movie_id: Int): Movie {
-        return moviesApi.getMovieDetails(movie_id)
+    override suspend fun getMovie(movie_id: Int): Movie {
+        return moviesApi.getMovie(movie_id)
     }
 
     override suspend fun getActors(movie_id: Int): List<Actor> {

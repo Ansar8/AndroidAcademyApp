@@ -18,10 +18,10 @@ import ru.sandbox.androidacademyapp.data.Movie
 interface MoviesApi {
 
     @GET("movie/popular")
-    suspend fun getMovies(@Query("page") page: Int): MovieListResponse
+    suspend fun getPopularMovies(@Query("page") page: Int): MovieListResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): Movie
+    suspend fun getMovie(@Path("movie_id") movie_id: Int): Movie
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieActors(@Path("movie_id") movie_id: Int): ActorListResponse
