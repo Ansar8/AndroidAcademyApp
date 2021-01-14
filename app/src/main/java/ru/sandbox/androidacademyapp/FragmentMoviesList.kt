@@ -17,7 +17,6 @@ class FragmentMoviesList : Fragment() {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
-    private lateinit var moviesLoadingIssueTextView: TextView
 
     private val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory() }
 
@@ -44,8 +43,6 @@ class FragmentMoviesList : Fragment() {
             recycler.layoutManager = GridLayoutManager(requireContext(), 4)
             recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
-
-        moviesLoadingIssueTextView = view.findViewById(R.id.movies_loading_issue_tv)
 
         viewModel.movies.observe(this.viewLifecycleOwner){
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
