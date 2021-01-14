@@ -16,4 +16,5 @@
     <dimen name="avengers_duration">8sp</dimen>
     <dimen name="data_loading_issue_tv_size">15sp</dimen>
     <dimen name="data_loading_issue_tv_padding">15dp</dimen>
+    <dimen name="data_loading_issue_padding">20dp</dimen>
 </resources>
