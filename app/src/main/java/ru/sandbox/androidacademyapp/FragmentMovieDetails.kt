@@ -2,8 +2,12 @@ package ru.sandbox.androidacademyapp
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,7 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Actor
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.Movie
 
 class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
@@ -22,7 +26,8 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
     private var listener: MovieDetailsFragmentClickListener? = null
 
-    private lateinit var actorsLoadingIssueTextView: TextView
+    private lateinit var errorMessageTextView: TextView
+    private lateinit var movieFrame: FrameLayout
     private lateinit var backdrop: ImageView
     private lateinit var name: TextView
     private lateinit var genre: TextView
@@ -32,6 +37,9 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
     private lateinit var backText: TextView
     private lateinit var recycler: RecyclerView
     private lateinit var ratingStars: List<ImageView>
+    private lateinit var progressBar: ProgressBar
+    private lateinit var castTitle: TextView
+    private lateinit var storyLineTitle: TextView
 
     private var movieId: Int = -1
 
@@ -49,22 +57,28 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
         initViews(view)
         viewModel.movieDetails.observe(this.viewLifecycleOwner, this::updateMovieDetails)
-        viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
-        viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showActorsNotLoadedMessage)
-
+        viewModel.isDetailsLoaded.observe(this.viewLifecycleOwner, this::showMovieDetails)
+        viewModel.isError.observe(this.viewLifecycleOwner, this::showErrorMessage)
+        viewModel.isDetailsLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
         if (savedInstanceState == null) {
             viewModel.getMovieDetails(movieId)
-            viewModel.loadActors(movieId)
         }
     }
 
     private fun initViews(view: View){
+        errorMessageTextView = view.findViewById(R.id.error_message)
+        progressBar = view.findViewById(R.id.progress_bar)
+
+        movieFrame = view.findViewById(R.id.movie_frame)
         backdrop = view.findViewById(R.id.movie_backdrop)
         name = view.findViewById(R.id.movie_name)
         genre = view.findViewById(R.id.movie_genre)
         ageLimits = view.findViewById(R.id.movie_age_limits)
         reviews = view.findViewById(R.id.movie_reviews)
         storyLine = view.findViewById(R.id.movie_story_line_text)
+        storyLineTitle = view.findViewById(R.id.movie_story_line)
+        castTitle = view.findViewById(R.id.movie_cast)
+
         backText = view.findViewById(R.id.back_text)
         backText.setOnClickListener { listener?.backToMoviesListFragment() }
 
@@ -80,8 +94,6 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
         recycler.adapter = ActorsAdapter()
         recycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recycler.addItemDecoration(ActorsItemDecoration(15))
-
-        actorsLoadingIssueTextView = view.findViewById(R.id.actors_loading_issue_tv)
     }
 
     private fun updateMovieDetails(movie: Movie) {
@@ -89,8 +101,8 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
         Glide.with(context)
             .load(movie.backdropUrl)
-            .placeholder(R.drawable.ic_movie)
-            .error(R.drawable.ic_error)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .error(R.drawable.ic_movie)
             .into(backdrop)
 
         name.text = movie.title
@@ -98,10 +110,14 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
         reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
         storyLine.text = movie.overview ?: context.getString(R.string.no_overview_text)
-        showStarRating(movie.ratingOutOfFive)
+        setStarRating(movie.ratingOutOfFive)
+
+        (recycler.adapter as? ActorsAdapter)?.apply {
+            bindMovies(movie.actors)
+        }
     }
 
-    private fun showStarRating(rating: Int) {
+    private fun setStarRating(rating: Int) {
         for (i in ratingStars.indices){
             if (i < rating)
                 ratingStars[i].setImageResource(R.drawable.red_star)
@@ -110,15 +126,26 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun updateActorsAdapter(actors: List<Actor>) {
-        (recycler.adapter as? ActorsAdapter)?.apply {
-            bindMovies(actors)
-        }
+    private fun showProgressBar(isVisible: Boolean){
+        progressBar.isVisible = isVisible
     }
 
-    private fun showActorsNotLoadedMessage(isVisible: Boolean){
-        actorsLoadingIssueTextView.isVisible = isVisible
-        recycler.isVisible = !isVisible
+    private fun showMovieDetails(isVisible: Boolean){
+        movieFrame.isVisible = isVisible
+        ageLimits.isVisible = isVisible
+        name.isVisible = isVisible
+        genre.isVisible = isVisible
+        ratingStars.forEach { it.isVisible = isVisible }
+        reviews.isVisible = isVisible
+        storyLine.isVisible = isVisible
+        storyLineTitle.isVisible = isVisible
+        castTitle.isVisible = isVisible
+        recycler.isVisible = isVisible
+    }
+
+
+    private fun showErrorMessage(isVisible: Boolean){
+        errorMessageTextView.isVisible = isVisible
     }
 
     //communication with activity

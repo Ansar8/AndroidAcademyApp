@@ -13,7 +13,37 @@
         android:paddingBottom="15dp"
         android:background="@color/main_background">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminateDrawable="@drawable/circular_progress_bar"
+            android:indeterminateOnly="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/data_loading_issue_padding"
+            android:text="@string/data_loading_issue"
+            android:textColor="@color/data_loading_issue"
+            android:textSize="@dimen/data_loading_issue_tv_size"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <FrameLayout
+            android:id="@+id/movie_frame"
             android:layout_width="0dp"
             android:layout_height="298dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,13 +55,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/ic_movie"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_movie" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/movie_image_gradient"/>
+                android:background="@drawable/movie_image_gradient" />
 
         </FrameLayout>
 
@@ -71,6 +101,8 @@
             tools:text="@string/age_limits"
             android:textSize="@dimen/age_limits"
             android:gravity="center"
+            android:visibility="invisible"
+            tools:visibility="visible"
             android:textStyle="bold"
             android:textColor="@color/age_limits"
             android:background="@drawable/rounded_square"
@@ -82,7 +114,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="254dp"
-            android:text="@string/movie_name"
+            tools:text="@string/movie_name"
             android:textColor="@color/movie_name"
             android:textSize="@dimen/movie_name"
             android:textStyle="bold"
@@ -97,14 +129,13 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:gravity="center_vertical"
-            android:text="@string/avengers_genre"
+            tools:text="@string/avengers_genre"
             android:textColor="@color/genre"
             android:textSize="@dimen/avengers_details_genre"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintTop_toBottomOf="@id/movie_name"
             app:layout_constraintBottom_toTopOf="@id/barrierHorizontalGenreTop" />
-
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierHorizontalGenreTop"
@@ -116,7 +147,9 @@
 
         <ImageView
             android:id="@+id/movie_star_1"
-            style="@style/RatingRedStar"
+            style="@style/RatingGreyStar"
+            android:visibility="invisible"
+            tools:visibility="visible"
             android:layout_marginEnd="2dp"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
             app:layout_constraintEnd_toStartOf="@+id/movie_star_2"
@@ -128,7 +161,9 @@
             android:id="@+id/movie_star_2"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
-            style="@style/RatingRedStar"
+            style="@style/RatingGreyStar"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/movie_star_1"
             app:layout_constraintEnd_toStartOf="@id/movie_star_3"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalGenreTop"
@@ -139,7 +174,9 @@
             android:id="@+id/movie_star_3"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
-            style="@style/RatingRedStar"
+            style="@style/RatingGreyStar"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toEndOf="@id/movie_star_2"
             app:layout_constraintEnd_toStartOf="@id/movie_star_4"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalGenreTop"
@@ -150,7 +187,9 @@
             android:id="@+id/movie_star_4"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
-            style="@style/RatingRedStar"
+            style="@style/RatingGreyStar"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toEndOf="@id/movie_star_3"
             app:layout_constraintEnd_toStartOf="@id/movie_star_5"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalGenreTop"
@@ -161,6 +200,8 @@
             android:id="@+id/movie_star_5"
             android:layout_marginStart="2dp"
             style="@style/RatingGreyStar"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toEndOf="@id/movie_star_4"
             app:layout_constraintEnd_toStartOf="@id/movie_reviews"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalGenreTop"
@@ -196,6 +237,8 @@
             android:textSize="@dimen/story_line"
             android:textColor="@color/story_line"
             android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintTop_toTopOf="@id/barrierHorizontalRatingTop"
@@ -233,6 +276,8 @@
             android:textSize="@dimen/cast"
             android:textColor="@color/cast"
             android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
             app:layout_constraintTop_toBottomOf="@id/barrierHorizontalStoryTop"
@@ -249,19 +294,6 @@
             android:id="@+id/movie_recycler_view_actors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
-            app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-            app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalCastTop" />
-
-        <TextView
-            android:id="@+id/actors_loading_issue_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/actors_loading_issue"
-            android:textColor="@color/data_loading_issue"
-            android:textStyle="bold"
-            android:textSize="@dimen/data_loading_issue_tv_size"
-            tools:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
             app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
             app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalCastTop" />
