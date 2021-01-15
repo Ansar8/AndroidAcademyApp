@@ -2,9 +2,7 @@ package ru.sandbox.androidacademyapp
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -57,9 +55,11 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
         initViews(view)
         viewModel.movieDetails.observe(this.viewLifecycleOwner, this::updateMovieDetails)
-        viewModel.isDetailsLoaded.observe(this.viewLifecycleOwner, this::showMovieDetails)
-        viewModel.isError.observe(this.viewLifecycleOwner, this::showErrorMessage)
-        viewModel.isDetailsLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.loadState.observe(this.viewLifecycleOwner) {
+            showMovieDetails(it == LoadState.NotLoading)
+            showProgressBar(it == LoadState.Loading)
+            showErrorMessage(it == LoadState.Error)
+        }
         if (savedInstanceState == null) {
             viewModel.getMovieDetails(movieId)
         }
