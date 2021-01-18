@@ -26,9 +26,9 @@ class MoviesLoadStateAdapter(private val retry: () -> Unit) :
 
     inner class MoviesLoadStateViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        private val progressBar: ProgressBar = itemView.findViewById(R.id.movies_progress_bar)
-        private val errorMessage: TextView = itemView.findViewById(R.id.movies_error_msg)
-        private val retryButton: Button = itemView.findViewById(R.id.movies_retry_button)
+        private val progressBar: ProgressBar = itemView.findViewById(R.id.movies_footer_progress_bar)
+        private val errorMessage: TextView = itemView.findViewById(R.id.movies_footer_error_msg)
+        private val retryButton: Button = itemView.findViewById(R.id.movies_footer_retry_button)
 
         init {
             retryButton.setOnClickListener { retry.invoke() }

@@ -8,7 +8,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/movies_error_msg"
+        android:id="@+id/movies_footer_error_msg"
         android:textColor="@color/data_loading_issue"
         android:textSize="@dimen/data_loading_issue_tv_size"
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
         tools:text="@string/data_loading_issue"/>
 
     <ProgressBar
-        android:id="@+id/movies_progress_bar"
+        android:id="@+id/movies_footer_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
@@ -27,7 +27,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:id="@+id/movies_retry_button"
+        android:id="@+id/movies_footer_retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
