@@ -15,7 +15,7 @@ class MovieRepository(private val moviesApi: MoviesApi): IMovieRepository {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                maxSize =  100,
+                maxSize =  MAXIMUM_ITEMS_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { MoviePagingSource(moviesApi) }
@@ -33,6 +33,7 @@ class MovieRepository(private val moviesApi: MoviesApi): IMovieRepository {
 
     companion object {
         private val TAG = MovieRepository::class.java.simpleName
-        private const val NETWORK_PAGE_SIZE = 20
+        private const val NETWORK_PAGE_SIZE = 1
+        private const val MAXIMUM_ITEMS_SIZE = 20
     }
 }
