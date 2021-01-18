@@ -6,37 +6,81 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.OnRecyclerItemClicked
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: MoviesListFragmentClickListener? = null
+    private lateinit var adapter: MoviesAdapter
+
     private lateinit var recycler: RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var retryButton: Button
 
     private val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory() }
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val orientation: Int = requireActivity().resources.configuration.orientation
 
-        val adapter = MoviesAdapter(clickListener)
+        initViews(view)
+        initAdapter()
+        initLayoutManager(orientation)
+        initItemDecoration(orientation)
+
+        viewModel.movies.observe(this.viewLifecycleOwner){
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+    }
+
+    private fun initViews(view: View) {
         recycler = view.findViewById(R.id.recycler_view_movies)
+        progressBar = view.findViewById(R.id.movies_progress_bar)
+        retryButton = view.findViewById(R.id.movies_retry_button)
+    }
+
+    private fun initAdapter() {
+        adapter = MoviesAdapter(clickListener)
+
+        retryButton.setOnClickListener { adapter.retry() }
         recycler.adapter = adapter.withLoadStateFooter(
             footer = MoviesLoadStateAdapter { adapter.retry() }
         )
 
+        adapter.addLoadStateListener { loadState ->
+            recycler.isVisible = loadState.source.refresh is LoadState.NotLoading
+            progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+
+            errorState?.let {
+                Toast.makeText(
+                        requireActivity(),
+                        "\uD83D\uDE28 Wooops ${it.error}",
+                        Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+
+    }
+
+    private fun initLayoutManager(orientation: Int) {
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             val gridLayoutManager = GridLayoutManager(requireContext(), 2)
             gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
@@ -45,7 +89,6 @@ class FragmentMoviesList : Fragment() {
                 }
             }
             recycler.layoutManager = gridLayoutManager
-            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
         }
         else {
             val gridLayoutManager = GridLayoutManager(requireContext(), 4)
@@ -55,11 +98,15 @@ class FragmentMoviesList : Fragment() {
                 }
             }
             recycler.layoutManager = gridLayoutManager
-            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
+    }
 
-        viewModel.movies.observe(this.viewLifecycleOwner){
-            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+    private fun initItemDecoration(orientation: Int) {
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
+        }
+        else {
+            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
     }
 
