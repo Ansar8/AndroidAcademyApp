@@ -14,7 +14,7 @@
         android:background="@color/main_background">
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/movie_details_progress_bar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:indeterminateDrawable="@drawable/circular_progress_bar"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/error_message"
+            android:id="@+id/movie_details_error_msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/data_loading_issue_padding"
