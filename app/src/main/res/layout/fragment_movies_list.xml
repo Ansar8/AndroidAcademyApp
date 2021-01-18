@@ -4,15 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191926">
+    android:paddingTop="20dp"
+    android:background="@color/movies_list_background"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/title_image"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/combined_shape"
         app:layout_constraintStart_toEndOf="@id/guideVerticalBegin"
         app:layout_constraintEnd_toStartOf="@id/title_text"
@@ -25,8 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="135dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_vertical"
         android:text="@string/title_name"
         android:textColor="@color/white"
@@ -62,10 +62,37 @@
         android:id="@+id/recycler_view_movies"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="24dp"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/movies_progress_bar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:indeterminateDrawable="@drawable/circular_progress_bar"
+        android:indeterminateOnly="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
+        app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/movies_loading_issue_tv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/movies_loading_issue"
+        android:textColor="@color/data_loading_issue"
+        android:textStyle="bold"
+        android:textSize="@dimen/data_loading_issue_tv_size"
+        android:gravity="center"
+        android:padding="@dimen/data_loading_issue_tv_padding"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
+        app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

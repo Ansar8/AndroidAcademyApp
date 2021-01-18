@@ -14,8 +14,10 @@
     <color name="cast">#ECECEC</color>
     <color name="story_line">#ECECEC</color>
     <color name="reviews">#6D6D80</color>
+    <color name="data_loading_issue">#6D6D80</color>
     <color name="genre">#FF3466</color>
     <color name="movie_name">#ECECEC</color>
     <color name="back_button">#6D6D80</color>
     <color name="avengers_duration">#565665</color>
+    <color name="movies_list_background">#191926</color>
 </resources>
