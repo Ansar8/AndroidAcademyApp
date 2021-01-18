@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.OnRecyclerItemClicked
 
@@ -21,9 +21,9 @@ class FragmentMoviesList : Fragment() {
     private val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory() }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,14 +33,28 @@ class FragmentMoviesList : Fragment() {
 
         val adapter = MoviesAdapter(clickListener)
         recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.adapter = adapter
+        recycler.adapter = adapter.withLoadStateFooter(
+            footer = MoviesLoadStateAdapter { adapter.retry() }
+        )
 
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+            val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+            gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == MoviesAdapter.MOVIE_ITEM) 1 else 2
+                }
+            }
+            recycler.layoutManager = gridLayoutManager
             recycler.addItemDecoration(MoviesItemDecoration(30, 2))
         }
         else {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 4)
+            val gridLayoutManager = GridLayoutManager(requireContext(), 4)
+            gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == MoviesAdapter.MOVIE_ITEM) 1 else 4
+                }
+            }
+            recycler.layoutManager = gridLayoutManager
             recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
 

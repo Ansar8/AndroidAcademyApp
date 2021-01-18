@@ -22,10 +22,11 @@
     <string name="avengers_duration">127 MIN</string>
     <string name="no_overview_text">No overview yet.</string>
     <string name="data_loading_issue">
-        Warning!\nThere was a problem to load data.\nPlease, try to refresh the page.
+        There was a problem to load data.\nPlease, try to refresh the page.
     </string>
     <string name="movies_loading_issue">
         Warning!\nThere was a problem to load a list of movies. Please, try to refresh the page.
     </string>
+    <string name="retry">retry</string>
 
 </resources>

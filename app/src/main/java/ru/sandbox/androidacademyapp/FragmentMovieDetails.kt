@@ -66,8 +66,8 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun initViews(view: View){
-        errorMessageTextView = view.findViewById(R.id.error_message)
-        progressBar = view.findViewById(R.id.progress_bar)
+        errorMessageTextView = view.findViewById(R.id.movie_details_error_msg)
+        progressBar = view.findViewById(R.id.movie_details_progress_bar)
 
         movieFrame = view.findViewById(R.id.movie_frame)
         backdrop = view.findViewById(R.id.movie_backdrop)

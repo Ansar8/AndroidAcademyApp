@@ -38,6 +38,10 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked):
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == itemCount) LOADING_ITEM else MOVIE_ITEM
+    }
+
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val ratingStars: List<ImageView> = listOf(
@@ -105,6 +109,8 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked):
     }
 
     companion object {
+        const val LOADING_ITEM: Int = 0
+        const val MOVIE_ITEM: Int = 1
         private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
                 oldItem.id == newItem.id
