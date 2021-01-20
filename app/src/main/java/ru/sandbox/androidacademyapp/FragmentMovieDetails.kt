@@ -69,7 +69,7 @@ class FragmentMovieDetails : Fragment() {
         view.findViewById<TextView>(R.id.movie_age_limits)
             .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minimumAge.toString()) }
         view.findViewById<TextView>(R.id.movie_reviews)
-            .apply { text = context.getString(R.string.movie_reviews_text, movie?.numberOfRatings.toString())}
+            .apply { text = context.getString(R.string.movie_reviews_text, movie?.reviews.toString())}
         view.findViewById<TextView>(R.id.movie_story_line_text)
             .apply { text =  movie?.overview ?: context.getString(R.string.no_overview_text) }
         view.findViewById<TextView>(R.id.back_text)

@@ -69,7 +69,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         like.setImageResource(R.drawable.grey_like)
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
         genre.text = movie.genres.joinToString { it.name }
-        reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
+        reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
         name.text = movie.title
 
         val runtime = movie.runtime.toString()
