@@ -71,25 +71,20 @@
         android:id="@+id/movies_progress_bar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:visibility="invisible"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:indeterminateOnly="true"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/movies_loading_issue_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/movies_loading_issue"
-        android:textColor="@color/data_loading_issue"
-        android:textStyle="bold"
-        android:textSize="@dimen/data_loading_issue_tv_size"
-        android:gravity="center"
-        android:padding="@dimen/data_loading_issue_tv_padding"
-        tools:visibility="visible"
+    <Button
+        android:id="@+id/movies_retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF3466"
+        android:text="@string/retry"
+        tools:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"

@@ -1,10 +1,9 @@
 package ru.sandbox.androidacademyapp.data
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.sandbox.androidacademyapp.BuildConfig
+import kotlin.math.roundToInt
 
 @Serializable
 data class Movie(
@@ -22,7 +21,7 @@ data class Movie(
     val adult: Boolean,
     val runtime: Int? = null,
     val genres: List<Genre> = emptyList(),
-    val actors: List<Actor> = emptyList()
+    var actors: List<Actor> = emptyList()
 ){
     val minimumAge: Int
         get() = if (adult) 16 else 13
@@ -32,4 +31,7 @@ data class Movie(
 
     val backdropUrl: String
         get() = BuildConfig.IMAGES_BASE_URL + BuildConfig.BACKDROP_SIZE + backdrop
+
+    val ratingOutOfFive: Int
+        get() = ratings.div(10).times(5).roundToInt()
 }
