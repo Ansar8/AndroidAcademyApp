@@ -5,6 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.sandbox.androidacademyapp.api.MoviesApi
 import ru.sandbox.androidacademyapp.data.Actor
 import ru.sandbox.androidacademyapp.data.Movie
@@ -22,13 +24,13 @@ class MovieRepository(private val moviesApi: MoviesApi): IMovieRepository {
         ).liveData
     }
 
-    override suspend fun getMovie(movie_id: Int): Movie {
-        return moviesApi.getMovie(movie_id)
+    override suspend fun getMovie(movie_id: Int): Movie = withContext(Dispatchers.IO){
+        moviesApi.getMovie(movie_id)
     }
 
-    override suspend fun getActors(movie_id: Int): List<Actor> {
+    override suspend fun getActors(movie_id: Int): List<Actor> = withContext(Dispatchers.IO){
         val response = moviesApi.getMovieActors(movie_id)
-        return response.actors.take(10)
+        response.actors.take(10)
     }
 
     companion object {
