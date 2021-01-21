@@ -30,7 +30,7 @@ object MoviesDbContract {
     }
 
     object MovieActorCross{
-        const val TABLE_NAME = "movieactorcross"
+        const val TABLE_NAME = "movieactorcrossref"
 
         const val COLUMN_NAME_MOVIE_ID = "movieId"
         const val COLUMN_NAME_ACTOR_ID = "actorId"
