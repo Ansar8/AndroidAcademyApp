@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.sandbox.androidacademyapp.FragmentMovieDetails.*
 import ru.sandbox.androidacademyapp.FragmentMoviesList.*
-import ru.sandbox.androidacademyapp.data.Movie
 
 class MainActivity : AppCompatActivity(),
                      MoviesListFragmentClickListener,

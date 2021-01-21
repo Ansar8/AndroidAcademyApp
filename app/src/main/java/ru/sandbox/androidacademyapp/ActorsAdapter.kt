@@ -7,12 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Actor
+import ru.sandbox.androidacademyapp.api.ActorResponse
 
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
-    private var actors = listOf<Actor>()
+    private var actors = listOf<ActorResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -26,7 +26,7 @@ class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
     override fun getItemCount(): Int = actors.size
 
-    fun bindMovies(newActors: List<Actor>) {
+    fun bindMovies(newActors: List<ActorResponse>) {
         actors = newActors
         notifyDataSetChanged()
     }
@@ -37,7 +37,7 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image: ImageView = itemView.findViewById(R.id.actor_image)
     private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
-    fun onBind(actor: Actor) {
+    fun onBind(actor: ActorResponse) {
         Glide.with(context).load(actor.pictureUrl).centerCrop().into(image) // TODO: add placeholder
         name.text = actor.name
     }

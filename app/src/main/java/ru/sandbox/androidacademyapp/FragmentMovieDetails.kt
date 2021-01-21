@@ -13,8 +13,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Actor
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.api.ActorResponse
+import ru.sandbox.androidacademyapp.api.MovieResponse
 import kotlin.math.roundToInt
 
 class FragmentMovieDetails : Fragment() {
@@ -28,7 +28,7 @@ class FragmentMovieDetails : Fragment() {
     private lateinit var actorsLoadingIssueTextView: TextView
 
     private lateinit var ratingStars: List<ImageView>
-    private var movie: Movie? = null
+    private var movie: MovieResponse? = null
     private var movieId: Int = -1
 
     private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
@@ -107,7 +107,7 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    private fun updateActorsAdapter(actors: List<Actor>) {
+    private fun updateActorsAdapter(actors: List<ActorResponse>) {
         (recycler.adapter as? ActorsAdapter)?.apply {
             bindMovies(actors)
         }

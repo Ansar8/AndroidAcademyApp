@@ -1,13 +1,13 @@
-package ru.sandbox.androidacademyapp.data
+package ru.sandbox.androidacademyapp.api
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.sandbox.androidacademyapp.BuildConfig
+import ru.sandbox.androidacademyapp.api.ActorResponse
+import ru.sandbox.androidacademyapp.api.GenreResponse
 
 @Serializable
-data class Movie(
+data class MovieResponse(
     val id: Int,
     val title: String,
     val overview: String?,
@@ -21,8 +21,8 @@ data class Movie(
     val reviews: Int,
     val adult: Boolean,
     val runtime: Int? = null,
-    val genres: List<Genre> = emptyList(),
-    val actors: List<Actor> = emptyList()
+    val genres: List<GenreResponse> = emptyList(),
+    val actors: List<ActorResponse> = emptyList()
 ){
     val minimumAge: Int
         get() = if (adult) 16 else 13

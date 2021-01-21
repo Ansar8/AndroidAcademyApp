@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.*
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.api.MovieResponse
 
 class FragmentMoviesList : Fragment() {
 
@@ -71,7 +71,7 @@ class FragmentMoviesList : Fragment() {
         super.onDetach()
     }
 
-    private fun updateMoviesAdapter(movies: List<Movie>){
+    private fun updateMoviesAdapter(movies: List<MovieResponse>){
         (recycler.adapter as? MoviesAdapter)?.apply {
             bindMovies(movies)
         }

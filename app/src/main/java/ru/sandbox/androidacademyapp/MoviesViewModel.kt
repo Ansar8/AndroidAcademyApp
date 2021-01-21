@@ -3,10 +3,9 @@ package ru.sandbox.androidacademyapp
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.data.Actor
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.api.ActorResponse
+import ru.sandbox.androidacademyapp.api.MovieResponse
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
-import java.lang.Exception
 
 class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
 
@@ -19,11 +18,11 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
     private val _isActorsLoadingError = MutableLiveData(false)
     val isActorsLoadingError: LiveData<Boolean> = _isActorsLoadingError
 
-    private val _movieList = MutableLiveData<List<Movie>>(emptyList())
-    val movieList: LiveData<List<Movie>> = _movieList
+    private val _movieList = MutableLiveData<List<MovieResponse>>(emptyList())
+    val movieList: LiveData<List<MovieResponse>> = _movieList
 
-    private val _actorList = MutableLiveData<List<Actor>>(emptyList())
-    val actorList: LiveData<List<Actor>> = _actorList
+    private val _actorList = MutableLiveData<List<ActorResponse>>(emptyList())
+    val actorList: LiveData<List<ActorResponse>> = _actorList
 
     private val moviesLoadingExceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
@@ -58,7 +57,7 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
         }
     }
 
-    fun getMovieById(id: Int?): Movie? {
+    fun getMovieById(id: Int?): MovieResponse? {
         return movieList.value?.find { it.id == id }
     }
 }

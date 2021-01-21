@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.api.MovieResponse
 import kotlin.math.roundToInt
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
@@ -18,7 +18,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
         fun onClick(movieId: Int)
     }
 
-    private var movies = listOf<Movie>()
+    private var movies = listOf<MovieResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -35,7 +35,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
 
     override fun getItemCount(): Int = movies.size
 
-    fun bindMovies(newMovies: List<Movie>) {
+    fun bindMovies(newMovies: List<MovieResponse>) {
         movies = newMovies
         notifyDataSetChanged()
     }
@@ -60,7 +60,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.movie_name)
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
-    fun onBind(movie: Movie) {
+    fun onBind(movie: MovieResponse) {
         val ratingOutOfFive = 5 * movie.ratings / 10
         showStarRating(ratingOutOfFive.roundToInt())
 

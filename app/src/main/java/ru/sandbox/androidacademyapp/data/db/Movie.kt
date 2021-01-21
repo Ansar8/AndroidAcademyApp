@@ -3,7 +3,6 @@ package ru.sandbox.androidacademyapp.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.sandbox.androidacademyapp.data.Movie
 import ru.sandbox.androidacademyapp.data.db.MoviesDbContract.Movies
 
 @Entity(tableName = Movies.TABLE_NAME)

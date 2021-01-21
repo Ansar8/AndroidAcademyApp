@@ -1,11 +1,11 @@
-package ru.sandbox.androidacademyapp.data
+package ru.sandbox.androidacademyapp.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.sandbox.androidacademyapp.BuildConfig
 
 @Serializable
-data class Actor(
+data class ActorResponse(
     val id: Int,
     val name: String,
     @SerialName("profile_path")
