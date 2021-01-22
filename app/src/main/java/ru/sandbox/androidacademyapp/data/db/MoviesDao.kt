@@ -22,7 +22,7 @@ interface MoviesDao {
     suspend fun insertMovieActorCrossRef(crossRef: MovieActorCrossRef)
 
     @Transaction
-    @Query("SELECT * FROM movies WHERE _id == :movieId")
+    @Query("SELECT * FROM movies WHERE movieId == :movieId")
     suspend fun getMovieWithActors(movieId: Int): List<MovieWithActors>
 
 }

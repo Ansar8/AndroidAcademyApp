@@ -9,7 +9,7 @@ object MoviesDbContract {
     object Movies{
         const val TABLE_NAME = "Movies"
 
-        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_ID = "movieId"
         const val COLUMN_NAME_TITLE = "title"
         const val COLUMN_NAME_OVERVIEW = "overview"
         const val COLUMN_NAME_POSTER_URL = "posterUrl"
@@ -24,12 +24,12 @@ object MoviesDbContract {
     object Actors{
         const val TABLE_NAME = "Actors"
 
-        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_ID = "actorId"
         const val COLUMN_NAME_NAME = "title"
         const val COLUMN_NAME_PICTURE = "picture"
     }
 
-    object MovieActorCrossRef{
+    object MovieActorCrossRefs{
         const val TABLE_NAME = "MovieWithActor"
 
         const val COLUMN_NAME_MOVIE_ID = "movieId"
