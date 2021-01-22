@@ -20,6 +20,6 @@ data class MovieResponse(
     @SerialName("vote_count")
     val reviews: Int,
     val adult: Boolean,
-    val runtime: Int?,
+    val runtime: Int? = null,
     val genres: List<GenreResponse> = emptyList()
 )
