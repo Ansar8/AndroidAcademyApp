@@ -20,16 +20,6 @@ data class MovieResponse(
     @SerialName("vote_count")
     val reviews: Int,
     val adult: Boolean,
-    val runtime: Int? = null,
-    val genres: List<GenreResponse> = emptyList(),
-    val actors: List<ActorResponse> = emptyList()
-){
-    val minimumAge: Int
-        get() = if (adult) 16 else 13
-
-    val posterUrl: String
-        get() = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + poster
-
-    val backdropUrl: String
-        get() = BuildConfig.IMAGES_BASE_URL + BuildConfig.BACKDROP_SIZE + backdrop
-}
+    val runtime: Int?,
+    val genres: List<GenreResponse> = emptyList()
+)
