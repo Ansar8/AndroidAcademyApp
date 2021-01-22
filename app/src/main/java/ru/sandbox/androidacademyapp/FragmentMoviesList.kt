@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.*
 import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.data.db.entites.Movie
 
 class FragmentMoviesList : Fragment() {
 
@@ -23,7 +24,9 @@ class FragmentMoviesList : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var moviesLoadingIssueTextView: TextView
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
+    private val viewModel: MoviesViewModel by activityViewModels {
+        MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +74,7 @@ class FragmentMoviesList : Fragment() {
         super.onDetach()
     }
 
-    private fun updateMoviesAdapter(movies: List<MovieResponse>){
+    private fun updateMoviesAdapter(movies: List<Movie>){
         (recycler.adapter as? MoviesAdapter)?.apply {
             bindMovies(movies)
         }

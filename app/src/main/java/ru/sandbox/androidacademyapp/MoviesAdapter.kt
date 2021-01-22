@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import kotlin.math.roundToInt
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
@@ -18,7 +19,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
         fun onClick(movieId: Int)
     }
 
-    private var movies = listOf<MovieResponse>()
+    private var movies = listOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -35,7 +36,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
 
     override fun getItemCount(): Int = movies.size
 
-    fun bindMovies(newMovies: List<MovieResponse>) {
+    fun bindMovies(newMovies: List<Movie>) {
         movies = newMovies
         notifyDataSetChanged()
     }
@@ -60,15 +61,15 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.movie_name)
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
-    fun onBind(movie: MovieResponse) {
+    fun onBind(movie: Movie) {
         val ratingOutOfFive = 5 * movie.ratings / 10
         showStarRating(ratingOutOfFive.roundToInt())
 
         Glide.with(context).load(movie.posterUrl).into(poster) // TODO: add placeholder
 
         like.setImageResource(R.drawable.grey_like)
-        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
-        genre.text = movie.genres.joinToString { it.name }
+        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minAge.toString())
+        genre.text = movie.genres
         reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
         name.text = movie.title
 

@@ -5,9 +5,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.sandbox.androidacademyapp.api.ActorResponse
 import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 
-class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
+class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -18,8 +19,8 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
     private val _isActorsLoadingError = MutableLiveData(false)
     val isActorsLoadingError: LiveData<Boolean> = _isActorsLoadingError
 
-    private val _movieList = MutableLiveData<List<MovieResponse>>(emptyList())
-    val movieList: LiveData<List<MovieResponse>> = _movieList
+    private val _movieList = MutableLiveData<List<Movie>>(emptyList())
+    val movieList: LiveData<List<Movie>> = _movieList
 
     private val _actorList = MutableLiveData<List<ActorResponse>>(emptyList())
     val actorList: LiveData<List<ActorResponse>> = _actorList
@@ -42,7 +43,7 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
             _isMoviesLoadingError.value = false
             _isLoading.value = true
 
-            val loadedMovies = loader.getMovies()
+            val loadedMovies = repository.getMovies()
             _movieList.value = loadedMovies
 
             _isLoading.value = false
@@ -52,12 +53,12 @@ class MoviesViewModel(private val loader: IMovieRepository) : ViewModel() {
     fun loadActors(movie_id: Int){
         viewModelScope.launch(actorsLoadingExceptionHandler) {
             _isActorsLoadingError.value = false
-            val loadedActors = loader.getActors(movie_id)
+            val loadedActors = repository.getActors(movie_id)
             _actorList.value = loadedActors
         }
     }
 
-    fun getMovieById(id: Int?): MovieResponse? {
+    fun getMovieById(id: Int?): Movie? {
         return movieList.value?.find { it.id == id }
     }
 }

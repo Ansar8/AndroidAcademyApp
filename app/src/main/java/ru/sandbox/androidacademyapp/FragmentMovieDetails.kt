@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.sandbox.androidacademyapp.api.ActorResponse
 import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import kotlin.math.roundToInt
 
 class FragmentMovieDetails : Fragment() {
@@ -28,10 +29,12 @@ class FragmentMovieDetails : Fragment() {
     private lateinit var actorsLoadingIssueTextView: TextView
 
     private lateinit var ratingStars: List<ImageView>
-    private var movie: MovieResponse? = null
+    private var movie: Movie? = null
     private var movieId: Int = -1
 
-    private val viewModel: MoviesViewModel by activityViewModels { MoviesViewModelFactory() }
+    private val viewModel: MoviesViewModel by activityViewModels {
+        MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,9 +68,9 @@ class FragmentMovieDetails : Fragment() {
         view.findViewById<TextView>(R.id.movie_name)
             .apply { text = movie?.title }
         view.findViewById<TextView>(R.id.movie_genre)
-            .apply { text = movie?.genres?.joinToString { it.name } }
+            .apply { text = movie?.genres}
         view.findViewById<TextView>(R.id.movie_age_limits)
-            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minimumAge.toString()) }
+            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minAge.toString()) }
         view.findViewById<TextView>(R.id.movie_reviews)
             .apply { text = context.getString(R.string.movie_reviews_text, movie?.reviews.toString())}
         view.findViewById<TextView>(R.id.movie_story_line_text)
