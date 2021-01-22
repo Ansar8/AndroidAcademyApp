@@ -8,58 +8,64 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.MoviesAdapter.*
-import ru.sandbox.androidacademyapp.api.MovieResponse
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var moviesLoadingIssueTextView: TextView
 
     private val viewModel: MoviesViewModel by activityViewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val orientation: Int = requireActivity().resources.configuration.orientation
 
-        recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.adapter = MoviesAdapter(clickListener)
-
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 2)
-            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
-        }
-        else {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 4)
-            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
-        }
-
-        progressBar = view.findViewById(R.id.movies_progress_bar)
-        moviesLoadingIssueTextView = view.findViewById(R.id.movies_loading_issue_tv)
+        initViews(view)
+        initLayoutManager(orientation)
+        initItemDecoration(orientation)
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
-        viewModel.isMoviesLoadingError.observe(this.viewLifecycleOwner, this::showMoviesNotLoadedMessage)
+        viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null){
             viewModel.loadMovies()
+        }
+    }
+
+    private fun initViews(view: View) {
+        progressBar = view.findViewById(R.id.movies_progress_bar)
+        recycler = view.findViewById(R.id.recycler_view_movies)
+        recycler.adapter = MoviesAdapter(clickListener)
+    }
+
+    private fun initLayoutManager(orientation: Int) {
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        }
+        else {
+            recycler.layoutManager = GridLayoutManager(requireContext(), 4)
+        }
+    }
+
+    private fun initItemDecoration(orientation: Int) {
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
+        }
+        else {
+            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
         }
     }
 
@@ -84,9 +90,8 @@ class FragmentMoviesList : Fragment() {
         progressBar.isVisible = isVisible
     }
 
-    private fun showMoviesNotLoadedMessage(isVisible: Boolean){
-        moviesLoadingIssueTextView.isVisible = isVisible
-        recycler.isVisible = !isVisible
+    private fun showToast(message: String){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private val clickListener = object : OnRecyclerItemClicked {
