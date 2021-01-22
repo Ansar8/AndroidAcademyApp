@@ -1,5 +1,6 @@
 package ru.sandbox.androidacademyapp
 
+import ru.sandbox.androidacademyapp.util.SingleLiveEvent
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -13,8 +14,8 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    private val _errorMessage = SingleLiveEvent<String>()
+    val errorMessage: SingleLiveEvent<String> get() = _errorMessage
 
     private val _isActorsLoadingError = MutableLiveData(false)
     val isActorsLoadingError: LiveData<Boolean> = _isActorsLoadingError
