@@ -6,6 +6,7 @@ import ru.sandbox.androidacademyapp.BuildConfig
 import ru.sandbox.androidacademyapp.api.MoviesApi
 import ru.sandbox.androidacademyapp.api.ActorResponse
 import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.api.Result
 import ru.sandbox.androidacademyapp.data.db.MoviesDao
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 
@@ -13,15 +14,29 @@ class MovieRepository(
     private val moviesApi: MoviesApi,
     private val moviesDao: MoviesDao): IMovieRepository {
 
-    override suspend fun getMovies(): List<Movie> = withContext(Dispatchers.IO) {
-        val response = moviesApi.getMovies()
-        val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
-        responseWithDetails.map { toEntity(it) }
+    override suspend fun getPopularMovies(): Result<List<Movie>> = withContext(Dispatchers.IO) {
+        try {
+            val response = moviesApi.getMovies()
+            val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
+            val movies = responseWithDetails.map { toEntity(it) }
+            Result.Success(movies)
+        }
+        catch (t: Throwable) {
+            Result.Error("Oops..looks like network failure!")
+        }
+    }
+
+    override suspend fun savePopularMovies(movies: List<Movie>){
+        moviesDao.insertMovies(movies)
     }
 
     override suspend fun getActors(movie_id: Int): List<ActorResponse> {
         val response = moviesApi.getMovieActors(movie_id)
         return response.actors.take(10)
+    }
+
+    override suspend fun getSavedPopularMovies(): List<Movie>{
+        return moviesDao.getPopularMovies()
     }
 
     private fun toEntity(movie: MovieResponse) = Movie(
