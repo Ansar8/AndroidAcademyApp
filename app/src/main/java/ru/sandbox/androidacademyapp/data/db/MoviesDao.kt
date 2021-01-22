@@ -9,14 +9,14 @@ import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
 @Dao
 interface MoviesDao {
 
-    @Query("SELECT * FROM movies")
+    @Query("SELECT * FROM Movies")
     suspend fun getPopularMovies(): List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovies(vararg movies: Movie)
+    suspend fun insertMovies(movies: List<Movie>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertActors(vararg actors: Actor)
+    suspend fun insertActors(actors: List<Actor>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovieActorCrossRef(crossRef: MovieActorCrossRef)
