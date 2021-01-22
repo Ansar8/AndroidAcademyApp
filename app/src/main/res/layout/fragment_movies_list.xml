@@ -79,20 +79,4 @@
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/movies_loading_issue_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/movies_loading_issue"
-        android:textColor="@color/data_loading_issue"
-        android:textStyle="bold"
-        android:textSize="@dimen/data_loading_issue_tv_size"
-        android:gravity="center"
-        android:padding="@dimen/data_loading_issue_tv_padding"
-        tools:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
