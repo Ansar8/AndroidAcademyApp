@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.sandbox.androidacademyapp.api.ActorResponse
-import ru.sandbox.androidacademyapp.api.MovieResponse
+import ru.sandbox.androidacademyapp.api.Result
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 
@@ -13,8 +13,8 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isMoviesLoadingError = MutableLiveData(false)
-    val isMoviesLoadingError: LiveData<Boolean> = _isMoviesLoadingError
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
     private val _isActorsLoadingError = MutableLiveData(false)
     val isActorsLoadingError: LiveData<Boolean> = _isActorsLoadingError
@@ -25,27 +25,34 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
     private val _actorList = MutableLiveData<List<ActorResponse>>(emptyList())
     val actorList: LiveData<List<ActorResponse>> = _actorList
 
-    private val moviesLoadingExceptionHandler = CoroutineExceptionHandler {
-        coroutineContext, exception ->
-            println("CoroutineExceptionHandler got $exception in $coroutineContext")
-            _isLoading.value = false
-            _isMoviesLoadingError.value = true
-    }
-
     private val actorsLoadingExceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
             println("CoroutineExceptionHandler got $exception in $coroutineContext")
             _isActorsLoadingError.value = true
     }
 
+    private val loadingExceptionHandler = CoroutineExceptionHandler {
+        coroutineContext, exception ->
+            println("CoroutineExceptionHandler got $exception in $coroutineContext")
+            _isLoading.value = false
+            _errorMessage.value = exception.message
+    }
+
     fun loadMovies(){
-        viewModelScope.launch(moviesLoadingExceptionHandler) {
-            _isMoviesLoadingError.value = false
+        viewModelScope.launch(loadingExceptionHandler) {
             _isLoading.value = true
+            val cachedMovies = repository.getSavedPopularMovies()
+            if (cachedMovies.isNotEmpty()) _movieList.value = cachedMovies
 
-            val loadedMovies = repository.getMovies()
-            _movieList.value = loadedMovies
-
+            when (val result = repository.getPopularMovies()){
+                is Result.Success -> {
+                    result.data?.let { remoteMovies ->
+                        repository.savePopularMovies(remoteMovies)
+                        _movieList.value = remoteMovies
+                    }
+                }
+                is Result.Error -> _errorMessage.value = result.message
+            }
             _isLoading.value = false
         }
     }
