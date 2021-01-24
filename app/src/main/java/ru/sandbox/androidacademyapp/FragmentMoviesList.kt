@@ -66,17 +66,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    //communication with activity
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MoviesListFragmentClickListener) listener = context
-    }
-
-    override fun onDetach() {
-        listener = null
-        super.onDetach()
-    }
-
     private fun updateMoviesAdapter(movies: List<Movie>){
         (recycler.adapter as? MoviesAdapter)?.apply {
             bindMovies(movies)
@@ -89,6 +78,17 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private fun showToast(message: String){
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    //communication with activity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MoviesListFragmentClickListener) listener = context
+    }
+
+    override fun onDetach() {
+        listener = null
+        super.onDetach()
     }
 
     private val clickListener = object : OnRecyclerItemClicked {

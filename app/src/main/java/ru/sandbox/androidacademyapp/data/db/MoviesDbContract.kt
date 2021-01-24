@@ -1,7 +1,5 @@
 package ru.sandbox.androidacademyapp.data.db
 
-import android.provider.BaseColumns
-
 object MoviesDbContract {
 
     const val DATABASE_NAME = "Movies.db"

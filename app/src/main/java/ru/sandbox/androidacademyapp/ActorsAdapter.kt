@@ -8,9 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import ru.sandbox.androidacademyapp.api.ActorResponse
 import ru.sandbox.androidacademyapp.data.db.entites.Actor
-
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
