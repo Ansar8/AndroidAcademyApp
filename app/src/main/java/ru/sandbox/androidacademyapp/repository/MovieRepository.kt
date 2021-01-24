@@ -34,7 +34,7 @@ class MovieRepository(
     override suspend fun getMovieWithActors(movieId: Int): Result<MovieWithActors> =
         withContext(Dispatchers.IO) {
             try {
-                val actors = moviesApi.getMovieActors(movieId).actors.map { toActorEntity(it) }
+                val actors = moviesApi.getMovieActors(movieId).actors.take(10).map { toActorEntity(it) }
                 val movie = toMovieEntity(moviesApi.getMovieDetails(movieId))
                 val movieWithActors = MovieWithActors(movie, actors)
 
