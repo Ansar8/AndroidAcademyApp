@@ -14,7 +14,7 @@ import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieActorCrossRef
         Actor::class,
         MovieActorCrossRef::class
     ],
-    version = 1
+    version = 2
 )
 abstract class MovieDatabase: RoomDatabase() {
 
