@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.data.api.Result
+import ru.sandbox.androidacademyapp.data.network.Result
 import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 import ru.sandbox.androidacademyapp.util.SingleLiveEvent

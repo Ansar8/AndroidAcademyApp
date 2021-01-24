@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.data.api
+package ru.sandbox.androidacademyapp.data.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
