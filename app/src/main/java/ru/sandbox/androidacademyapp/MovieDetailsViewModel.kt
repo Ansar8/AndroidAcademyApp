@@ -37,8 +37,10 @@ class MovieDetailsViewModel(private val repository: IMovieRepository) : ViewMode
             val savedDetails = repository.getSavedMovieWithActors(movieId)
             if(savedDetails.isNotEmpty()) {
                 val details = savedDetails.first()
-                _movieDetails.value = details
-                _isLoading.value = false
+                if (details.actors.isNotEmpty()) {
+                    _movieDetails.value = details
+                    _isLoading.value = false
+                }
             }
 
             when (val result = repository.getMovieWithActors(movieId)){
