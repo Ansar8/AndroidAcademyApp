@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sandbox.androidacademyapp.BuildConfig
 import ru.sandbox.androidacademyapp.data.network.MoviesApi
-import ru.sandbox.androidacademyapp.data.network.ActorResponse
-import ru.sandbox.androidacademyapp.data.network.MovieResponse
+import ru.sandbox.androidacademyapp.data.network.responses.ActorResponse
+import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 import ru.sandbox.androidacademyapp.util.Result
 import ru.sandbox.androidacademyapp.data.db.MoviesDao
 import ru.sandbox.androidacademyapp.data.db.entities.Actor

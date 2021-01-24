@@ -9,6 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
 import ru.sandbox.androidacademyapp.BuildConfig
+import ru.sandbox.androidacademyapp.data.network.responses.ActorListResponse
+import ru.sandbox.androidacademyapp.data.network.responses.MovieListResponse
+import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 
 interface MoviesApi {
 
