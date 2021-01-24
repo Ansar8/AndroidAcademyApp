@@ -4,7 +4,6 @@ import ru.sandbox.androidacademyapp.util.SingleLiveEvent
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.api.ActorResponse
 import ru.sandbox.androidacademyapp.api.Result
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
@@ -17,20 +16,8 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
     private val _errorMessage = SingleLiveEvent<String>()
     val errorMessage: SingleLiveEvent<String> get() = _errorMessage
 
-    private val _isActorsLoadingError = MutableLiveData(false)
-    val isActorsLoadingError: LiveData<Boolean> = _isActorsLoadingError
-
     private val _movieList = MutableLiveData<List<Movie>>(emptyList())
     val movieList: LiveData<List<Movie>> = _movieList
-
-    private val _actorList = MutableLiveData<List<ActorResponse>>(emptyList())
-    val actorList: LiveData<List<ActorResponse>> = _actorList
-
-    private val actorsLoadingExceptionHandler = CoroutineExceptionHandler {
-        coroutineContext, exception ->
-            println("CoroutineExceptionHandler got $exception in $coroutineContext")
-            _isActorsLoadingError.value = true
-    }
 
     private val loadingExceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
@@ -41,32 +28,22 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
 
     fun loadMovies(){
         viewModelScope.launch(loadingExceptionHandler) {
-            _isLoading.value = true
-            val cachedMovies = repository.getSavedPopularMovies()
-            if (cachedMovies.isNotEmpty()) _movieList.value = cachedMovies
 
-            when (val result = repository.getPopularMovies()){
+            _isLoading.value = true
+            val savedMovies = repository.getSavedMovies()
+            if (savedMovies.isNotEmpty()) _movieList.value = savedMovies
+
+            when (val result = repository.getMovies()){
                 is Result.Success -> {
                     result.data?.let { remoteMovies ->
-                        repository.savePopularMovies(remoteMovies)
+                        repository.saveMovies(remoteMovies)
                         _movieList.value = remoteMovies
                     }
                 }
                 is Result.Error -> _errorMessage.value = result.message
             }
+
             _isLoading.value = false
         }
-    }
-
-    fun loadActors(movie_id: Int){
-        viewModelScope.launch(actorsLoadingExceptionHandler) {
-            _isActorsLoadingError.value = false
-            val loadedActors = repository.getActors(movie_id)
-            _actorList.value = loadedActors
-        }
-    }
-
-    fun getMovieById(id: Int?): Movie? {
-        return movieList.value?.find { it.id == id }
     }
 }
