@@ -7,12 +7,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.api.ActorResponse
+import ru.sandbox.androidacademyapp.data.db.entites.Actor
 
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
-    private var actors = listOf<ActorResponse>()
+    private var actors = listOf<Actor>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -26,7 +28,7 @@ class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
     override fun getItemCount(): Int = actors.size
 
-    fun bindMovies(newActors: List<ActorResponse>) {
+    fun bindMovies(newActors: List<Actor>) {
         actors = newActors
         notifyDataSetChanged()
     }
@@ -37,8 +39,14 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image: ImageView = itemView.findViewById(R.id.actor_image)
     private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
-    fun onBind(actor: ActorResponse) {
-        Glide.with(context).load(actor.pictureUrl).centerCrop().into(image) // TODO: add placeholder
+    fun onBind(actor: Actor) {
+        Glide.with(context)
+            .load(actor.pictureUrl)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_person)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .centerCrop()
+            .into(image)
         name.text = actor.name
     }
 }
