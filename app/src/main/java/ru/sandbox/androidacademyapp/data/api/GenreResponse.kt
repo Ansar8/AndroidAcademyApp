@@ -1,7 +1,5 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.api
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable

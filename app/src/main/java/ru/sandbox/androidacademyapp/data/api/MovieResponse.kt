@@ -1,10 +1,7 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import ru.sandbox.androidacademyapp.BuildConfig
-import ru.sandbox.androidacademyapp.api.ActorResponse
-import ru.sandbox.androidacademyapp.api.GenreResponse
 
 @Serializable
 data class MovieResponse(

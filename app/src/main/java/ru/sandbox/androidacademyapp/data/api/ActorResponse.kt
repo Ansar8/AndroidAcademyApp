@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

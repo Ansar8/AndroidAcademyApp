@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.api
 
 sealed class Result<T>(
     val data: T? = null,

@@ -1,8 +1,6 @@
 package ru.sandbox.androidacademyapp.repository
 
-import ru.sandbox.androidacademyapp.api.ActorResponse
-import ru.sandbox.androidacademyapp.api.Result
-import ru.sandbox.androidacademyapp.data.db.entites.Actor
+import ru.sandbox.androidacademyapp.data.api.Result
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
 
