@@ -1,8 +1,8 @@
 package ru.sandbox.androidacademyapp.repository
 
 import ru.sandbox.androidacademyapp.util.Result
-import ru.sandbox.androidacademyapp.data.db.entites.Movie
-import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
+import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 
 interface IMovieRepository {
     suspend fun getMovies(): Result<List<Movie>>

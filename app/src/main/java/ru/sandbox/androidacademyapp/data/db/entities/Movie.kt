@@ -1,9 +1,8 @@
-package ru.sandbox.androidacademyapp.data.db.entites
+package ru.sandbox.androidacademyapp.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.sandbox.androidacademyapp.BuildConfig
 import ru.sandbox.androidacademyapp.data.db.MoviesDbContract.Movies
 
 @Entity(tableName = Movies.TABLE_NAME)

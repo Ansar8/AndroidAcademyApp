@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.sandbox.androidacademyapp.util.Result
-import ru.sandbox.androidacademyapp.data.db.entites.Movie
+import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 
 class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {

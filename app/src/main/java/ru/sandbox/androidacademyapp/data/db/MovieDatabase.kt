@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.sandbox.androidacademyapp.data.db.entites.Actor
-import ru.sandbox.androidacademyapp.data.db.entites.Movie
-import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieActorCrossRef
+import ru.sandbox.androidacademyapp.data.db.entities.Actor
+import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieActorCrossRef
 
 @Database(
     entities = [

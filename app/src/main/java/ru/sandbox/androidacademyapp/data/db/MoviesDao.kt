@@ -1,10 +1,10 @@
 package ru.sandbox.androidacademyapp.data.db
 
 import androidx.room.*
-import ru.sandbox.androidacademyapp.data.db.entites.Actor
-import ru.sandbox.androidacademyapp.data.db.entites.Movie
-import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieActorCrossRef
-import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
+import ru.sandbox.androidacademyapp.data.db.entities.Actor
+import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieActorCrossRef
+import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 
 @Dao
 interface MoviesDao {

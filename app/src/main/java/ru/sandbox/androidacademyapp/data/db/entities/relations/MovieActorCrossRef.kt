@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.data.db.entites.relations
+package ru.sandbox.androidacademyapp.data.db.entities.relations
 
 import androidx.room.*
 import ru.sandbox.androidacademyapp.data.db.MoviesDbContract.MovieActorCrossRefs

@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.data.db.entites
+package ru.sandbox.androidacademyapp.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
