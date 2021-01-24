@@ -3,18 +3,15 @@ package ru.sandbox.androidacademyapp
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.MoviesAdapter.*
+import ru.sandbox.androidacademyapp.MoviesAdapter.OnRecyclerItemClicked
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
@@ -23,7 +20,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private val viewModel: MoviesViewModel by activityViewModels {
+    private val viewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
     }
 
