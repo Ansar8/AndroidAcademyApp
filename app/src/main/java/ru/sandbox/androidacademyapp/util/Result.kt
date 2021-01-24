@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.data.network
+package ru.sandbox.androidacademyapp.util
 
 sealed class Result<T>(
     val data: T? = null,
