@@ -15,5 +15,5 @@ data class Actor(
     val name: String,
 
     @ColumnInfo(name = Actors.COLUMN_NAME_PICTURE)
-    val picture: String?
+    val pictureUrl: String?
 )

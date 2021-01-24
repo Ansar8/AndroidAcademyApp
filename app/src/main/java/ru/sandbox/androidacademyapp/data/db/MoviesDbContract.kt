@@ -26,7 +26,7 @@ object MoviesDbContract {
 
         const val COLUMN_NAME_ID = "actorId"
         const val COLUMN_NAME_NAME = "title"
-        const val COLUMN_NAME_PICTURE = "picture"
+        const val COLUMN_NAME_PICTURE = "pictureUrl"
     }
 
     object MovieActorCrossRefs{
