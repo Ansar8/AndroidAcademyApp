@@ -53,13 +53,16 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
+
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
         viewModel.movieDetails.observe(this.viewLifecycleOwner){ movieWithActors ->
             updateMovieDetails(movieWithActors)
             showMovieDetails(true)
         }
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
-        if (savedInstanceState == null) viewModel.loadMovieDetails(movieId)
+
+        if (savedInstanceState == null)
+            viewModel.loadMovieDetails(movieId)
     }
 
     private fun initViews(view: View){
@@ -90,6 +93,8 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
         recycler.adapter = ActorsAdapter()
         recycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recycler.addItemDecoration(ActorsItemDecoration(15))
+
+        showMovieDetails(false)
     }
 
     private fun updateMovieDetails(movieWithActors: MovieWithActors) {
