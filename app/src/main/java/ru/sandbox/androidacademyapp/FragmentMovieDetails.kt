@@ -2,37 +2,43 @@ package ru.sandbox.androidacademyapp
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.api.ActorResponse
-import ru.sandbox.androidacademyapp.api.MovieResponse
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.data.db.entites.Movie
-import kotlin.math.roundToInt
+import ru.sandbox.androidacademyapp.data.db.entites.relations.MovieWithActors
 
-class FragmentMovieDetails : Fragment() {
+class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
 
     interface MovieDetailsFragmentClickListener {
         fun backToMoviesListFragment()
     }
 
     private var listener: MovieDetailsFragmentClickListener? = null
-    private lateinit var recycler: RecyclerView
-    private lateinit var actorsLoadingIssueTextView: TextView
 
+    private lateinit var movieFrame: FrameLayout
+    private lateinit var backdrop: ImageView
+    private lateinit var name: TextView
+    private lateinit var genre: TextView
+    private lateinit var ageLimits: TextView
+    private lateinit var reviews: TextView
+    private lateinit var storyLine: TextView
+    private lateinit var backText: TextView
+    private lateinit var recycler: RecyclerView
     private lateinit var ratingStars: List<ImageView>
-    private var movie: Movie? = null
+    private lateinit var progressBar: ProgressBar
+    private lateinit var castTitle: TextView
+    private lateinit var storyLineTitle: TextView
+
     private var movieId: Int = -1
 
-    private val viewModel: MoviesViewModel by activityViewModels {
+    private val viewModel: MovieDetailsViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
     }
 
@@ -43,40 +49,34 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movie_details, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findViews(view)
-
-        viewModel.actorList.observe(this.viewLifecycleOwner, this::updateActorsAdapter)
-        viewModel.isActorsLoadingError.observe(this.viewLifecycleOwner, this::showActorsNotLoadedMessage)
-
-        if (savedInstanceState == null) viewModel.loadActors(movieId)
+        initViews(view)
+        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.movieDetails.observe(this.viewLifecycleOwner){ movieWithActors ->
+            updateMovieDetails(movieWithActors)
+            showMovieDetails(true)
+        }
+        viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
+        if (savedInstanceState == null) viewModel.loadMovieDetails(movieId)
     }
 
-    private fun findViews(view: View){
-        movie = viewModel.getMovieById(movieId)
+    private fun initViews(view: View){
+        progressBar = view.findViewById(R.id.movie_details_progress_bar)
 
-        view.findViewById<ImageView>(R.id.movie_backdrop)
-            .apply { Glide.with(context).load(movie?.backdropUrl).into(this) } // TODO: add placeholder
-        view.findViewById<TextView>(R.id.movie_name)
-            .apply { text = movie?.title }
-        view.findViewById<TextView>(R.id.movie_genre)
-            .apply { text = movie?.genres}
-        view.findViewById<TextView>(R.id.movie_age_limits)
-            .apply { text = context.getString(R.string.movie_age_limits_text, movie?.minAge.toString()) }
-        view.findViewById<TextView>(R.id.movie_reviews)
-            .apply { text = context.getString(R.string.movie_reviews_text, movie?.reviews.toString())}
-        view.findViewById<TextView>(R.id.movie_story_line_text)
-            .apply { text =  movie?.overview ?: context.getString(R.string.no_overview_text) }
-        view.findViewById<TextView>(R.id.back_text)
-            .setOnClickListener { listener?.backToMoviesListFragment() }
+        movieFrame = view.findViewById(R.id.movie_frame)
+        backdrop = view.findViewById(R.id.movie_backdrop)
+        name = view.findViewById(R.id.movie_name)
+        genre = view.findViewById(R.id.movie_genre)
+        ageLimits = view.findViewById(R.id.movie_age_limits)
+        reviews = view.findViewById(R.id.movie_reviews)
+        storyLine = view.findViewById(R.id.movie_story_line_text)
+        storyLineTitle = view.findViewById(R.id.movie_story_line)
+        castTitle = view.findViewById(R.id.movie_cast)
+
+        backText = view.findViewById(R.id.back_text)
+        backText.setOnClickListener { listener?.backToMoviesListFragment() }
 
         ratingStars = listOf(
             view.findViewById(R.id.movie_star_1),
@@ -85,23 +85,38 @@ class FragmentMovieDetails : Fragment() {
             view.findViewById(R.id.movie_star_4),
             view.findViewById(R.id.movie_star_5)
         )
-        val ratingOutOfFive = movie?.ratings?.div(10)?.times(5)
-        if (ratingOutOfFive != null) {
-            showStarRating(ratingOutOfFive.roundToInt())
-        }
-        else {
-            showStarRating(0)
-        }
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
         recycler.adapter = ActorsAdapter()
         recycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recycler.addItemDecoration(ActorsItemDecoration(15))
-
-        actorsLoadingIssueTextView = view.findViewById(R.id.actors_loading_issue_tv)
     }
 
-    private fun showStarRating(rating: Int) {
+    private fun updateMovieDetails(movieWithActors: MovieWithActors) {
+
+        val movie = movieWithActors.movie
+        val actors = movieWithActors.actors
+        val context = requireContext()
+
+        Glide.with(context)
+            .load(movie.backdropUrl)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .error(R.drawable.ic_movie)
+            .into(backdrop)
+
+        name.text = movie.title
+        genre.text = movie.genres
+        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minAge.toString())
+        reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
+        storyLine.text = movie.overview ?: context.getString(R.string.no_overview_text)
+        setStarRating(movie.ratings)
+
+        (recycler.adapter as? ActorsAdapter)?.apply {
+            bindMovies(actors)
+        }
+    }
+
+    private fun setStarRating(rating: Int) {
         for (i in ratingStars.indices){
             if (i < rating)
                 ratingStars[i].setImageResource(R.drawable.red_star)
@@ -110,15 +125,25 @@ class FragmentMovieDetails : Fragment() {
         }
     }
 
-    private fun updateActorsAdapter(actors: List<ActorResponse>) {
-        (recycler.adapter as? ActorsAdapter)?.apply {
-            bindMovies(actors)
-        }
+    private fun showProgressBar(isVisible: Boolean){
+        progressBar.isVisible = isVisible
     }
 
-    private fun showActorsNotLoadedMessage(isVisible: Boolean){
-        actorsLoadingIssueTextView.isVisible = isVisible
-        recycler.isVisible = !isVisible
+    private fun showToast(message: String){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showMovieDetails(isVisible: Boolean){
+        movieFrame.isVisible = isVisible
+        ageLimits.isVisible = isVisible
+        name.isVisible = isVisible
+        genre.isVisible = isVisible
+        ratingStars.forEach { it.isVisible = isVisible }
+        reviews.isVisible = isVisible
+        storyLine.isVisible = isVisible
+        storyLineTitle.isVisible = isVisible
+        castTitle.isVisible = isVisible
+        recycler.isVisible = isVisible
     }
 
     //communication with activity

@@ -16,6 +16,13 @@ class MoviesViewModelFactory(private val applicationContext: Context) : ViewMode
                     MovieDatabase.create(applicationContext).moviesDao
                 )
             )
+        MovieDetailsViewModel::class.java ->
+            MovieDetailsViewModel(
+                MovieRepository(
+                    MoviesApi.create(),
+                    MovieDatabase.create(applicationContext).moviesDao
+                )
+            )
         else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
     } as T
 }
