@@ -15,7 +15,7 @@ import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 
-class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
+class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     interface MovieDetailsFragmentClickListener {
         fun backToMoviesListFragment()
@@ -166,8 +166,8 @@ class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {
     companion object{
         private const val PARAM_MOVIE_ID = "movieId"
 
-        fun newInstance(movieId: Int): FragmentMovieDetails {
-            val fragment = FragmentMovieDetails()
+        fun newInstance(movieId: Int): MovieDetailsFragment {
+            val fragment = MovieDetailsFragment()
             val args = Bundle()
             args.putInt(PARAM_MOVIE_ID, movieId)
             fragment.arguments = args

@@ -16,7 +16,7 @@ import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.OnRecyclerItemClicke
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 
-class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
+class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: MoviesListFragmentClickListener? = null
     private lateinit var recycler: RecyclerView
