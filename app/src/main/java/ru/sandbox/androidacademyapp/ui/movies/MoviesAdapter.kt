@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.ui
+package ru.sandbox.androidacademyapp.ui.movies
 
 import android.graphics.Outline
 import android.view.LayoutInflater

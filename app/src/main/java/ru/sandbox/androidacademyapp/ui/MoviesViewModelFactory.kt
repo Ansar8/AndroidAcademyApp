@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import ru.sandbox.androidacademyapp.data.network.MoviesApi
 import ru.sandbox.androidacademyapp.data.db.MovieDatabase
 import ru.sandbox.androidacademyapp.repository.MovieRepository
+import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsViewModel
+import ru.sandbox.androidacademyapp.ui.movies.MoviesViewModel
 
 class MoviesViewModelFactory(private val applicationContext: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {

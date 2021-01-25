@@ -3,8 +3,10 @@ package ru.sandbox.androidacademyapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.sandbox.androidacademyapp.R
-import ru.sandbox.androidacademyapp.ui.FragmentMovieDetails.*
-import ru.sandbox.androidacademyapp.ui.FragmentMoviesList.*
+import ru.sandbox.androidacademyapp.ui.moviedetails.FragmentMovieDetails.*
+import ru.sandbox.androidacademyapp.ui.movies.FragmentMoviesList.*
+import ru.sandbox.androidacademyapp.ui.moviedetails.FragmentMovieDetails
+import ru.sandbox.androidacademyapp.ui.movies.FragmentMoviesList
 
 class MainActivity : AppCompatActivity(),
                      MoviesListFragmentClickListener,

@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.ui
+package ru.sandbox.androidacademyapp.ui.moviedetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

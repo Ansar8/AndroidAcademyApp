@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.ui
+package ru.sandbox.androidacademyapp.ui.movies
 
 import ru.sandbox.androidacademyapp.util.SingleLiveEvent
 import androidx.lifecycle.*
