@@ -45,28 +45,32 @@ class MovieRepository(
             }
         }
 
-    override suspend fun getSavedMovies(): List<Movie>{
-        return moviesDao.getPopularMovies()
-    }
-
-    override suspend fun getSavedMovieWithActors(movieId: Int): List<MovieWithActors> {
-        return moviesDao.getMovieWithActors(movieId)
-    }
-
-    override suspend fun saveMovies(movies: List<Movie>){
-        moviesDao.insertMovies(movies)
-    }
-
-    override suspend fun saveMovieWithActors(movieWithActors: MovieWithActors) {
-        val movie = movieWithActors.movie
-        val actors = movieWithActors.actors
-
-        moviesDao.insertActors(actors)
-        actors.forEach { actor ->
-            val crossRef = MovieActorCrossRef(movie.id, actor.id)
-            moviesDao.insertMovieActorCrossRef(crossRef)
+    override suspend fun getSavedMovies(): List<Movie> =
+        withContext(Dispatchers.IO){
+            moviesDao.getPopularMovies()
         }
-    }
+
+    override suspend fun getSavedMovieWithActors(movieId: Int): List<MovieWithActors> =
+        withContext(Dispatchers.IO){
+            moviesDao.getMovieWithActors(movieId)
+        }
+
+    override suspend fun saveMovies(movies: List<Movie>) =
+        withContext(Dispatchers.IO){
+            moviesDao.insertMovies(movies)
+        }
+
+    override suspend fun saveMovieWithActors(movieWithActors: MovieWithActors) =
+        withContext(Dispatchers.IO){
+            val movie = movieWithActors.movie
+            val actors = movieWithActors.actors
+
+            moviesDao.insertActors(actors)
+            actors.forEach { actor ->
+                val crossRef = MovieActorCrossRef(movie.id, actor.id)
+                moviesDao.insertMovieActorCrossRef(crossRef)
+            }
+        }
 
     private fun toActorEntity(actor: ActorResponse) = Actor(
         id = actor.id,
