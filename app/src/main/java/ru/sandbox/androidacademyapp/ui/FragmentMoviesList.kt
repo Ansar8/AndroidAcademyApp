@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui
 
 import android.content.Context
 import android.content.res.Configuration
@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.sandbox.androidacademyapp.MoviesAdapter.OnRecyclerItemClicked
+import ru.sandbox.androidacademyapp.R
+import ru.sandbox.androidacademyapp.ui.MoviesAdapter.OnRecyclerItemClicked
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {

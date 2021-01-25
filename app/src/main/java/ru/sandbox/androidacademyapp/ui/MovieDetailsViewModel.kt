@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

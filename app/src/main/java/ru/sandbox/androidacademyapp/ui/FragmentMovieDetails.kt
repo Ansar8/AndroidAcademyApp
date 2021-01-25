@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 
 class FragmentMovieDetails : Fragment(R.layout.fragment_movie_details) {

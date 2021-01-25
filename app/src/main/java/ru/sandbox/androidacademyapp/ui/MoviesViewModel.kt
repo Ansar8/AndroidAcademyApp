@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui
 
 import ru.sandbox.androidacademyapp.util.SingleLiveEvent
 import androidx.lifecycle.*

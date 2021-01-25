@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Actor
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
