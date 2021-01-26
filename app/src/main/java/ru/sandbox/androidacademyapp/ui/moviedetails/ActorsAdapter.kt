@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui.moviedetails
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Actor
-
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import ru.sandbox.androidacademyapp.R
+import ru.sandbox.androidacademyapp.data.db.entities.Actor
 
 class ActorsAdapter(): RecyclerView.Adapter<ActorViewHolder>() {
 
@@ -38,7 +39,13 @@ class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.actor_full_name)
 
     fun onBind(actor: Actor) {
-        Glide.with(context).load(actor.pictureUrl).centerCrop().into(image) // TODO: add placeholder
+        Glide.with(context)
+            .load(actor.pictureUrl)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_person)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .centerCrop()
+            .into(image)
         name.text = actor.name
     }
 }

@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp
+package ru.sandbox.androidacademyapp.ui.movies
 
 import android.graphics.Outline
 import android.view.LayoutInflater
@@ -9,8 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.sandbox.androidacademyapp.data.Movie
-import kotlin.math.roundToInt
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import ru.sandbox.androidacademyapp.R
+import ru.sandbox.androidacademyapp.data.db.entities.Movie
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
@@ -61,15 +62,19 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
     fun onBind(movie: Movie) {
-        val ratingOutOfFive = 5 * movie.ratings / 10
-        showStarRating(ratingOutOfFive.roundToInt())
+        showStarRating(movie.ratings)
 
-        Glide.with(context).load(movie.posterUrl).into(poster) // TODO: add placeholder
+        Glide.with(context)
+            .load(movie.posterUrl)
+            .placeholder(R.drawable.ic_movie)
+            .error(R.drawable.ic_error)
+            .transition(DrawableTransitionOptions.withCrossFade(500))
+            .into(poster)
 
         like.setImageResource(R.drawable.grey_like)
-        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minimumAge.toString())
-        genre.text = movie.genres.joinToString { it.name }
-        reviews.text = context.getString(R.string.movie_reviews_text, movie.numberOfRatings.toString())
+        ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minAge.toString())
+        genre.text = movie.genres
+        reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
         name.text = movie.title
 
         val runtime = movie.runtime.toString()

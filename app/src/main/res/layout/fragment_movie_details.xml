@@ -13,7 +13,20 @@
         android:paddingBottom="15dp"
         android:background="@color/main_background">
 
+        <ProgressBar
+            android:id="@+id/movie_details_progress_bar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminateDrawable="@drawable/circular_progress_bar"
+            android:indeterminateOnly="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <FrameLayout
+            android:id="@+id/movie_frame"
             android:layout_width="0dp"
             android:layout_height="298dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="254dp"
-            android:text="@string/movie_name"
+            tools:text="@string/movie_name"
             android:textColor="@color/movie_name"
             android:textSize="@dimen/movie_name"
             android:textStyle="bold"
@@ -97,7 +110,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:gravity="center_vertical"
-            android:text="@string/avengers_genre"
+            tools:text="@string/avengers_genre"
             android:textColor="@color/genre"
             android:textSize="@dimen/avengers_details_genre"
             app:layout_constraintStart_toStartOf="@id/guideVerticalBegin"
@@ -253,18 +266,7 @@
             app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
             app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalCastTop" />
 
-        <TextView
-            android:id="@+id/actors_loading_issue_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/actors_loading_issue"
-            android:textColor="@color/data_loading_issue"
-            android:textStyle="bold"
-            android:textSize="@dimen/data_loading_issue_tv_size"
-            tools:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
-            app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-            app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalCastTop" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

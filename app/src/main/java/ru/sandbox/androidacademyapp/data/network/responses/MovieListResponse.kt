@@ -1,11 +1,10 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.network.responses
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import ru.sandbox.androidacademyapp.data.Movie
 
 @Serializable
 data class MovieListResponse(
     @SerialName("results")
-    val movies: List<Movie>
+    val movies: List<MovieResponse>
 )

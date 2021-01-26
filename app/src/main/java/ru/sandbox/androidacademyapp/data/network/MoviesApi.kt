@@ -1,8 +1,6 @@
-package ru.sandbox.androidacademyapp.api
+package ru.sandbox.androidacademyapp.data.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -11,8 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
 import ru.sandbox.androidacademyapp.BuildConfig
-import ru.sandbox.androidacademyapp.data.Actor
-import ru.sandbox.androidacademyapp.data.Movie
+import ru.sandbox.androidacademyapp.data.network.responses.ActorListResponse
+import ru.sandbox.androidacademyapp.data.network.responses.MovieListResponse
+import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 
 interface MoviesApi {
 
@@ -20,7 +19,7 @@ interface MoviesApi {
     suspend fun getMovies(): MovieListResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): Movie
+    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieResponse
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieActors(@Path("movie_id") movie_id: Int): ActorListResponse
