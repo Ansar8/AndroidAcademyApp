@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
+import ru.sandbox.androidacademyapp.util.Response
 
 class UpdateMoviesWorker(
     appContext: Context,
@@ -19,12 +20,12 @@ class UpdateMoviesWorker(
         try {
             // refresh movies cache
             when (val result = repository.getMovies()) {
-                is ru.sandbox.androidacademyapp.util.Result.Success -> {
+                is Response.Success -> {
                     result.data?.let { remoteMovies ->
                         repository.saveMovies(remoteMovies)
                     }
                 }
-                is ru.sandbox.androidacademyapp.util.Result.Error -> throw Exception()
+                is Response.Error -> throw Exception()
             }
             Result.success()
         } catch (e: Exception) {
