@@ -4,7 +4,7 @@ import ru.sandbox.androidacademyapp.util.SingleLiveEvent
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.util.Result
+import ru.sandbox.androidacademyapp.util.Response
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 
@@ -33,14 +33,14 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
             val savedMovies = repository.getSavedMovies()
             if (savedMovies.isNotEmpty()) _movieList.value = savedMovies
 
-            when (val result = repository.getMovies()){
-                is Result.Success -> {
-                    result.data?.let { remoteMovies ->
+            when (val response = repository.getMovies()){
+                is Response.Success -> {
+                    response.data?.let { remoteMovies ->
                         repository.saveMovies(remoteMovies)
                         _movieList.value = remoteMovies
                     }
                 }
-                is Result.Error -> _errorMessage.value = result.message
+                is Response.Error -> _errorMessage.value = response.message
             }
 
             _isLoading.value = false

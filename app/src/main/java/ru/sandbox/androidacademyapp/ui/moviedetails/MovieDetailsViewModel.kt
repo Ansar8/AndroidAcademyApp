@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.util.Result
+import ru.sandbox.androidacademyapp.util.Response
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 import ru.sandbox.androidacademyapp.util.SingleLiveEvent
@@ -43,17 +43,17 @@ class MovieDetailsViewModel(private val repository: IMovieRepository) : ViewMode
                 }
             }
 
-            when (val result = repository.getMovieWithActors(movieId)){
-                is Result.Success -> {
-                    result.data?.let { movieWithActors ->
+            when (val response = repository.getMovieWithActors(movieId)){
+                is Response.Success -> {
+                    response.data?.let { movieWithActors ->
                         repository.saveMovieWithActors(movieWithActors)
                         _movieDetails.value = movieWithActors
                     }
                     _isLoading.value = false
                 }
-                is Result.Error -> {
+                is Response.Error -> {
                     if (_isLoading.value != null && _isLoading.value == true)
-                    _errorMessage.value = result.message
+                    _errorMessage.value = response.message
                 }
             }
         }

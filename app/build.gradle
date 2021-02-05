@@ -53,6 +53,7 @@ android {
 dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.6"
+    def work_version = "2.5.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -83,6 +84,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
 
     testImplementation 'junit:junit:4.+'
