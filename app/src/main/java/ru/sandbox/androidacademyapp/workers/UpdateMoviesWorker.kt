@@ -1,6 +1,7 @@
 package ru.sandbox.androidacademyapp.workers
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
@@ -14,30 +15,28 @@ class UpdateMoviesWorker(
     private val repository: IMovieRepository)
         : CoroutineWorker(appContext, params) {
 
-
-
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             // refresh movies cache
+            Log.d(TAG, "doWork: Started to update movies cache.")
             when (val result = repository.getMovies()) {
                 is Response.Success -> {
+                    Log.d(TAG, "doWork: Loaded movies from network.")
                     result.data?.let { remoteMovies ->
                         repository.saveMovies(remoteMovies)
+                        Log.d(TAG, "doWork: Saved movies to cache.")
                     }
                 }
-                is Response.Error -> throw Exception()
+                is Response.Error -> throw Exception("Failed to load movies from network.")
             }
             Result.success()
         } catch (e: Exception) {
-            if (runAttemptCount < MAX_NUMBER_OF_RETRY) {
-                Result.retry()
-            } else {
-                Result.failure()
-            }
+            Log.d(TAG, "doWork: " + e.message)
+            Result.failure()
         }
     }
 
     companion object {
-        const val MAX_NUMBER_OF_RETRY = 3
+        val TAG = "UpdateMoviesWorker"
     }
 }
