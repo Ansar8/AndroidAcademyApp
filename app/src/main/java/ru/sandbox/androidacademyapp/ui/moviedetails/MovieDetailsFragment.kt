@@ -17,11 +17,11 @@ import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    interface MovieDetailsFragmentClickListener {
+    interface BackToMovieListClickListener {
         fun backToMoviesListFragment()
     }
 
-    private var listener: MovieDetailsFragmentClickListener? = null
+    private var listener: BackToMovieListClickListener? = null
 
     private lateinit var movieFrame: FrameLayout
     private lateinit var backdrop: ImageView
@@ -155,7 +155,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     //communication with activity
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MovieDetailsFragmentClickListener) listener = context
+        if (context is BackToMovieListClickListener) listener = context
     }
 
     override fun onDetach() {

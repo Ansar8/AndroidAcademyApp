@@ -6,13 +6,13 @@ import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsFragment.*
 import ru.sandbox.androidacademyapp.ui.movies.MoviesFragment.*
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsFragment
-import ru.sandbox.androidacademyapp.ui.movies.MoviesFragment
+import ru.sandbox.androidacademyapp.ui.movies.MoviesViewPagerFragment
 
 class MainActivity : AppCompatActivity(),
-                     MoviesListFragmentClickListener,
-                     MovieDetailsFragmentClickListener {
+                     MovieListItemClickListener,
+                     BackToMovieListClickListener {
 
-    private var moviesFragment: MoviesFragment? = null
+    private var moviesViewPagerFragment: MoviesViewPagerFragment? = null
     private var movieDetailsFragment: MovieDetailsFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,19 +20,12 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            moviesFragment = MoviesFragment()
-            moviesFragment?.apply {
+            moviesViewPagerFragment = MoviesViewPagerFragment()
+            moviesViewPagerFragment?.apply {
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.fragments_container, this, MOVIES_LIST_FRAGMENT_FLAG)
+                    .add(R.id.fragments_container, this)
                     .commit()
             }
-        }
-        else {
-            moviesFragment = supportFragmentManager
-                .findFragmentByTag(MOVIES_LIST_FRAGMENT_FLAG) as? MoviesFragment
-
-            movieDetailsFragment = supportFragmentManager
-                .findFragmentByTag(MOVIE_DETAILS_FRAGMENT_FLAG) as? MovieDetailsFragment
         }
     }
 
@@ -47,7 +40,7 @@ class MainActivity : AppCompatActivity(),
                     R.anim.fade_out
                 )
                 .addToBackStack(null)
-                .add(R.id.fragments_container, this, MOVIE_DETAILS_FRAGMENT_FLAG)
+                .add(R.id.fragments_container, this)
                 .commit()
         }
     }
@@ -56,10 +49,5 @@ class MainActivity : AppCompatActivity(),
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         }
-    }
-
-    companion object {
-        const val MOVIES_LIST_FRAGMENT_FLAG = "moviesListFragment"
-        const val MOVIE_DETAILS_FRAGMENT_FLAG = "movieDetailsFragment"
     }
 }
