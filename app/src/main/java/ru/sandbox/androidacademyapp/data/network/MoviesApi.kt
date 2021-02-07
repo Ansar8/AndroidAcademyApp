@@ -15,9 +15,6 @@ import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 
 interface MoviesApi {
 
-    @GET("movie/popular?page=1")
-    suspend fun getMovies(): MovieListResponse
-
     @GET("movie/{type}?page=1")
     suspend fun getMovies(@Path("type") type: String): MovieListResponse
 
