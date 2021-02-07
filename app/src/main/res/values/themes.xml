@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/main_dark_theme</item>
         <!-- Customize your theme here. -->
     </style>
     
@@ -38,16 +38,15 @@
     </style>
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabBackground">@color/black</item>
-        <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabPaddingStart">12dp</item>
-        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/main_dark_theme</item>
+        <item name="tabIndicatorHeight">2dp</item>
         <item name="tabMaxWidth">0dp</item>
         <item name="tabGravity">fill</item>
-        <item name="tabTextColor">#9DFFFFFF</item>
+        <item name="tabTextColor">#6D6D80</item>
         <item name="tabSelectedTextColor">@color/white</item>
         <item name="tabIndicator">@drawable/tab_indicator</item>
         <item name="tabIndicatorColor">#FF3466</item>
+        <item name="tabRippleColor">#FF3466</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
     </style>
 
