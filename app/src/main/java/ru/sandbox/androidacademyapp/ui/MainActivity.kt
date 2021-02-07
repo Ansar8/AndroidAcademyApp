@@ -40,6 +40,12 @@ class MainActivity : AppCompatActivity(),
         movieDetailsFragment = MovieDetailsFragment.newInstance(movieId)
         movieDetailsFragment?.apply {
             supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
                 .addToBackStack(null)
                 .add(R.id.fragments_container, this, MOVIE_DETAILS_FRAGMENT_FLAG)
                 .commit()
