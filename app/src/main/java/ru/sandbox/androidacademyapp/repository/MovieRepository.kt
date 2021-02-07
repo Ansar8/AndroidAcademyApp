@@ -1,5 +1,6 @@
 package ru.sandbox.androidacademyapp.repository
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sandbox.androidacademyapp.BuildConfig
@@ -18,15 +19,16 @@ class MovieRepository(
     private val moviesApi: MoviesApi,
     private val moviesDao: MoviesDao): IMovieRepository {
 
-    override suspend fun getMovies(): Response<List<Movie>> =
+    override suspend fun getMovies(type: String): Response<List<Movie>> =
         withContext(Dispatchers.IO) {
             try {
-                val response = moviesApi.getMovies()
+                val response = moviesApi.getMovies(type)
                 val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
                 val movies = responseWithDetails.map { toMovieEntity(it) }
                 Response.Success(movies)
             }
             catch (t: Throwable) {
+                Log.d("getMovies", t.message.toString())
                 Response.Error("Oops..looks like network failure!")
             }
         }
@@ -41,6 +43,7 @@ class MovieRepository(
                 Response.Success(movieWithActors)
             }
             catch (t: Throwable){
+                Log.d("getMovieWithActors", t.message.toString())
                 Response.Error("Oops..looks like network failure!")
             }
         }
