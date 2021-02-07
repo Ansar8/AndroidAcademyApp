@@ -37,7 +37,7 @@ class MoviesViewPagerFragment: Fragment(R.layout.fragment_movies_view_pager) {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Popular"
-                1 -> tab.text = "Latest"
+                1 -> tab.text = "Upcoming"
                 2 -> tab.text = "Top rated"
             }
         }.attach()

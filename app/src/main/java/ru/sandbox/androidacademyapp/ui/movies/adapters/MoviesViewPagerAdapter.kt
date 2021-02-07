@@ -11,7 +11,7 @@ class MoviesViewPagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateA
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> MoviesFragment.newInstance("popular")
-            1 -> MoviesFragment.newInstance("latest")
+            1 -> MoviesFragment.newInstance("upcoming")
             2 -> MoviesFragment.newInstance("top_rated")
             else -> MoviesFragment.newInstance("popular")
         }
