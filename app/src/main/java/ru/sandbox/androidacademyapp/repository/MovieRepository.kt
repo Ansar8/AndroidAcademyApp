@@ -10,22 +10,38 @@ import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 import ru.sandbox.androidacademyapp.util.Response
 import ru.sandbox.androidacademyapp.data.db.MoviesDao
 import ru.sandbox.androidacademyapp.data.db.entities.Actor
+import ru.sandbox.androidacademyapp.data.db.entities.Category
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import ru.sandbox.androidacademyapp.data.db.entities.relations.CategoryWithMovies
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieActorCrossRef
+import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieCategoryCrossRef
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
+import ru.sandbox.androidacademyapp.ui.movies.MoviesCategory
 import kotlin.math.roundToInt
 
 class MovieRepository(
     private val moviesApi: MoviesApi,
     private val moviesDao: MoviesDao): IMovieRepository {
 
-    override suspend fun getMovies(type: String): Response<List<Movie>> =
+    override suspend fun getCategoryWithMovies(categoryName: String): Response<CategoryWithMovies> =
         withContext(Dispatchers.IO) {
             try {
-                val response = moviesApi.getMovies(type)
+                val category = Category(
+                    MoviesCategory.valueOf(categoryName).ordinal,
+                    MoviesCategory.valueOf(categoryName).name
+                )
+
+                val response = when (MoviesCategory.valueOf(categoryName)){
+                    MoviesCategory.POPULAR -> moviesApi.getPopularMovies()
+                    MoviesCategory.UPCOMING -> moviesApi.getUpcomingMovies()
+                    MoviesCategory.TOPRATED -> moviesApi.getTopRatedMovies()
+                }
+
                 val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
                 val movies = responseWithDetails.map { toMovieEntity(it) }
-                Response.Success(movies)
+
+                val categoryWithMovies = CategoryWithMovies(category = category, movies = movies)
+                Response.Success(categoryWithMovies)
             }
             catch (t: Throwable) {
                 Log.d("getMovies", t.message.toString())
@@ -48,9 +64,9 @@ class MovieRepository(
             }
         }
 
-    override suspend fun getSavedMovies(): List<Movie> =
+    override suspend fun getSavedCategoryWithMovies(categoryName: String): List<CategoryWithMovies> =
         withContext(Dispatchers.IO){
-            moviesDao.getPopularMovies()
+            moviesDao.getCategoryWithMovies(categoryName)
         }
 
     override suspend fun getSavedMovieWithActors(movieId: Int): List<MovieWithActors> =
@@ -58,9 +74,17 @@ class MovieRepository(
             moviesDao.getMovieWithActors(movieId)
         }
 
-    override suspend fun saveMovies(movies: List<Movie>) =
+    override suspend fun saveCategoryWithMovies(categoryWithMovies: CategoryWithMovies) =
         withContext(Dispatchers.IO){
+            val category = categoryWithMovies.category
+            val movies = categoryWithMovies.movies
+
             moviesDao.insertMovies(movies)
+            moviesDao.insertCategory(category)
+            movies.forEach { movie ->
+                val crossRef = MovieCategoryCrossRef(movie.id, category.id)
+                moviesDao.insertMovieCategoryCrossRef(crossRef)
+            }
         }
 
     override suspend fun saveMovieWithActors(movieWithActors: MovieWithActors) =
