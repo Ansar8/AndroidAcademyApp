@@ -26,7 +26,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     private var listener: MovieListItemClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var type: String
+    private lateinit var category: String
 
     private val viewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
@@ -35,7 +35,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            type = it.getString(PARAM_TYPE, "")
+            category = it.getString(PARAM_CATEGORY, "")
         }
     }
 
@@ -53,7 +53,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null){
-            viewModel.loadMovies(type)
+            viewModel.loadMovies(category)
         }
     }
 
@@ -113,12 +113,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     companion object {
-        private const val PARAM_TYPE = "type"
+        private const val PARAM_CATEGORY = "category"
 
-        fun newInstance(type: String) =
+        fun newInstance(category: String) =
             MoviesFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PARAM_TYPE, type)
+                    putString(PARAM_CATEGORY, category)
                 }
             }
     }

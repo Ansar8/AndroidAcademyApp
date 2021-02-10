@@ -2,9 +2,7 @@ package ru.sandbox.androidacademyapp.ui.movies
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -38,7 +36,7 @@ class MoviesViewPagerFragment: Fragment(R.layout.fragment_movies_view_pager) {
             when (position) {
                 0 -> tab.text = "Popular"
                 1 -> tab.text = "Upcoming"
-                2 -> tab.text = "Top rated"
+                2 -> tab.text = "Top Rated"
             }
         }.attach()
     }
