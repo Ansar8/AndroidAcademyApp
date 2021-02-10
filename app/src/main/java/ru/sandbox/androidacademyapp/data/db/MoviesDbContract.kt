@@ -5,7 +5,7 @@ object MoviesDbContract {
     const val DATABASE_NAME = "Movies.db"
 
     object Movies{
-        const val TABLE_NAME = "Movies"
+        const val TABLE_NAME = "Movie"
 
         const val COLUMN_NAME_ID = "movieId"
         const val COLUMN_NAME_TITLE = "title"
@@ -20,11 +20,25 @@ object MoviesDbContract {
     }
 
     object Actors{
-        const val TABLE_NAME = "Actors"
+        const val TABLE_NAME = "Actor"
 
         const val COLUMN_NAME_ID = "actorId"
         const val COLUMN_NAME_NAME = "title"
         const val COLUMN_NAME_PICTURE = "pictureUrl"
+    }
+
+    object Categories{
+        const val TABLE_NAME = "Category"
+
+        const val COLUMN_NAME_ID = "categoryId"
+        const val COLUMN_NAME_NAME = "name"
+    }
+
+    object MovieCategoryCrossRefs{
+        const val TABLE_NAME = "MovieWithCategory"
+
+        const val COLUMN_NAME_MOVIE_ID = "movieId"
+        const val COLUMN_NAME_CATEGORY_ID = "categoryId"
     }
 
     object MovieActorCrossRefs{
