@@ -4,45 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:background="@color/movies_list_background"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <ImageView
-        android:id="@+id/title_image"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/combined_shape"
-        app:layout_constraintStart_toEndOf="@id/guideVerticalBegin"
-        app:layout_constraintEnd_toStartOf="@id/title_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/barrierHorizontalTitleTop"/>
-
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:text="@string/title_name"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guideVerticalEnd"
-        app:layout_constraintStart_toEndOf="@id/title_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/barrierHorizontalTitleTop"/>
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrierHorizontalTitleTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="title_text" />
+    android:background="@color/main_dark_theme">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideVerticalBegin"
@@ -64,7 +26,7 @@
         android:layout_height="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ProgressBar
@@ -76,7 +38,7 @@
         android:indeterminateOnly="true"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

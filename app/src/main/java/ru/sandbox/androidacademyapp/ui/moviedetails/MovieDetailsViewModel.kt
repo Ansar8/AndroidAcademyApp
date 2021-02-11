@@ -45,9 +45,9 @@ class MovieDetailsViewModel(private val repository: IMovieRepository) : ViewMode
 
             when (val response = repository.getMovieWithActors(movieId)){
                 is Response.Success -> {
-                    response.data?.let { movieWithActors ->
-                        repository.saveMovieWithActors(movieWithActors)
-                        _movieDetails.value = movieWithActors
+                    response.data?.let {
+                        repository.saveMovieWithActors(it)
+                        _movieDetails.value = it
                     }
                     _isLoading.value = false
                 }

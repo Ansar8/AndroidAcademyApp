@@ -1,4 +1,4 @@
-package ru.sandbox.androidacademyapp.ui.movies
+package ru.sandbox.androidacademyapp.ui.movies.adapters
 
 import android.graphics.Outline
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 
-class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesRecyclerAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
     interface OnRecyclerItemClicked {
         fun onClick(movieId: Int)

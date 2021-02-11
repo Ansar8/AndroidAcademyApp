@@ -19,5 +19,5 @@
     <color name="movie_name">#ECECEC</color>
     <color name="back_button">#6D6D80</color>
     <color name="avengers_duration">#565665</color>
-    <color name="movies_list_background">#191926</color>
+    <color name="main_dark_theme">#191926</color>
 </resources>

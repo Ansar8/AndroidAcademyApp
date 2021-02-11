@@ -12,18 +12,31 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.R
-import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.OnRecyclerItemClicked
+import ru.sandbox.androidacademyapp.ui.movies.adapters.MoviesRecyclerAdapter.OnRecyclerItemClicked
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
+import ru.sandbox.androidacademyapp.ui.movies.adapters.MoviesRecyclerAdapter
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private var listener: MoviesListFragmentClickListener? = null
+    interface MovieListItemClickListener {
+        fun moveToMovieDetailsFragment(movieId: Int)
+    }
+
+    private var listener: MovieListItemClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var category: String
 
     private val viewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            category = it.getString(PARAM_CATEGORY, "")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,14 +53,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null){
-            viewModel.loadMovies()
+            viewModel.loadMovies(category)
         }
     }
 
     private fun initViews(view: View) {
         progressBar = view.findViewById(R.id.movies_progress_bar)
         recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.adapter = MoviesAdapter(clickListener)
+        recycler.adapter = MoviesRecyclerAdapter(clickListener)
     }
 
     private fun initLayoutManager(orientation: Int) {
@@ -69,7 +82,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun updateMoviesAdapter(movies: List<Movie>){
-        (recycler.adapter as? MoviesAdapter)?.apply {
+        (recycler.adapter as? MoviesRecyclerAdapter)?.apply {
             bindMovies(movies)
         }
     }
@@ -85,7 +98,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     //communication with activity
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MoviesListFragmentClickListener) listener = context
+        if (context is MovieListItemClickListener) listener = context
     }
 
     override fun onDetach() {
@@ -99,7 +112,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    interface MoviesListFragmentClickListener {
-        fun moveToMovieDetailsFragment(movieId: Int)
+    companion object {
+        private const val PARAM_CATEGORY = "category"
+
+        fun newInstance(category: String) =
+            MoviesFragment().apply {
+                arguments = Bundle().apply {
+                    putString(PARAM_CATEGORY, category)
+                }
+            }
     }
 }

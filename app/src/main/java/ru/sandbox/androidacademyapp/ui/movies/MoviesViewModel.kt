@@ -26,18 +26,20 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
             _errorMessage.value = exception.message
     }
 
-    fun loadMovies(){
+    fun loadMovies(categoryName: String){
         viewModelScope.launch(loadingExceptionHandler) {
 
             _isLoading.value = true
-            val savedMovies = repository.getSavedMovies()
-            if (savedMovies.isNotEmpty()) _movieList.value = savedMovies
 
-            when (val response = repository.getMovies()){
+            val savedMoviesByCategory = repository.getSavedCategoryWithMovies(categoryName)
+            if (savedMoviesByCategory.isNotEmpty())
+                _movieList.value = savedMoviesByCategory.first().movies
+
+            when (val response = repository.getCategoryWithMovies(categoryName)){
                 is Response.Success -> {
-                    response.data?.let { remoteMovies ->
-                        repository.saveMovies(remoteMovies)
-                        _movieList.value = remoteMovies
+                    response.data?.let {
+                        repository.saveCategoryWithMovies(it)
+                        _movieList.value = it.movies
                     }
                 }
                 is Response.Error -> _errorMessage.value = response.message
