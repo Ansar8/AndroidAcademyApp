@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidAcademyApp</string>
+    <string name="app_name">Movies</string>
     <string name="title_name">Movies list</string>
     <string name="story_line_text">
         After the devastating events of Avengers: Infinity War,
@@ -27,5 +27,8 @@
     <string name="movies_loading_issue">
         Warning!\nThere was a problem to load a list of movies. Please, try to refresh the page.
     </string>
+    <string name="channel_new_movies">New movies</string>
+    <string name="channel_new_movies_description">New incoming movies.</string>
+    <string name="channel_new_movies_content_text">Don\'t miss this new movie !</string>
 
 </resources>
