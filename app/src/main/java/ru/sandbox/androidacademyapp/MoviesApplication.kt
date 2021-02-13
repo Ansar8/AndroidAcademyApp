@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.*
 import ru.sandbox.androidacademyapp.data.db.MovieDatabase
 import ru.sandbox.androidacademyapp.data.network.MoviesApi
+import ru.sandbox.androidacademyapp.notifications.NewMovieNotifications
 import ru.sandbox.androidacademyapp.repository.MovieRepository
 import ru.sandbox.androidacademyapp.workers.MoviesWorkerFactory
 import ru.sandbox.androidacademyapp.workers.UpdateMoviesWorker
@@ -69,7 +70,8 @@ class MoviesApplication: Application(), Configuration.Provider {
         val delegatingWorkerFactory = DelegatingWorkerFactory()
         val repository = MovieRepository(
                 MoviesApi.create(),
-                MovieDatabase.create(applicationContext).moviesDao
+                MovieDatabase.create(applicationContext).moviesDao,
+                NewMovieNotifications(applicationContext)
         )
         delegatingWorkerFactory.addFactory(MoviesWorkerFactory(repository))
 

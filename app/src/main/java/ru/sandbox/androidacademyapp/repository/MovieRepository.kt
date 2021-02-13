@@ -12,11 +12,13 @@ import ru.sandbox.androidacademyapp.data.db.entities.Actor
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieActorCrossRef
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
+import ru.sandbox.androidacademyapp.notifications.Notifications
 import kotlin.math.roundToInt
 
 class MovieRepository(
     private val moviesApi: MoviesApi,
-    private val moviesDao: MoviesDao): IMovieRepository {
+    private val moviesDao: MoviesDao,
+    private val notifications: Notifications): IMovieRepository {
 
     override suspend fun getMovies(): Response<List<Movie>> =
         withContext(Dispatchers.IO) {
@@ -47,16 +49,18 @@ class MovieRepository(
 
     override suspend fun getSavedMovies(): List<Movie> =
         withContext(Dispatchers.IO){
-            moviesDao.getPopularMovies()
+            moviesDao.getMovies()
         }
 
     override suspend fun getSavedMovieWithActors(movieId: Int): List<MovieWithActors> =
         withContext(Dispatchers.IO){
+            notifications.dismissNotification(movieId)
             moviesDao.getMovieWithActors(movieId)
         }
 
     override suspend fun saveMovies(movies: List<Movie>) =
         withContext(Dispatchers.IO){
+            notifyAboutNewMovie(movies)
             moviesDao.insertMovies(movies)
         }
 
@@ -71,6 +75,19 @@ class MovieRepository(
                 moviesDao.insertMovieActorCrossRef(crossRef)
             }
         }
+
+    private suspend fun notifyAboutNewMovie(movies: List<Movie>) {
+        val remoteMovieIds = movies.map { it.id }
+        val cachedMovieIds = moviesDao.getMovies().map { it.id }
+        val newMovieIds = remoteMovieIds.filter { !cachedMovieIds.contains(it) }
+
+        val movieWithHighestRating = movies
+            .filter{ movie -> movie.id in newMovieIds }
+            .maxByOrNull { movie -> movie.ratings }
+
+        if (movieWithHighestRating != null)
+            notifications.showNotification(movieWithHighestRating)
+    }
 
     private fun toActorEntity(actor: ActorResponse) = Actor(
         id = actor.id,
