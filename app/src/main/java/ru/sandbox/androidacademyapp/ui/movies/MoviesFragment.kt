@@ -18,7 +18,7 @@ import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private var listener: MoviesListFragmentClickListener? = null
+    private var listener: MovieItemClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
 
@@ -85,7 +85,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     //communication with activity
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MoviesListFragmentClickListener) listener = context
+        if (context is MovieItemClickListener) listener = context
     }
 
     override fun onDetach() {
@@ -95,11 +95,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private val clickListener = object : OnRecyclerItemClicked {
         override fun onClick(movieId: Int) {
-            listener?.moveToMovieDetailsFragment(movieId)
+            listener?.moveToMovieDetails(movieId)
         }
     }
 
-    interface MoviesListFragmentClickListener {
-        fun moveToMovieDetailsFragment(movieId: Int)
+    interface MovieItemClickListener {
+        fun moveToMovieDetails(movieId: Int)
     }
 }

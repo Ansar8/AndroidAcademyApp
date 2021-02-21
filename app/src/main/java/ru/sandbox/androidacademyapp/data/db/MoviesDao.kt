@@ -11,7 +11,7 @@ import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 interface MoviesDao {
 
     @Query("SELECT * FROM Movies")
-    suspend fun getPopularMovies(): List<Movie>
+    suspend fun getMovies(): List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovies(movies: List<Movie>)

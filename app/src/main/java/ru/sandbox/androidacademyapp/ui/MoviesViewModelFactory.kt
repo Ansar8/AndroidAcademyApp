@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.sandbox.androidacademyapp.data.network.MoviesApi
 import ru.sandbox.androidacademyapp.data.db.MovieDatabase
+import ru.sandbox.androidacademyapp.notifications.NewMovieNotifications
 import ru.sandbox.androidacademyapp.repository.MovieRepository
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsViewModel
 import ru.sandbox.androidacademyapp.ui.movies.MoviesViewModel
@@ -15,14 +16,16 @@ class MoviesViewModelFactory(private val applicationContext: Context) : ViewMode
             MoviesViewModel(
                 MovieRepository(
                     MoviesApi.create(),
-                    MovieDatabase.create(applicationContext).moviesDao
+                    MovieDatabase.create(applicationContext).moviesDao,
+                    NewMovieNotifications(applicationContext)
                 )
             )
         MovieDetailsViewModel::class.java ->
             MovieDetailsViewModel(
                 MovieRepository(
                     MoviesApi.create(),
-                    MovieDatabase.create(applicationContext).moviesDao
+                    MovieDatabase.create(applicationContext).moviesDao,
+                    NewMovieNotifications(applicationContext)
                 )
             )
         else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
