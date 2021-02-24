@@ -1,27 +1,31 @@
 package ru.sandbox.androidacademyapp.ui.moviedetails
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import android.widget.*
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.content.res.use
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
-
-    interface BackButtonClickListener {
-        fun backToMovieList()
-    }
-
-    private var listener: BackButtonClickListener? = null
 
     private lateinit var movieFrame: FrameLayout
     private lateinit var backdrop: ImageView
@@ -48,6 +52,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         arguments?.let {
             movieId = it.getInt(PARAM_MOVIE_ID)
         }
+
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragments_container
+            duration = 2000
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,11 +76,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         if (savedInstanceState == null)
             viewModel.loadMovieDetails(movieId)
+
     }
 
     private fun initViews(view: View){
         progressBar = view.findViewById(R.id.movie_details_progress_bar)
-
         movieFrame = view.findViewById(R.id.movie_frame)
         backdrop = view.findViewById(R.id.movie_backdrop)
         name = view.findViewById(R.id.movie_name)
@@ -80,7 +92,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         castTitle = view.findViewById(R.id.movie_cast)
 
         backText = view.findViewById(R.id.back_text)
-        backText.setOnClickListener { listener?.backToMovieList() }
+        backText.setOnClickListener { findNavController().popBackStack() }
 
         ratingStars = listOf(
             view.findViewById(R.id.movie_star_1),
@@ -152,26 +164,19 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         recycler.isVisible = isVisible
     }
 
-    //communication with activity
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is BackButtonClickListener) listener = context
-    }
-
-    override fun onDetach() {
-        listener = null
-        super.onDetach()
+    @ColorInt
+    @SuppressLint("Recycle")
+    fun Context.themeColor(
+        @AttrRes themeAttrId: Int
+    ): Int {
+        return obtainStyledAttributes(
+            intArrayOf(themeAttrId)
+        ).use {
+            it.getColor(0, Color.MAGENTA)
+        }
     }
 
     companion object{
         private const val PARAM_MOVIE_ID = "movieId"
-
-        fun newInstance(movieId: Int): MovieDetailsFragment {
-            val fragment = MovieDetailsFragment()
-            val args = Bundle()
-            args.putInt(PARAM_MOVIE_ID, movieId)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

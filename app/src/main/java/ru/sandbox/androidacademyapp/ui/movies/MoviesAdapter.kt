@@ -12,11 +12,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.*
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
     interface OnRecyclerItemClicked {
-        fun onClick(movieId: Int)
+        fun onClick(movieId: Int, view: View)
     }
 
     private var movies = listOf<Movie>()
@@ -24,14 +25,16 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.view_holder_movie, parent, false)
-        return MovieViewHolder(view)
+        return MovieViewHolder(view, clickListener)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.onBind(movies[position])
-        holder.itemView.setOnClickListener {
-            clickListener.onClick(movies[position].id)
-        }
+        val movie = movies[position]
+        holder.onBind(movie)
+//        holder.itemView.transitionName = "Transition name: ${movie.title}"
+//        holder.itemView.setOnClickListener {
+//            clickListener.onClick(movies[position].id, it)
+//        }
     }
 
     override fun getItemCount(): Int = movies.size
@@ -42,7 +45,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
     }
 }
 
-class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class MovieViewHolder(itemView: View, private val clickListener: OnRecyclerItemClicked) : RecyclerView.ViewHolder(itemView) {
 
     private val ratingStars: List<ImageView> = listOf(
         itemView.findViewById(R.id.star_1),
@@ -62,6 +65,10 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
     fun onBind(movie: Movie) {
+        itemView.transitionName = movie.id.toString()
+        itemView.setOnClickListener {
+            clickListener.onClick(movie.id, it)
+        }
         showStarRating(movie.ratings)
 
         Glide.with(context)

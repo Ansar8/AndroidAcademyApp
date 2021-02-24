@@ -1,24 +1,37 @@
 package ru.sandbox.androidacademyapp.ui.movies
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.Nullable
+import androidx.core.content.res.use
+import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
+import kotlinx.android.synthetic.main.view_holder_movie.*
 import ru.sandbox.androidacademyapp.R
-import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.OnRecyclerItemClicked
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
+import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.OnRecyclerItemClicked
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private var listener: MovieItemClickListener? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
 
@@ -29,8 +42,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orientation: Int = requireActivity().resources.configuration.orientation
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
+        val orientation: Int = requireActivity().resources.configuration.orientation
         initViews(view)
         initLayoutManager(orientation)
         initItemDecoration(orientation)
@@ -82,24 +97,19 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    //communication with activity
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MovieItemClickListener) listener = context
-    }
-
-    override fun onDetach() {
-        listener = null
-        super.onDetach()
-    }
-
     private val clickListener = object : OnRecyclerItemClicked {
-        override fun onClick(movieId: Int) {
-            listener?.moveToMovieDetails(movieId)
-        }
-    }
+        override fun onClick(movieId: Int, view: View) {
 
-    interface MovieItemClickListener {
-        fun moveToMovieDetails(movieId: Int)
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = 2000
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = 2000
+            }
+
+            val bundle = bundleOf("movieId" to movieId)
+            val extras = FragmentNavigatorExtras(view to getString(R.string.movie_details_transition_name))
+            findNavController().navigate(R.id.navigate_to_movie_details, bundle, null, extras)
+        }
     }
 }
