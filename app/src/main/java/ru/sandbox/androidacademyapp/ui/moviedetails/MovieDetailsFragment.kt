@@ -2,6 +2,7 @@ package ru.sandbox.androidacademyapp.ui.moviedetails
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.transition.MaterialContainerTransform
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
@@ -38,6 +40,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var storyLineTitle: TextView
 
     private var movieId: Int = -1
+    private lateinit var transitionName: String
 
     private val viewModel: MovieDetailsViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
@@ -47,7 +50,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             movieId = it.getInt(PARAM_MOVIE_ID)
+            transitionName = it.getString(PARAM_TRANSITION_NAME)!!
         }
+        postponeEnterTransition()
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,11 +70,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         if (savedInstanceState == null)
             viewModel.loadMovieDetails(movieId)
+
+        startPostponedEnterTransition()
     }
 
     private fun initViews(view: View){
-        progressBar = view.findViewById(R.id.movie_details_progress_bar)
+        view.transitionName = transitionName
 
+        progressBar = view.findViewById(R.id.movie_details_progress_bar)
         movieFrame = view.findViewById(R.id.movie_frame)
         backdrop = view.findViewById(R.id.movie_backdrop)
         name = view.findViewById(R.id.movie_name)
@@ -165,11 +174,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     companion object{
         private const val PARAM_MOVIE_ID = "movieId"
+        private const val PARAM_TRANSITION_NAME = "transitionName"
+        const val TAG = "MovieDetailsFragment"
 
-        fun newInstance(movieId: Int): MovieDetailsFragment {
+        fun newInstance(movieId: Int, transitionName: String): MovieDetailsFragment {
             val fragment = MovieDetailsFragment()
             val args = Bundle()
             args.putInt(PARAM_MOVIE_ID, movieId)
+            args.putString(PARAM_TRANSITION_NAME, transitionName)
             fragment.arguments = args
             return fragment
         }

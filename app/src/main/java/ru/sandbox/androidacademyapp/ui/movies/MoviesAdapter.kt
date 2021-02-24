@@ -16,7 +16,7 @@ import ru.sandbox.androidacademyapp.data.db.entities.Movie
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
     interface OnRecyclerItemClicked {
-        fun onClick(movieId: Int)
+        fun onClick(movieId: Int, view: View)
     }
 
     private var movies = listOf<Movie>()
@@ -28,9 +28,11 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.onBind(movies[position])
+        val movie = movies[position]
+        holder.onBind(movie)
+        holder.itemView.transitionName = "Transition name: ${movie.title}"
         holder.itemView.setOnClickListener {
-            clickListener.onClick(movies[position].id)
+            clickListener.onClick(movies[position].id, it)
         }
     }
 
