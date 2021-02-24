@@ -30,5 +30,6 @@
     <string name="channel_new_movies">New movies</string>
     <string name="channel_new_movies_description">New incoming movies.</string>
     <string name="channel_new_movies_content_text">Don\'t miss this new movie !</string>
+    <string name="movie_details_transition_name">to_movie_details_transition</string>
 
 </resources>
