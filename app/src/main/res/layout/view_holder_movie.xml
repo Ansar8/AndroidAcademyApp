@@ -85,83 +85,33 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="228dp"/>
 
-        <ImageView
-            android:id="@+id/star_1"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/movie_rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:layout_marginEnd="1dp"
-            tools:src="@drawable/red_star"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/star_2"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/star_2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            tools:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@+id/star_1"
-            app:layout_constraintRight_toLeftOf="@id/star_3"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/star_3"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            tools:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@id/star_2"
-            app:layout_constraintRight_toLeftOf="@id/star_4"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/star_4"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            tools:src="@drawable/red_star"
-            app:layout_constraintLeft_toRightOf="@id/star_3"
-            app:layout_constraintRight_toLeftOf="@id/star_5"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/star_5"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="6dp"
-            tools:src="@drawable/grey_star"
-            app:layout_constraintLeft_toRightOf="@id/star_4"
-            app:layout_constraintRight_toLeftOf="@id/reviews"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            tools:ignore="ContentDescription" />
+            android:isIndicator="true"
+            android:numStars="5"
+            android:scaleX=".7"
+            android:scaleY=".7"
+            android:theme="@style/RatingBar"
+            android:transformPivotX="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideHorizontalGenresTop"
+            tools:rating="4.5" />
 
         <TextView
             android:id="@+id/reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="50dp"
             tools:text="@string/avengers_reviews"
             android:textColor="@color/reviews"
             android:textSize="@dimen/avengers_preview_reviews"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            app:layout_constraintLeft_toRightOf="@id/star_5" />
+            app:layout_constraintTop_toTopOf="@+id/guideHorizontalGenresTop"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <TextView

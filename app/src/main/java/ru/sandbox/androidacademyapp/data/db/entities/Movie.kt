@@ -24,7 +24,7 @@ data class Movie(
     val backdropUrl: String,
 
     @ColumnInfo(name = Movies.COLUMN_NAME_RATINGS)
-    val ratings: Int,
+    val ratings: Float,
 
     @ColumnInfo(name = Movies.COLUMN_NAME_REVIEWS)
     val reviews: Int,

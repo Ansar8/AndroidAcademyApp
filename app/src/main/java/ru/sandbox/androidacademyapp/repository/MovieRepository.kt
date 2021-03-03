@@ -101,7 +101,7 @@ class MovieRepository(
         overview = movie.overview,
         posterUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.POSTER_SIZE + movie.poster,
         backdropUrl = BuildConfig.IMAGES_BASE_URL + BuildConfig.BACKDROP_SIZE + movie.backdrop,
-        ratings = movie.ratings.div(10).times(5).roundToInt(),
+        ratings = movie.ratings.div(10).times(5),
         reviews = movie.reviews,
         minAge = if (movie.adult) 16 else 13,
         runtime = movie.runtime,
