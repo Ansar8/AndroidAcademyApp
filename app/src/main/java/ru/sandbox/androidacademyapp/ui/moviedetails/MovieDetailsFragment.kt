@@ -32,7 +32,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var storyLine: TextView
     private lateinit var backText: TextView
     private lateinit var recycler: RecyclerView
-    private lateinit var ratingStars: List<ImageView>
+    private lateinit var ratingBar: RatingBar
     private lateinit var progressBar: ProgressBar
     private lateinit var castTitle: TextView
     private lateinit var storyLineTitle: TextView
@@ -82,13 +82,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         backText = view.findViewById(R.id.back_text)
         backText.setOnClickListener { listener?.backToMovieList() }
 
-        ratingStars = listOf(
-            view.findViewById(R.id.movie_star_1),
-            view.findViewById(R.id.movie_star_2),
-            view.findViewById(R.id.movie_star_3),
-            view.findViewById(R.id.movie_star_4),
-            view.findViewById(R.id.movie_star_5)
-        )
+        ratingBar = view.findViewById(R.id.movie_details_rating_bar)
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
         recycler.adapter = ActorsAdapter()
@@ -115,19 +109,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minAge.toString())
         reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
         storyLine.text = movie.overview ?: context.getString(R.string.no_overview_text)
-        setStarRating(movie.ratings)
+        ratingBar.rating = movie.ratings
 
         (recycler.adapter as? ActorsAdapter)?.apply {
             bindMovies(actors)
-        }
-    }
-
-    private fun setStarRating(rating: Int) {
-        for (i in ratingStars.indices){
-            if (i < rating)
-                ratingStars[i].setImageResource(R.drawable.red_star)
-            else
-                ratingStars[i].setImageResource(R.drawable.grey_star)
         }
     }
 
@@ -144,7 +129,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         ageLimits.isVisible = isVisible
         name.isVisible = isVisible
         genre.isVisible = isVisible
-        ratingStars.forEach { it.isVisible = isVisible }
+        ratingBar.isVisible = isVisible
         reviews.isVisible = isVisible
         storyLine.isVisible = isVisible
         storyLineTitle.isVisible = isVisible

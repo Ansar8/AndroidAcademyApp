@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
+import kotlin.math.roundToInt
 
 class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerView.Adapter<MovieViewHolder>() {
 
@@ -44,13 +46,7 @@ class MoviesAdapter(private val clickListener: OnRecyclerItemClicked): RecyclerV
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val ratingStars: List<ImageView> = listOf(
-        itemView.findViewById(R.id.star_1),
-        itemView.findViewById(R.id.star_2),
-        itemView.findViewById(R.id.star_3),
-        itemView.findViewById(R.id.star_4),
-        itemView.findViewById(R.id.star_5)
-    )
+    private val ratingBar: RatingBar = itemView.findViewById(R.id.movie_rating_bar)
 
     private val poster: ImageView =
         itemView.findViewById<ImageView>(R.id.poster).apply { setRoundedTopCorners(this) }
@@ -62,8 +58,6 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView = itemView.findViewById(R.id.duration)
 
     fun onBind(movie: Movie) {
-        showStarRating(movie.ratings)
-
         Glide.with(context)
             .load(movie.posterUrl)
             .placeholder(R.drawable.ic_movie)
@@ -74,20 +68,12 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         like.setImageResource(R.drawable.grey_like)
         ageLimits.text = context.getString(R.string.movie_age_limits_text, movie.minAge.toString())
         genre.text = movie.genres
+        ratingBar.rating = movie.ratings
         reviews.text = context.getString(R.string.movie_reviews_text, movie.reviews.toString())
         name.text = movie.title
 
         val runtime = movie.runtime.toString()
         duration.text = if (runtime == "null") "" else context.getString(R.string.movie_duration_text, runtime)
-    }
-
-    private fun showStarRating(rating: Int) {
-        for (i in ratingStars.indices){
-            if (i < rating)
-                ratingStars[i].setImageResource(R.drawable.red_star)
-            else
-                ratingStars[i].setImageResource(R.drawable.grey_star)
-        }
     }
 
     private fun setRoundedTopCorners(image: ImageView) {
