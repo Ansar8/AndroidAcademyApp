@@ -14,9 +14,10 @@ import ru.sandbox.androidacademyapp.ui.moviesearch.MovieSearchFragment
 interface Navigator {
     fun moveToMovieDetailsFragment(movieId: Int)
     fun moveToMovieSearchFragment()
+    fun backToMovieList()
 }
 
-class MainActivity : AppCompatActivity(), Navigator, BackButtonClickListener {
+class MainActivity : AppCompatActivity(), Navigator {
 
     companion object {
         const val MOVIE_DETAILS_FRAGMENT_FLAG = "movieDetailsFragment"

@@ -16,6 +16,7 @@ import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 import ru.sandbox.androidacademyapp.ui.Navigator
+import ru.sandbox.androidacademyapp.util.LoadState
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
@@ -33,7 +34,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         initViews(view)
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
-        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.isLoading.observe(this.viewLifecycleOwner, this::handleLoadingState)
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null){
@@ -65,8 +66,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    private fun showProgressBar(isVisible: Boolean){
-        progressBar.isVisible = isVisible
+    private fun handleLoadingState(state: LoadState){
+        when(state){
+            LoadState.Loading -> progressBar.isVisible = true
+            LoadState.Ready -> progressBar.isVisible = false
+        }
+
     }
 
     private fun showToast(message: String){

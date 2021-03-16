@@ -14,14 +14,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
+import ru.sandbox.androidacademyapp.ui.Navigator
+import ru.sandbox.androidacademyapp.util.LoadState
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    interface BackButtonClickListener {
-        fun backToMovieList()
-    }
-
-    private var listener: BackButtonClickListener? = null
+    private var listener: Navigator? = null
 
     private lateinit var movieFrame: FrameLayout
     private lateinit var backdrop: ImageView
@@ -55,7 +53,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         initViews(view)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.isLoading.observe(this.viewLifecycleOwner, this::handleLoadingState)
         viewModel.movieDetails.observe(this.viewLifecycleOwner){ movieWithActors ->
             updateMovieDetails(movieWithActors)
             showMovieDetails(true)
@@ -116,8 +114,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun showProgressBar(isVisible: Boolean){
-        progressBar.isVisible = isVisible
+    private fun handleLoadingState(state: LoadState){
+        when(state){
+            is LoadState.Loading -> progressBar.isVisible = true
+            is LoadState.Ready -> progressBar.isVisible = false
+        }
     }
 
     private fun showToast(message: String){
@@ -140,7 +141,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     //communication with activity
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BackButtonClickListener) listener = context
+        if (context is Navigator) listener = context
     }
 
     override fun onDetach() {

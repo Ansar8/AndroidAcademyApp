@@ -6,14 +6,12 @@ import ru.sandbox.androidacademyapp.BuildConfig
 import ru.sandbox.androidacademyapp.data.network.MoviesApi
 import ru.sandbox.androidacademyapp.data.network.responses.ActorResponse
 import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
-import ru.sandbox.androidacademyapp.util.Response
 import ru.sandbox.androidacademyapp.data.db.MoviesDao
 import ru.sandbox.androidacademyapp.data.db.entities.Actor
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieActorCrossRef
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.notifications.Notifications
-import kotlin.math.roundToInt
 
 class MovieRepository(
     private val moviesApi: MoviesApi,
@@ -22,37 +20,25 @@ class MovieRepository(
 
     override suspend fun searchMovies(query: String, page: Int): List<Movie> =
         withContext(Dispatchers.IO) {
-                val response = moviesApi.searchMovie(query, page)
-                val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
-                val movies = responseWithDetails.map(::toMovieEntity)
-                movies
+            val response = moviesApi.searchMovie(query, page)
+            response.movies
+                .map { moviesApi.getMovieDetails(it.id) }
+                .map(::toMovieEntity)
         }
 
-    override suspend fun getMovies(): Response<List<Movie>> =
+    override suspend fun getMovies(): List<Movie> =
         withContext(Dispatchers.IO) {
-            try {
-                val response = moviesApi.getMovies()
-                val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
-                val movies = responseWithDetails.map { toMovieEntity(it) }
-                Response.Success(movies)
-            }
-            catch (t: Throwable) {
-                Response.Error("Oops..looks like network failure!")
-            }
+            val response = moviesApi.getMovies()
+            response.movies
+                .map { moviesApi.getMovieDetails(it.id) }
+                .map(::toMovieEntity)
         }
 
-    override suspend fun getMovieWithActors(movieId: Int): Response<MovieWithActors> =
+    override suspend fun getMovieWithActors(movieId: Int): MovieWithActors =
         withContext(Dispatchers.IO) {
-            try {
-                val actors = moviesApi.getMovieActors(movieId).actors.take(10).map { toActorEntity(it) }
-                val movie = toMovieEntity(moviesApi.getMovieDetails(movieId))
-                val movieWithActors = MovieWithActors(movie, actors)
-
-                Response.Success(movieWithActors)
-            }
-            catch (t: Throwable){
-                Response.Error("Oops..looks like network failure!")
-            }
+            val actors = moviesApi.getMovieActors(movieId).actors.take(10).map(::toActorEntity)
+            val movie = toMovieEntity(moviesApi.getMovieDetails(movieId))
+            MovieWithActors(movie, actors)
         }
 
     override suspend fun getSavedMovies(): List<Movie> =

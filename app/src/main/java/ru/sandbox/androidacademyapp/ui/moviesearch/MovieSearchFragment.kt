@@ -18,6 +18,7 @@ import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
 import ru.sandbox.androidacademyapp.ui.Navigator
 import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter
 import ru.sandbox.androidacademyapp.ui.movies.MoviesItemDecoration
+import ru.sandbox.androidacademyapp.util.LoadState
 
 
 class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
@@ -64,14 +65,14 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
             .subscribe(viewModel.queryInput)
     }
 
-    private fun handleSearchResult(result: NetworkState){
+    private fun handleSearchResult(result: SearchResult){
         when(result){
-            is NetworkState.Success -> {
+            is SearchResult.Success -> {
                 searchOutputMessage.isVisible = false
                 movieListRecyclerView.isVisible = true
                 updateMovieList(result.movieList)
             }
-            is NetworkState.Error -> {
+            is SearchResult.Error -> {
                 updateMovieList(emptyList())
                 searchOutputMessage.isVisible = true
                 movieListRecyclerView.isVisible = false
@@ -79,13 +80,13 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
 
                 Log.e(MovieSearchFragment::class.java.name, "Something went wrong.", result.error)
             }
-            is NetworkState.EmptyContent -> {
+            is SearchResult.EmptyContent -> {
                 updateMovieList(emptyList())
                 searchOutputMessage.isVisible = true
                 movieListRecyclerView.isVisible = false
                 searchOutputMessage.setText(R.string.empty_content)
             }
-            is NetworkState.EmptyQuery -> {
+            is SearchResult.EmptyQuery -> {
                 updateMovieList(emptyList())
                 searchOutputMessage.isVisible = true
                 movieListRecyclerView.isVisible = false
@@ -94,13 +95,13 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
         }
     }
 
-    private fun handleLoadingState(state: SearchState){
+    private fun handleLoadingState(state: LoadState){
         when(state){
-            SearchState.Loading -> {
+            LoadState.Loading -> {
                 searchProgressBar.isVisible = true
                 searchIconImageView.isVisible = false
             }
-            SearchState.Ready -> {
+            LoadState.Ready -> {
                 searchProgressBar.isVisible = false
                 searchIconImageView.isVisible = true
             }
