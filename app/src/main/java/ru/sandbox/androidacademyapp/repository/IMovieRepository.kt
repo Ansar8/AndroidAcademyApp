@@ -5,6 +5,7 @@ import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 
 interface IMovieRepository {
+    suspend fun searchMovies(query: String, page: Int): List<Movie>
     suspend fun getMovies(): Response<List<Movie>>
     suspend fun getMovieWithActors(movieId: Int): Response<MovieWithActors>
     suspend fun getSavedMovies(): List<Movie>

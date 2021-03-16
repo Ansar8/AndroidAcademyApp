@@ -20,6 +20,14 @@ class MovieRepository(
     private val moviesDao: MoviesDao,
     private val notifications: Notifications): IMovieRepository {
 
+    override suspend fun searchMovies(query: String, page: Int): List<Movie> =
+        withContext(Dispatchers.IO) {
+                val response = moviesApi.searchMovie(query, page)
+                val responseWithDetails = response.movies.map { moviesApi.getMovieDetails(it.id) }
+                val movies = responseWithDetails.map(::toMovieEntity)
+                movies
+        }
+
     override suspend fun getMovies(): Response<List<Movie>> =
         withContext(Dispatchers.IO) {
             try {

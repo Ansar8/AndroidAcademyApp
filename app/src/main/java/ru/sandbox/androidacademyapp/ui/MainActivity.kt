@@ -7,11 +7,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsFragment.*
-import ru.sandbox.androidacademyapp.ui.movies.MoviesFragment.*
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsFragment
 import ru.sandbox.androidacademyapp.ui.movies.MoviesFragment
+import ru.sandbox.androidacademyapp.ui.moviesearch.MovieSearchFragment
 
-class MainActivity : AppCompatActivity(), MovieItemClickListener, BackButtonClickListener {
+interface Navigator {
+    fun moveToMovieDetailsFragment(movieId: Int)
+    fun moveToMovieSearchFragment()
+}
+
+class MainActivity : AppCompatActivity(), Navigator, BackButtonClickListener {
 
     companion object {
         const val MOVIE_DETAILS_FRAGMENT_FLAG = "movieDetailsFragment"
@@ -36,7 +41,7 @@ class MainActivity : AppCompatActivity(), MovieItemClickListener, BackButtonClic
         }
     }
 
-    override fun moveToMovieDetails(movieId: Int) {
+    override fun moveToMovieDetailsFragment(movieId: Int) {
         supportFragmentManager.popBackStack(
             MOVIE_DETAILS_FRAGMENT_FLAG,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
@@ -45,6 +50,13 @@ class MainActivity : AppCompatActivity(), MovieItemClickListener, BackButtonClic
         supportFragmentManager.commit {
             addToBackStack(MOVIE_DETAILS_FRAGMENT_FLAG)
             add(R.id.fragments_container, MovieDetailsFragment.newInstance(movieId))
+        }
+    }
+
+    override fun moveToMovieSearchFragment() {
+        supportFragmentManager.commit {
+            addToBackStack(null)
+            replace(R.id.fragments_container, MovieSearchFragment.newInstance())
         }
     }
 
@@ -58,7 +70,7 @@ class MainActivity : AppCompatActivity(), MovieItemClickListener, BackButtonClic
         when (intent.action) {
             Intent.ACTION_VIEW -> {
                 val id = intent.data?.lastPathSegment?.toIntOrNull()
-                if (id != null) moveToMovieDetails(id)
+                if (id != null) moveToMovieDetailsFragment(id)
             }
         }
     }
