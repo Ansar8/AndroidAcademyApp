@@ -21,6 +21,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@drawable/search_bar_shadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <EditText
         android:id="@+id/search_input"
         style="@style/SearchStyle"
