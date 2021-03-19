@@ -29,9 +29,21 @@
         android:layout_marginTop="16dp"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:hint="@string/search_query_hint"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/back_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="@+id/search_input"
+        app:layout_constraintTop_toTopOf="@id/search_input"
+        app:layout_constraintBottom_toBottomOf="@id/search_input"
+        tools:ignore="ContentDescription" />
 
     <ProgressBar
         android:id="@+id/movie_search_progress_bar"
@@ -72,7 +84,7 @@
         android:layout_marginHorizontal="16dp"
         android:gravity="center"
         android:text="@string/empty_query"
-        android:textColor="@color/white"
+        android:textColor="#6D6D80"
         android:textSize="16sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

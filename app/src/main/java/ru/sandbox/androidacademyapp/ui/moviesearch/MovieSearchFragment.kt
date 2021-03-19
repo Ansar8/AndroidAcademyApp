@@ -28,6 +28,7 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
     private lateinit var searchProgressBar: ProgressBar
     private lateinit var searchOutputMessage: TextView
     private lateinit var movieListRecyclerView: RecyclerView
+    private lateinit var searchBackButton: ImageView
 
     private var listener: Navigator? = null
 
@@ -59,6 +60,9 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
         searchProgressBar = view.findViewById(R.id.movie_search_progress_bar)
         searchOutputMessage = view.findViewById(R.id.search_output_message)
         searchInputEditText = view.findViewById(R.id.search_input)
+
+        searchBackButton = view.findViewById(R.id.back_icon)
+        searchBackButton.setOnClickListener { listener?.backToMovieList() }
 
         searchInputEditText.textChanges()
             .map { text -> text.toString() }
