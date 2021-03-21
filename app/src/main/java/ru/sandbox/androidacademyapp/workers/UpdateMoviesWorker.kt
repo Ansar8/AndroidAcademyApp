@@ -7,7 +7,6 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
-import ru.sandbox.androidacademyapp.util.Response
 
 class UpdateMoviesWorker(
     appContext: Context,
@@ -19,16 +18,10 @@ class UpdateMoviesWorker(
         try {
             // refresh movies cache
             Log.d(TAG, "doWork: Started to update movies cache.")
-            when (val result = repository.getMovies()) {
-                is Response.Success -> {
-                    Log.d(TAG, "doWork: Loaded movies from network.")
-                    result.data?.let { remoteMovies ->
-                        repository.saveMovies(remoteMovies)
-                        Log.d(TAG, "doWork: Saved movies to cache.")
-                    }
-                }
-                is Response.Error -> throw Exception("Failed to load movies from network.")
-            }
+            val remoteMovies = repository.getMovies()
+            if (remoteMovies.isNotEmpty())
+                repository.saveMovies(remoteMovies)
+
             Result.success()
         } catch (e: Exception) {
             Log.d(TAG, "doWork: " + e.message)
@@ -37,6 +30,6 @@ class UpdateMoviesWorker(
     }
 
     companion object {
-        val TAG = "UpdateMoviesWorker"
+        const val TAG = "UpdateMoviesWorker"
     }
 }

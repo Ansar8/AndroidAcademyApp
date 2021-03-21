@@ -8,12 +8,19 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import ru.sandbox.androidacademyapp.BuildConfig
 import ru.sandbox.androidacademyapp.data.network.responses.ActorListResponse
 import ru.sandbox.androidacademyapp.data.network.responses.MovieListResponse
 import ru.sandbox.androidacademyapp.data.network.responses.MovieResponse
 
 interface MoviesApi {
+
+    @GET("search/movie")
+    suspend fun searchMovie(
+        @Query("query") query: String,
+        @Query("page") page: Int = 1
+    ): MovieListResponse
 
     @GET("movie/popular?page=1")
     suspend fun getMovies(): MovieListResponse

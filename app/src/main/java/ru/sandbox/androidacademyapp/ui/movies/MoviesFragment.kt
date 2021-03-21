@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -12,13 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sandbox.androidacademyapp.R
-import ru.sandbox.androidacademyapp.ui.movies.MoviesAdapter.OnRecyclerItemClicked
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
+import ru.sandbox.androidacademyapp.ui.Navigator
+import ru.sandbox.androidacademyapp.util.LoadState
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private var listener: MovieItemClickListener? = null
+    private var listener: Navigator? = null
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
 
@@ -29,14 +31,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orientation: Int = requireActivity().resources.configuration.orientation
-
         initViews(view)
-        initLayoutManager(orientation)
-        initItemDecoration(orientation)
 
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
-        viewModel.isLoading.observe(this.viewLifecycleOwner, this::showProgressBar)
+        viewModel.isLoading.observe(this.viewLifecycleOwner, this::handleLoadingState)
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null){
@@ -45,26 +43,20 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun initViews(view: View) {
-        progressBar = view.findViewById(R.id.movies_progress_bar)
+        val spanCount = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> 4
+            else -> 2
+        }
+
         recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.adapter = MoviesAdapter(clickListener)
-    }
+        recycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        recycler.addItemDecoration(MoviesItemDecoration(30, spanCount))
+        recycler.adapter = MoviesAdapter(::moveToMovieDetails)
 
-    private fun initLayoutManager(orientation: Int) {
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 2)
-        }
-        else {
-            recycler.layoutManager = GridLayoutManager(requireContext(), 4)
-        }
-    }
+        progressBar = view.findViewById(R.id.movies_progress_bar)
 
-    private fun initItemDecoration(orientation: Int) {
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recycler.addItemDecoration(MoviesItemDecoration(30, 2))
-        }
-        else {
-            recycler.addItemDecoration(MoviesItemDecoration(30, 4))
+        view.findViewById<ImageView>(R.id.movie_list_search_icon).setOnClickListener {
+            listener?.moveToMovieSearchFragment()
         }
     }
 
@@ -74,8 +66,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    private fun showProgressBar(isVisible: Boolean){
-        progressBar.isVisible = isVisible
+    private fun handleLoadingState(state: LoadState){
+        when(state){
+            LoadState.Loading -> progressBar.isVisible = true
+            LoadState.Ready -> progressBar.isVisible = false
+        }
+
     }
 
     private fun showToast(message: String){
@@ -85,7 +81,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     //communication with activity
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MovieItemClickListener) listener = context
+        if (context is Navigator) listener = context
     }
 
     override fun onDetach() {
@@ -93,13 +89,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         super.onDetach()
     }
 
-    private val clickListener = object : OnRecyclerItemClicked {
-        override fun onClick(movieId: Int) {
-            listener?.moveToMovieDetails(movieId)
-        }
-    }
-
-    interface MovieItemClickListener {
-        fun moveToMovieDetails(movieId: Int)
+    private fun moveToMovieDetails(movie: Movie) {
+        listener?.moveToMovieDetailsFragment(movie.id)
     }
 }

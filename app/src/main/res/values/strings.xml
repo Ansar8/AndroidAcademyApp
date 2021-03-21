@@ -27,8 +27,14 @@
     <string name="movies_loading_issue">
         Warning!\nThere was a problem to load a list of movies. Please, try to refresh the page.
     </string>
+
     <string name="channel_new_movies">New movies</string>
     <string name="channel_new_movies_description">New incoming movies.</string>
     <string name="channel_new_movies_content_text">Don\'t miss this new movie !</string>
+
+    <string name="search_query_hint">Enter movie\'s name …</string>
+    <string name="search_error">Something went wrong when downloading videos. Please, check your connection and try again !</string>
+    <string name="empty_content">No results matching your query</string>
+    <string name="empty_query">Start typing in a search bar to find a movie</string>
 
 </resources>

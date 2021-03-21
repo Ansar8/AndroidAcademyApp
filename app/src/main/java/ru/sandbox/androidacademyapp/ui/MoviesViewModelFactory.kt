@@ -9,25 +9,21 @@ import ru.sandbox.androidacademyapp.notifications.NewMovieNotifications
 import ru.sandbox.androidacademyapp.repository.MovieRepository
 import ru.sandbox.androidacademyapp.ui.moviedetails.MovieDetailsViewModel
 import ru.sandbox.androidacademyapp.ui.movies.MoviesViewModel
+import ru.sandbox.androidacademyapp.ui.moviesearch.MovieSearchViewModel
 
 class MoviesViewModelFactory(private val applicationContext: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {
-        MoviesViewModel::class.java ->
-            MoviesViewModel(
-                MovieRepository(
-                    MoviesApi.create(),
-                    MovieDatabase.create(applicationContext).moviesDao,
-                    NewMovieNotifications(applicationContext)
-                )
-            )
-        MovieDetailsViewModel::class.java ->
-            MovieDetailsViewModel(
-                MovieRepository(
-                    MoviesApi.create(),
-                    MovieDatabase.create(applicationContext).moviesDao,
-                    NewMovieNotifications(applicationContext)
-                )
-            )
-        else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
-    } as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+        val repository = MovieRepository(
+            moviesApi = MoviesApi.create(),
+            moviesDao = MovieDatabase.create(applicationContext).moviesDao,
+            notifications = NewMovieNotifications(applicationContext)
+        )
+        return when (modelClass) {
+            MoviesViewModel::class.java -> MoviesViewModel(repository)
+            MovieDetailsViewModel::class.java -> MovieDetailsViewModel(repository)
+            MovieSearchViewModel::class.java -> MovieSearchViewModel(repository)
+            else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
+        } as T
+    }
 }
