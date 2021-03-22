@@ -29,9 +29,9 @@ class MovieSearchViewModel(private val repository: IMovieRepository): ViewModel(
 
     init {
         queryInput
+            .debounce(DEBOUNCE_DELAY_TIME_MS, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .doOnNext { item -> Log.d("Next item:", "Next movie's name: $item") }
-            .debounce(DEBOUNCE_DELAY_TIME_MS, TimeUnit.MILLISECONDS)
             .doOnEach { _isLoading.postValue(LoadState.Loading) }
             .switchMap(::searchMoviesByQuery)
             .observeOn(AndroidSchedulers.mainThread())
