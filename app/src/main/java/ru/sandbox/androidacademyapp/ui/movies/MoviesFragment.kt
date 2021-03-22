@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.sandbox.androidacademyapp.R
 import ru.sandbox.androidacademyapp.data.db.entities.Movie
 import ru.sandbox.androidacademyapp.ui.MoviesViewModelFactory
@@ -24,8 +25,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: Navigator? = null
     private lateinit var movieList: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var moviesPlaceholder: TextView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private val viewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
@@ -52,8 +53,13 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         movieList.addItemDecoration(MoviesItemDecoration(30, spanCount))
         movieList.adapter = MoviesAdapter(::moveToMovieDetails)
 
-        progressBar = view.findViewById(R.id.movies_progress_bar)
         moviesPlaceholder = view.findViewById(R.id.movies_placeholder)
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeContainer)
+        swipeRefreshLayout.setColorSchemeResources(R.color.pink)
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadMovies()
+        }
 
         view.findViewById<ImageView>(R.id.movie_list_search_icon).setOnClickListener {
             listener?.moveToMovieSearchFragment()
@@ -68,8 +74,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private fun handleLoadingState(state: LoadState){
         when(state){
-            LoadState.Loading -> progressBar.isVisible = true
-            LoadState.Ready -> progressBar.isVisible = false
+            LoadState.Loading -> swipeRefreshLayout.isRefreshing = true
+            LoadState.Ready -> swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -86,6 +92,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
                 moviesPlaceholder.setText(R.string.movies_empty_content)
             }
             is MoviesResult.ErrorWithCache -> {
+                updateMoviesAdapter(result.cachedMovieList)
                 movieList.isVisible = true
                 moviesPlaceholder.isVisible = false
 

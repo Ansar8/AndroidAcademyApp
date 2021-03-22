@@ -60,7 +60,7 @@ class MoviesViewModel(private val repository: IMovieRepository) : ViewModel() {
             catch (error: Throwable){
                 if (savedMovies.isNotEmpty()){
                     //notify to check connection and show cached movies
-                    _moviesResult.value = MoviesResult.ErrorWithCache(error)
+                    _moviesResult.value = MoviesResult.ErrorWithCache(savedMovies, error)
                 }
                 else {
                     //notify to check connection and show message to refresh the page
