@@ -36,7 +36,9 @@
     <string name="search_error">Something went wrong when downloading videos. Please, check your connection and try again.</string>
     <string name="empty_content">No results matching your query</string>
     <string name="empty_query">Start typing in a search bar to find a movie</string>
-    <string name="details_load_error">Something went wrong when loading details.\nPlease, check your connection and try again.</string>
+    <string name="details_load_error">Something went wrong when loading details.\nPlease, check your connection and refresh the page.</string>
+    <string name="movies_load_error">Something went wrong when loading movies.\nPlease, check your connection and refresh the page.</string>
+    <string name="movies_empty_content">No movies were found.\nPlease, try to refresh the page.</string>
     <string name="try_again_btn">Try again</string>
 
 </resources>

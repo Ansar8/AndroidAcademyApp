@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_view_movies"
+        app:layout_constraintBottom_toTopOf="@+id/barrierHorizontalTitleTop"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -74,6 +74,20 @@
         app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/movies_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textColor="#6D6D80"
+        android:textSize="16sp"
+        tools:text="@string/movies_load_error"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
+        app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalTitleTop"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ProgressBar
         android:id="@+id/movies_progress_bar"

@@ -3,9 +3,11 @@ package ru.sandbox.androidacademyapp.ui.movies
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,8 +23,9 @@ import ru.sandbox.androidacademyapp.util.LoadState
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: Navigator? = null
-    private lateinit var recycler: RecyclerView
+    private lateinit var movieList: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var moviesPlaceholder: TextView
 
     private val viewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(applicationContext = requireContext().applicationContext)
@@ -33,13 +36,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
         initViews(view)
 
-        viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesAdapter)
+        viewModel.moviesResult.observe(this.viewLifecycleOwner, this::handleMoviesResult)
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::handleLoadingState)
         viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
-
-        if (savedInstanceState == null){
-            viewModel.loadMovies()
-        }
     }
 
     private fun initViews(view: View) {
@@ -48,12 +47,13 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
             else -> 2
         }
 
-        recycler = view.findViewById(R.id.recycler_view_movies)
-        recycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
-        recycler.addItemDecoration(MoviesItemDecoration(30, spanCount))
-        recycler.adapter = MoviesAdapter(::moveToMovieDetails)
+        movieList = view.findViewById(R.id.recycler_view_movies)
+        movieList.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        movieList.addItemDecoration(MoviesItemDecoration(30, spanCount))
+        movieList.adapter = MoviesAdapter(::moveToMovieDetails)
 
         progressBar = view.findViewById(R.id.movies_progress_bar)
+        moviesPlaceholder = view.findViewById(R.id.movies_placeholder)
 
         view.findViewById<ImageView>(R.id.movie_list_search_icon).setOnClickListener {
             listener?.moveToMovieSearchFragment()
@@ -61,7 +61,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun updateMoviesAdapter(movies: List<Movie>){
-        (recycler.adapter as? MoviesAdapter)?.apply {
+        (movieList.adapter as? MoviesAdapter)?.apply {
             bindMovies(movies)
         }
     }
@@ -71,7 +71,34 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
             LoadState.Loading -> progressBar.isVisible = true
             LoadState.Ready -> progressBar.isVisible = false
         }
+    }
 
+    private fun handleMoviesResult(result: MoviesResult){
+        when(result){
+            is MoviesResult.Success -> {
+                updateMoviesAdapter(result.movieList)
+                movieList.isVisible = true
+                moviesPlaceholder.isVisible = false
+            }
+            is MoviesResult.EmptyContent -> {
+                movieList.isVisible = false
+                moviesPlaceholder.isVisible = true
+                moviesPlaceholder.setText(R.string.movies_empty_content)
+            }
+            is MoviesResult.ErrorWithCache -> {
+                movieList.isVisible = true
+                moviesPlaceholder.isVisible = false
+
+                Log.e(MoviesFragment::class.java.name, "Something went wrong.", result.error)
+            }
+            is MoviesResult.Error -> {
+                movieList.isVisible = false
+                moviesPlaceholder.isVisible = true
+                moviesPlaceholder.setText(R.string.movies_load_error)
+
+                Log.e(MoviesFragment::class.java.name, "Something went wrong.", result.error)
+            }
+        }
     }
 
     private fun showToast(message: String){
