@@ -2,8 +2,10 @@ package ru.sandbox.androidacademyapp.ui.moviedetails
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,6 +36,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var progressBar: ProgressBar
     private lateinit var castTitle: TextView
     private lateinit var storyLineTitle: TextView
+    private lateinit var detailsPlaceholder: TextView
+    private lateinit var tryAgainButton: TextView
 
     private var movieId: Int = -1
 
@@ -54,11 +58,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         initViews(view)
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, this::handleLoadingState)
-        viewModel.movieDetails.observe(this.viewLifecycleOwner){ movieWithActors ->
-            updateMovieDetails(movieWithActors)
-            showMovieDetails(true)
-        }
-        viewModel.errorMessage.observe(this.viewLifecycleOwner, this::showToast)
+        viewModel.detailsResult.observe(this.viewLifecycleOwner, this::handleDetailsResult)
+        viewModel.toastMessage.observe(this.viewLifecycleOwner, this::showToast)
 
         if (savedInstanceState == null)
             viewModel.loadMovieDetails(movieId)
@@ -80,6 +81,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         backText = view.findViewById(R.id.back_text)
         backText.setOnClickListener { listener?.backToMovieList() }
 
+        detailsPlaceholder = view.findViewById(R.id.details_placeholder)
+
+        tryAgainButton = view.findViewById(R.id.try_again_btn)
+        tryAgainButton.setOnClickListener {
+            showDetailsPlaceholder(false)
+            viewModel.loadMovieDetails(movieId)
+        }
+
         ratingBar = view.findViewById(R.id.movie_details_rating_bar)
 
         recycler = view.findViewById(R.id.movie_recycler_view_actors)
@@ -88,6 +97,36 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         recycler.addItemDecoration(ActorsItemDecoration(15))
 
         showMovieDetails(false)
+    }
+
+    private fun handleLoadingState(state: LoadState){
+        when(state){
+            is LoadState.Loading -> progressBar.isVisible = true
+            is LoadState.Ready -> progressBar.isVisible = false
+        }
+    }
+
+    private fun handleDetailsResult(result: DetailsResult){
+        when(result){
+            is DetailsResult.Success -> {
+                showDetailsPlaceholder(false)
+                updateMovieDetails(result.movieDetails)
+                showMovieDetails(true)
+            }
+            is DetailsResult.Error -> {
+                showMovieDetails(false)
+                showDetailsPlaceholder(true)
+
+                Log.e(MovieDetailsFragment::class.java.name, "Something went wrong.", result.error)
+            }
+            is DetailsResult.ErrorWithCache -> {
+                showDetailsPlaceholder(false)
+                updateMovieDetails(result.cachedMovieDetails)
+                showMovieDetails(true)
+
+                Log.e(MovieDetailsFragment::class.java.name, "Something went wrong.", result.error)
+            }
+        }
     }
 
     private fun updateMovieDetails(movieWithActors: MovieWithActors) {
@@ -114,13 +153,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun handleLoadingState(state: LoadState){
-        when(state){
-            is LoadState.Loading -> progressBar.isVisible = true
-            is LoadState.Ready -> progressBar.isVisible = false
-        }
-    }
-
     private fun showToast(message: String){
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
@@ -136,6 +168,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         storyLineTitle.isVisible = isVisible
         castTitle.isVisible = isVisible
         recycler.isVisible = isVisible
+    }
+
+    private fun showDetailsPlaceholder(isVisible: Boolean){
+        detailsPlaceholder.isVisible = isVisible
+        tryAgainButton.isVisible = isVisible
     }
 
     //communication with activity

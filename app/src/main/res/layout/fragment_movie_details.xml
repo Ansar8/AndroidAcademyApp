@@ -51,20 +51,6 @@
             app:layout_constraintGuide_end="16dp"/>
 
         <TextView
-            android:id="@+id/back_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:text="@string/back_button"
-            android:textColor="@color/back_button"
-            android:textSize="@dimen/back_button"
-            app:drawableStartCompat="@drawable/back"
-            android:drawablePadding="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
-            app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/movie_age_limits"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -214,6 +200,51 @@
             app:layout_constraintEnd_toStartOf="@+id/guideVerticalEnd"
             app:layout_constraintStart_toEndOf="@+id/guideVerticalBegin"
             app:layout_constraintTop_toBottomOf="@+id/barrierHorizontalCastTop" />
+
+        <TextView
+            android:id="@+id/back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/back_button"
+            android:textColor="@color/back_button"
+            android:textSize="@dimen/back_button"
+            app:drawableStartCompat="@drawable/back"
+            android:drawablePadding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/details_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#6D6D80"
+            android:text="@string/details_load_error"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/try_again_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#FF3466"
+            android:textStyle="bold"
+            android:text="@string/try_again_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_placeholder"/>
 
         <ProgressBar
             android:id="@+id/movie_details_progress_bar"

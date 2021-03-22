@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.sandbox.androidacademyapp.data.db.entities.relations.MovieWithActors
 import ru.sandbox.androidacademyapp.repository.IMovieRepository
 import ru.sandbox.androidacademyapp.util.LoadState
 import ru.sandbox.androidacademyapp.util.SingleLiveEvent
@@ -17,44 +16,56 @@ class MovieDetailsViewModel(private val repository: IMovieRepository) : ViewMode
     private val _isLoading = MutableLiveData<LoadState>()
     val isLoading: LiveData<LoadState> = _isLoading
 
-    private val _errorMessage = SingleLiveEvent<String>()
-    val errorMessage: SingleLiveEvent<String> get() = _errorMessage
+    private val _toastMessage = SingleLiveEvent<String>()
+    val toastMessage: SingleLiveEvent<String> get() = _toastMessage
 
-    private val _movieDetails = MutableLiveData<MovieWithActors>()
-    val movieDetails: LiveData<MovieWithActors> = _movieDetails
+    private val _detailsResult = MutableLiveData<DetailsResult>()
+    val detailsResult: LiveData<DetailsResult> = _detailsResult
 
     private val loadingExceptionHandler = CoroutineExceptionHandler {
         coroutineContext, exception ->
             println("CoroutineExceptionHandler got $exception in $coroutineContext")
             _isLoading.value = LoadState.Ready
-            _errorMessage.value = exception.message
+            _detailsResult.value = DetailsResult.Error(exception)
+            _toastMessage.value = "Oops.. something unexpected happened !!"
+
     }
 
     fun loadMovieDetails(movieId: Int) {
         viewModelScope.launch(loadingExceptionHandler) {
 
             _isLoading.value = LoadState.Loading
+            var loadingError: Throwable? = null
 
-            val savedDetails = repository.getSavedMovieWithActors(movieId)
-            if(savedDetails.isNotEmpty()) {
-                val details = savedDetails.first()
-                    _movieDetails.value = details
-            }
-
-            var remoteDetails: MovieWithActors? = null
+            // get remote details
             try {
-                remoteDetails = repository.getMovieWithActors(movieId)
-                _movieDetails.value = remoteDetails
+                val remoteDetails = repository.getMovieWithActors(movieId)
+                // save remote details
+                repository.saveMovieWithActors(remoteDetails)
             }
             catch (error: Throwable){
-                _errorMessage.value = "Oops.. looks like network failure!!"
+                loadingError = error
+            }
+
+            // use the database as a single source of truth
+            val savedDetails = repository.getSavedMovieWithActors(movieId)
+            val details = savedDetails.first()
+
+
+            if (loadingError != null){
+                //checking if there are full movie's details
+                if (details.actors.isNotEmpty())
+                    _detailsResult.value = DetailsResult.ErrorWithCache(details, loadingError)
+                else
+                    _detailsResult.value = DetailsResult.Error(loadingError)
+
+                _toastMessage.value = "Oops.. looks like network failure!!"
+            }
+            else {
+                _detailsResult.value = DetailsResult.Success(details)
             }
 
             _isLoading.value = LoadState.Ready
-
-            if (remoteDetails != null){
-                repository.saveMovieWithActors(remoteDetails)
-            }
         }
     }
 }
